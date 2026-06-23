@@ -251,37 +251,26 @@
         <button class="theme-toggle" id="theme-btn" type="button" aria-label="Alternar tema">🌓</button>
     </div>
     <div class="logos-container">
-        <!-- FIFA logo inline SVG -->
+        <!-- CBF logo via football-data.org (mesma API já usada no projeto) -->
+        <div class="logo-box" title="CBF — Confederação Brasileira de Futebol">
+            <img src="https://crests.football-data.org/764.png" alt="CBF"
+                 style="height:85px;max-width:140px;object-fit:contain;filter:drop-shadow(0 3px 6px rgba(0,0,0,.5))"
+                 onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+            <div class="logo-fallback" style="display:none">🇧🇷 CBF</div>
+        </div>
+        <!-- FIFA World Cup 2026 emblem via football-data.org -->
+        <div class="logo-box" title="Copa do Mundo FIFA 2026">
+            <img src="https://crests.football-data.org/wm26.png" alt="Copa 2026"
+                 style="height:85px;max-width:140px;object-fit:contain;filter:drop-shadow(0 3px 6px rgba(0,0,0,.5))"
+                 onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+            <div class="logo-fallback" style="display:none">⚽ Copa 2026</div>
+        </div>
+        <!-- FIFA logo via dl.svgcdn.com (CDN público sem hotlink) -->
         <div class="logo-box" title="FIFA">
-            <svg height="85" viewBox="0 0 200 100" xmlns="http://www.w3.org/2000/svg" style="filter:drop-shadow(0 3px 6px rgba(0,0,0,.5))">
-                <rect width="200" height="100" rx="8" fill="#1a3a6b"/>
-                <text x="100" y="58" text-anchor="middle" font-family="Arial Black,Arial,sans-serif" font-weight="900" font-size="46" fill="#ffffff" letter-spacing="4">FIFA</text>
-                <rect x="20" y="68" width="160" height="4" fill="#c8a84b"/>
-            </svg>
-        </div>
-        <!-- CBF logo inline SVG -->
-        <div class="logo-box" title="CBF">
-            <svg height="85" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="filter:drop-shadow(0 3px 6px rgba(0,0,0,.5))">
-                <circle cx="50" cy="50" r="48" fill="#009c3b" stroke="#ffdf00" stroke-width="4"/>
-                <polygon points="50,12 88,50 50,88 12,50" fill="#ffdf00"/>
-                <circle cx="50" cy="50" r="22" fill="#002776"/>
-                <text x="50" y="55" text-anchor="middle" font-family="Arial Black,Arial,sans-serif" font-weight="900" font-size="16" fill="#ffffff">CBF</text>
-            </svg>
-        </div>
-        <!-- Copa 2026 inline SVG -->
-        <div class="logo-box" title="Copa do Mundo 2026">
-            <svg height="85" viewBox="0 0 120 100" xmlns="http://www.w3.org/2000/svg" style="filter:drop-shadow(0 3px 6px rgba(0,0,0,.5))">
-                <rect width="120" height="100" rx="8" fill="#002776"/>
-                <text x="60" y="30" text-anchor="middle" font-family="Arial,sans-serif" font-weight="700" font-size="11" fill="#c8a84b" letter-spacing="1">FIFA WORLD CUP</text>
-                <!-- Troféu simplificado -->
-                <rect x="52" y="35" width="16" height="28" rx="2" fill="#c8a84b"/>
-                <ellipse cx="60" cy="35" rx="18" ry="12" fill="#c8a84b"/>
-                <rect x="47" y="62" width="26" height="5" rx="2" fill="#c8a84b"/>
-                <rect x="43" y="67" width="34" height="4" rx="2" fill="#c8a84b"/>
-                <path d="M42 35 Q34 35 34 45 Q34 52 42 52" fill="none" stroke="#c8a84b" stroke-width="4"/>
-                <path d="M78 35 Q86 35 86 45 Q86 52 78 52" fill="none" stroke="#c8a84b" stroke-width="4"/>
-                <text x="60" y="90" text-anchor="middle" font-family="Arial Black,Arial,sans-serif" font-weight="900" font-size="14" fill="#ffffff">2026</text>
-            </svg>
+            <img src="https://dl.svgcdn.com/png/simple-icons/fifa-200.png" alt="FIFA"
+                 style="height:85px;max-width:140px;object-fit:contain;filter:drop-shadow(0 3px 6px rgba(0,0,0,.5)) brightness(100)"
+                 onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+            <div class="logo-fallback" style="display:none">FIFA</div>
         </div>
     </div>
     <div class="title-wrapper">
