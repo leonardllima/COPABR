@@ -444,6 +444,47 @@
             .count-box { min-width: 62px; padding: 10px 6px; }
             .count-box span { font-size: 1.5rem; }
         }
+.modal-bolao{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.8);
+    z-index:9999;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+}
+
+.modal-bolao-content{
+    background:var(--surface-color);
+    width:100%;
+    max-width:700px;
+    padding:25px;
+    border-radius:12px;
+}
+
+.modal-bolao-content input{
+    width:100%;
+    padding:12px;
+    margin-bottom:10px;
+}
+
+.palpite-item{
+    display:flex;
+    gap:10px;
+    margin-bottom:10px;
+}
+
+.palpite-item input{
+    flex:1;
+}
+
+#fechar-bolao{
+    float:right;
+    cursor:pointer;
+    font-size:24px;
+    font-weight:bold;
+}
     </style>
 </head>
 <body>
@@ -518,6 +559,44 @@
             <h2 class="card-title">⏳ Próximo Confronto</h2>
             <div class="next-match-header" id="proximo-jogo-content"></div>
         </div>
+
+<div class="card card-full" id="bolao-card">
+    <h2 class="card-title">🎯 Bolão Oficial da Copa</h2>
+
+    <div style="text-align:center">
+
+        <p id="bolao-jogo-info">
+            Próximo jogo da Seleção Brasileira
+        </p>
+
+        <div style="
+            margin-top:15px;
+            font-size:1.2rem;
+            font-weight:bold;
+            color:var(--br-green);
+        ">
+            R$ 5,00 por palpite
+        </div>
+
+        <button
+            id="btn-bolao"
+            style="
+                margin-top:20px;
+                background:var(--br-green);
+                color:white;
+                border:none;
+                padding:15px 30px;
+                border-radius:10px;
+                font-size:1rem;
+                font-weight:bold;
+                cursor:pointer;
+            "
+        >
+            Participar do Bolão
+        </button>
+
+    </div>
+</div>
 
         <div class="card card-half">
             <h2 class="card-title">🏆 Classificação - Grupo C</h2>
@@ -1232,7 +1311,219 @@
             renderAllData();
         }
 
+document
+.getElementById("btn-bolao")
+.addEventListener(
+    "click",
+    abrirBolao
+);
+
+document
+.getElementById("fechar-bolao")
+.addEventListener(
+    "click",
+    fecharBolao
+);
+
+document
+.getElementById("add-palpite")
+.addEventListener(
+    "click",
+    adicionarCampoPalpite
+);
+
+document
+.getElementById("confirmar-bolao")
+.addEventListener(
+    "click",
+    enviarBolao
+);
+let palpitesBolao = [];
+
+function abrirBolao(){
+    document
+        .getElementById("modal-bolao")
+        .style.display = "flex";
+}
+
+function fecharBolao(){
+    document
+        .getElementById("modal-bolao")
+        .style.display = "none";
+}
+
+function atualizarResumoBolao(){
+
+    document.getElementById(
+        "qtd-palpites"
+    ).innerText = palpitesBolao.length;
+
+    document.getElementById(
+        "valor-total"
+    ).innerText =
+        (palpitesBolao.length * 5)
+        .toFixed(2)
+        .replace(".", ",");
+}
+
+function adicionarCampoPalpite(){
+
+    const div =
+        document.createElement("div");
+
+    div.className =
+        "palpite-item";
+
+    div.innerHTML = `
+        <input
+            type="number"
+            placeholder="Brasil"
+            class="brasil-gols"
+        >
+
+        <input
+            type="number"
+            placeholder="Adversário"
+            class="adv-gols"
+        >
+    `;
+
+    document
+        .getElementById(
+            "lista-palpites"
+        )
+        .appendChild(div);
+
+    palpitesBolao.push({});
+
+    atualizarResumoBolao();
+}
         document.addEventListener('DOMContentLoaded', initApp);
     </script>
+<div id="modal-bolao" class="modal-bolao">
+
+    <div class="modal-bolao-content">
+
+        <span id="fechar-bolao">&times;</span>
+
+        <h2>🎯 Participar do Bolão</h2>
+
+        <input
+            type="text"
+            id="bolao-nome"
+            placeholder="Nome Completo"
+        >
+
+        <input
+            type="text"
+            id="bolao-whatsapp"
+            placeholder="WhatsApp"
+        >
+
+        <input
+            type="email"
+            id="bolao-email"
+            placeholder="Email (Opcional)"
+        >
+
+        <hr>
+
+        <div id="lista-palpites"></div>
+
+        <button id="add-palpite">
+            + Adicionar Palpite
+        </button>
+
+        <div id="resumo-bolao">
+
+            <p>
+                Palpites:
+                <span id="qtd-palpites">0</span>
+            </p>
+
+            <p>
+                Total:
+                R$
+                <span id="valor-total">0,00</span>
+            </p>
+
+        </div>
+
+        <button id="confirmar-bolao">
+            Confirmar Participação
+        </button>
+
+    </div>
+async function enviarBolao(){
+
+    const nome =
+        document
+        .getElementById("bolao-nome")
+        .value;
+
+    const whatsapp =
+        document
+        .getElementById("bolao-whatsapp")
+        .value;
+
+    const email =
+        document
+        .getElementById("bolao-email")
+        .value;
+
+    const palpites = [];
+
+    document
+        .querySelectorAll(".palpite-item")
+        .forEach(item=>{
+
+            palpites.push({
+                brasil:
+                    Number(
+                        item.querySelector(
+                            ".brasil-gols"
+                        ).value
+                    ),
+
+                adversario:
+                    Number(
+                        item.querySelector(
+                            ".adv-gols"
+                        ).value
+                    )
+            });
+
+        });
+
+    const response =
+        await fetch(
+            `${PROXY_BASE}/api/bolao/participar`,
+            {
+                method:"POST",
+                headers:{
+                    "Content-Type":
+                        "application/json"
+                },
+                body:JSON.stringify({
+                    nome,
+                    whatsapp,
+                    email,
+                    jogo_id:
+                        "PROXIMO_JOGO",
+                    palpites
+                })
+            }
+        );
+
+    const resultado =
+        await response.json();
+
+    alert(
+        `Participação registrada!\n\nID: ${resultado.id}`
+    );
+
+    fecharBolao();
+}
+</div>
 </body>
 </html>
