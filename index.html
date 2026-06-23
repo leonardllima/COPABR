@@ -3,1284 +3,1461 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Acompanhamento da Seleção Brasileira na Copa do Mundo FIFA 2026: próximo jogo, classificação do grupo, elenco convocado, estatísticas e escalação.">
+    <meta name="description" content="Bolão da Seleção Brasileira — Copa do Mundo FIFA 2026">
     <meta name="theme-color" content="#002776">
     <title>Seleção Brasileira | Copa do Mundo FIFA 2026</title>
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23009c3b'/%3E%3Cpolygon points='32,8 58,32 32,56 6,32' fill='%23ffdf00'/%3E%3Ccircle cx='32' cy='32' r='12' fill='%23002776'/%3E%3C/svg%3E">
 
     <script>
-        (function () {
-            try {
-                var theme = localStorage.getItem('theme');
-                if (theme === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
-            } catch (e) {}
-        })();
+        (function(){try{var t=localStorage.getItem('theme');if(t==='dark')document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();
     </script>
 
     <style>
         :root {
-            --br-green: #009c3b;
-            --br-green-dark: #007a2e;
-            --br-yellow: #ffdf00;
-            --br-blue: #002776;
-            --br-blue-dark: #001a4f;
-            --br-white: #ffffff;
-            --bg-color: #f0f2f5;
-            --surface-color: #ffffff;
-            --text-primary: #1c1e21;
-            --text-secondary: #606770;
-            --border-color: #dadde1;
-            --card-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            --br-green: #009c3b; --br-green-dark: #007a2e;
+            --br-yellow: #ffdf00; --br-blue: #002776; --br-blue-dark: #001a4f;
+            --bg-color: #f0f2f5; --surface-color: #fff;
+            --text-primary: #1c1e21; --text-secondary: #606770;
+            --border-color: #dadde1; --card-shadow: 0 2px 8px rgba(0,0,0,.08);
+            --danger-color: #e53935; --warning-color: #ffb300;
+            --success-color: #2e7d32; --focus-ring: #1d6fd6;
             --pitch-bg: #388e3c;
-            --danger-color: #e53935;
-            --warning-color: #ffb300;
-            --focus-ring: #1d6fd6;
         }
         [data-theme="dark"] {
-            --bg-color: #121212;
-            --surface-color: #1e1e1e;
-            --text-primary: #e4e6eb;
-            --text-secondary: #b0b3b8;
-            --border-color: #3a3b3c;
-            --card-shadow: 0 4px 12px rgba(0,0,0,0.5);
-            --pitch-bg: #1b5e20;
-            --focus-ring: #ffdf00;
+            --bg-color: #121212; --surface-color: #1e1e1e;
+            --text-primary: #e4e6eb; --text-secondary: #b0b3b8;
+            --border-color: #3a3b3c; --card-shadow: 0 4px 12px rgba(0,0,0,.5);
+            --pitch-bg: #1b5e20; --focus-ring: #ffdf00;
         }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease; }
-        html, body { max-width: 100%; overflow-x: hidden; }
-        body { background-color: var(--bg-color); color: var(--text-primary); line-height: 1.6; }
-        h1, h2, h3, h4 { color: var(--br-blue); }
-        [data-theme="dark"] h1, [data-theme="dark"] h2, [data-theme="dark"] h3, [data-theme="dark"] h4 { color: var(--br-yellow); }
-        a:focus-visible, button:focus-visible, [tabindex]:focus-visible { outline: 3px solid var(--focus-ring); outline-offset: 2px; }
-        @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+        *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;transition:background-color .3s,color .3s,border-color .3s}
+        html,body{max-width:100%;overflow-x:hidden}
+        body{background:var(--bg-color);color:var(--text-primary);line-height:1.6}
+        h1,h2,h3,h4{color:var(--br-blue)}
+        [data-theme="dark"] h1,[data-theme="dark"] h2,[data-theme="dark"] h3,[data-theme="dark"] h4{color:var(--br-yellow)}
+        a:focus-visible,button:focus-visible,[tabindex]:focus-visible{outline:3px solid var(--focus-ring);outline-offset:2px}
+        @media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 
-        header { background: linear-gradient(135deg, var(--br-green-dark), var(--br-blue)); color: var(--br-white); padding: 20px 20px 30px 20px; text-align: center; position: relative; box-shadow: 0 4px 12px rgba(0,0,0,0.15); border-bottom: 6px solid var(--br-yellow); }
-        .header-actions { display: flex; justify-content: flex-end; align-items: center; gap: 15px; max-width: 1400px; margin: 0 auto 15px auto; flex-wrap: wrap; }
-        .btn-refresh { background: var(--br-yellow); color: var(--br-blue-dark); border: none; padding: 10px 20px; border-radius: 20px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.2); font-size: 0.9rem; transition: transform 0.2s, background 0.3s; }
-        .btn-refresh:hover { transform: scale(1.05); background: #ffe633; }
-        .btn-refresh:disabled { cursor: not-allowed; opacity: 0.75; transform: none; }
-        .theme-toggle { background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); color: white; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; }
-        .theme-toggle:hover { background: rgba(255,255,255,0.25); }
-        .logos-container { display: flex; align-items: center; justify-content: center; gap: 40px; margin-bottom: 20px; flex-wrap: wrap; }
-        .logo-box { display: flex; align-items: center; justify-content: center; height: 85px; }
-        .logos-container img { height: 85px; max-width: 140px; object-fit: contain; filter: drop-shadow(0 3px 6px rgba(0,0,0,0.5)); transition: transform 0.3s ease; }
-        .logos-container img:hover { transform: scale(1.08); }
-        .logo-fallback { display: none; align-items: center; justify-content: center; height: 85px; padding: 0 18px; border-radius: 10px; background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.35); color: var(--br-white); font-weight: 800; letter-spacing: 1px; font-size: 0.95rem; text-align: center; white-space: nowrap; }
-        [data-theme="dark"] .logo-fifa { filter: drop-shadow(0 2px 5px rgba(255,255,255,0.2)) brightness(1.2); }
-        .title-wrapper h1 { color: var(--br-white); font-size: 2.2rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 5px; text-shadow: 1px 1px 3px rgba(0,0,0,0.3); }
-        .title-wrapper p { font-size: 1.1rem; font-weight: 500; color: var(--br-yellow); text-transform: uppercase; letter-spacing: 1px; }
-        #api-status { font-size: 0.85rem; margin-top: 20px; color: rgba(255,255,255,0.9); display: flex; align-items: center; justify-content: center; gap: 8px; font-weight: 600; background: rgba(0,0,0,0.2); padding: 5px 15px; border-radius: 15px; width: fit-content; max-width: 90%; margin-left: auto; margin-right: auto; text-align: center; }
-        .status-dot { height: 12px; width: 12px; min-width: 12px; border-radius: 50%; background-color: var(--warning-color); display: inline-block; box-shadow: 0 0 5px rgba(0,0,0,0.5); }
-        .data-disclaimer { max-width: 1400px; margin: 16px auto 0; padding: 10px 16px; font-size: 0.8rem; color: rgba(255,255,255,0.85); text-align: center; }
+        /* Header */
+        header{background:linear-gradient(135deg,var(--br-green-dark),var(--br-blue));color:#fff;padding:20px 20px 30px;text-align:center;position:relative;box-shadow:0 4px 12px rgba(0,0,0,.15);border-bottom:6px solid var(--br-yellow)}
+        .header-actions{display:flex;justify-content:flex-end;align-items:center;gap:12px;max-width:1400px;margin:0 auto 15px;flex-wrap:wrap}
+        .btn-refresh{background:var(--br-yellow);color:var(--br-blue-dark);border:none;padding:10px 20px;border-radius:20px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:8px;box-shadow:0 2px 5px rgba(0,0,0,.2);font-size:.9rem;transition:transform .2s}
+        .btn-refresh:hover{transform:scale(1.05)}
+        .btn-refresh:disabled{cursor:not-allowed;opacity:.75;transform:none}
+        .theme-toggle{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:#fff;width:40px;height:40px;border-radius:50%;cursor:pointer;font-size:1.2rem;display:flex;align-items:center;justify-content:center}
+        .logos-container{display:flex;align-items:center;justify-content:center;gap:40px;margin-bottom:20px;flex-wrap:wrap}
+        .logos-container img{height:85px;max-width:140px;object-fit:contain;filter:drop-shadow(0 3px 6px rgba(0,0,0,.5));transition:transform .3s}
+        .logos-container img:hover{transform:scale(1.08)}
+        .logo-fallback{display:none;align-items:center;justify-content:center;height:85px;padding:0 18px;border-radius:10px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.35);color:#fff;font-weight:800;font-size:.95rem;text-align:center}
+        .title-wrapper h1{color:#fff;font-size:2.2rem;text-transform:uppercase;letter-spacing:2px;margin-bottom:5px;text-shadow:1px 1px 3px rgba(0,0,0,.3)}
+        .title-wrapper p{font-size:1.1rem;font-weight:500;color:var(--br-yellow);text-transform:uppercase;letter-spacing:1px}
+        #api-status{font-size:.85rem;margin-top:20px;color:rgba(255,255,255,.9);display:flex;align-items:center;justify-content:center;gap:8px;font-weight:600;background:rgba(0,0,0,.2);padding:5px 15px;border-radius:15px;width:fit-content;margin-left:auto;margin-right:auto}
+        .status-dot{height:12px;width:12px;min-width:12px;border-radius:50%;background:var(--warning-color);display:inline-block}
 
-        .container { max-width: 1400px; margin: 30px auto; padding: 0 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 25px; }
-        .card { background-color: var(--surface-color); border-radius: 12px; padding: 25px; box-shadow: var(--card-shadow); border-top: 5px solid var(--br-green); display: flex; flex-direction: column; min-width: 0; }
-        .card-full { grid-column: 1 / -1; }
-        .card-half { grid-column: span 1; }
-        .card-title { font-size: 1.4rem; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; border-bottom: 2px solid var(--border-color); padding-bottom: 12px; font-weight: 700; }
+        /* Layout */
+        .container{max-width:1400px;margin:30px auto;padding:0 20px;display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:25px}
+        .card{background:var(--surface-color);border-radius:12px;padding:25px;box-shadow:var(--card-shadow);border-top:5px solid var(--br-green);display:flex;flex-direction:column;min-width:0}
+        .card-full{grid-column:1/-1}
+        .card-title{font-size:1.4rem;margin-bottom:20px;display:flex;align-items:center;gap:10px;border-bottom:2px solid var(--border-color);padding-bottom:12px;font-weight:700}
 
-        .table-scroll { width: 100%; overflow-x: auto; }
-        table { width: 100%; border-collapse: collapse; font-size: 0.95rem; min-width: 320px; }
-        th, td { padding: 12px 10px; text-align: center; border-bottom: 1px solid var(--border-color); }
-        th { background-color: rgba(0, 156, 59, 0.08); color: var(--br-green); font-weight: 700; text-transform: uppercase; font-size: 0.85rem; }
-        [data-theme="dark"] th { color: var(--br-yellow); background-color: rgba(255, 223, 0, 0.08); }
-        .highlight-row { background-color: rgba(0, 156, 59, 0.05); font-weight: bold; }
-        [data-theme="dark"] .highlight-row { background-color: rgba(255, 223, 0, 0.05); }
-        .list-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px dashed var(--border-color); font-size: 0.95rem; gap: 10px; }
-        .list-item:last-child { border-bottom: none; }
-        .badge { padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: bold; color: white; text-transform: uppercase; white-space: nowrap; }
-        .badge-warning { background-color: var(--warning-color); color: #000; }
-        .badge-danger { background-color: var(--danger-color); }
-        .badge-success { background-color: var(--br-green); }
+        /* Tables */
+        .table-scroll{width:100%;overflow-x:auto}
+        table{width:100%;border-collapse:collapse;font-size:.95rem;min-width:320px}
+        th,td{padding:12px 10px;text-align:center;border-bottom:1px solid var(--border-color)}
+        th{background:rgba(0,156,59,.08);color:var(--br-green);font-weight:700;text-transform:uppercase;font-size:.85rem}
+        [data-theme="dark"] th{color:var(--br-yellow);background:rgba(255,223,0,.08)}
+        .highlight-row{background:rgba(0,156,59,.05);font-weight:700}
 
-        .next-match-header { text-align: center; margin-bottom: 20px; }
-        .next-match-header h3 { font-size: 1.8rem; margin-bottom: 5px; }
-        .next-match-header p { font-size: 0.95rem; color: var(--text-secondary); }
-        .countdown { display: flex; gap: 15px; justify-content: center; margin-top: 20px; flex-wrap: wrap; }
-        .count-box { background: var(--br-blue); color: var(--br-yellow); padding: 15px 10px; border-radius: 8px; text-align: center; min-width: 75px; box-shadow: 0 4px 6px rgba(0,0,0,0.2); }
-        .count-box span { display: block; font-size: 2rem; font-weight: 800; line-height: 1; }
-        .count-box small { font-size: 0.75rem; text-transform: uppercase; color: var(--br-white); margin-top: 5px; display: block; }
+        /* Next match + countdown */
+        .next-match-header{text-align:center;margin-bottom:20px}
+        .next-match-header h3{font-size:1.8rem;margin-bottom:5px}
+        .countdown{display:flex;gap:15px;justify-content:center;margin-top:20px;flex-wrap:wrap}
+        .count-box{background:var(--br-blue);color:var(--br-yellow);padding:15px 10px;border-radius:8px;text-align:center;min-width:75px;box-shadow:0 4px 6px rgba(0,0,0,.2)}
+        .count-box span{display:block;font-size:2rem;font-weight:800;line-height:1}
+        .count-box small{font-size:.75rem;text-transform:uppercase;color:#fff;margin-top:5px;display:block}
 
-        .pitch-container { width: 100%; max-width: 650px; height: 450px; background-color: var(--pitch-bg); border: 2px solid rgba(255,255,255,0.7); position: relative; border-radius: 8px; overflow: hidden; margin: 20px auto 0; box-shadow: inset 0 0 20px rgba(0,0,0,0.2); }
-        .pitch-container::before { content: ''; position: absolute; top: 50%; left: 0; right: 0; height: 2px; background: rgba(255,255,255,0.7); transform: translateY(-50%); }
-        .pitch-container::after { content: ''; position: absolute; top: 50%; left: 50%; width: 100px; height: 100px; border: 2px solid rgba(255,255,255,0.7); border-radius: 50%; transform: translate(-50%, -50%); }
-        .penalty-area-top, .penalty-area-bottom { position: absolute; left: 50%; transform: translateX(-50%); width: 200px; height: 70px; border: 2px solid rgba(255,255,255,0.7); }
-        .penalty-area-top { top: 0; border-top: none; }
-        .penalty-area-bottom { bottom: 0; border-bottom: none; }
-        .pitch-player { position: absolute; transform: translate(-50%, -50%); text-align: center; width: 60px; z-index: 10; }
-        .pitch-player .dot { width: 32px; height: 32px; background: var(--br-yellow); color: var(--br-blue); border-radius: 50%; margin: 0 auto; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; font-weight: 800; border: 2px solid var(--br-blue); box-shadow: 0 2px 4px rgba(0,0,0,0.4); }
-        .pitch-player .name { color: white; font-size: 0.75rem; margin-top: 4px; background: rgba(0,0,0,0.6); padding: 2px 6px; border-radius: 4px; white-space: nowrap; font-weight: 600; text-shadow: 1px 1px 1px rgba(0,0,0,0.8); }
-        @media (max-width: 480px) { .pitch-container { height: 360px; } .pitch-player { width: 48px; } .pitch-player .name { font-size: 0.65rem; padding: 1px 4px; } }
+        /* Pitch */
+        .pitch-container{width:100%;max-width:650px;height:450px;background:var(--pitch-bg);border:2px solid rgba(255,255,255,.7);position:relative;border-radius:8px;overflow:hidden;margin:20px auto 0;box-shadow:inset 0 0 20px rgba(0,0,0,.2)}
+        .pitch-container::before{content:'';position:absolute;top:50%;left:0;right:0;height:2px;background:rgba(255,255,255,.7);transform:translateY(-50%)}
+        .pitch-container::after{content:'';position:absolute;top:50%;left:50%;width:100px;height:100px;border:2px solid rgba(255,255,255,.7);border-radius:50%;transform:translate(-50%,-50%)}
+        .penalty-area-top,.penalty-area-bottom{position:absolute;left:50%;transform:translateX(-50%);width:200px;height:70px;border:2px solid rgba(255,255,255,.7)}
+        .penalty-area-top{top:0;border-top:none}
+        .penalty-area-bottom{bottom:0;border-bottom:none}
+        .pitch-player{position:absolute;transform:translate(-50%,-50%);text-align:center;width:60px;z-index:10}
+        .pitch-player .dot{width:32px;height:32px;background:var(--br-yellow);color:var(--br-blue);border-radius:50%;margin:0 auto;display:flex;align-items:center;justify-content:center;font-size:.9rem;font-weight:800;border:2px solid var(--br-blue);box-shadow:0 2px 4px rgba(0,0,0,.4)}
+        .pitch-player .name{color:#fff;font-size:.75rem;margin-top:4px;background:rgba(0,0,0,.6);padding:2px 6px;border-radius:4px;white-space:nowrap;font-weight:600}
 
-        .squad-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
-        .squad-section h3 { font-size: 1.1rem; color: var(--text-primary); margin-bottom: 15px; padding-bottom: 5px; border-bottom: 2px solid var(--br-green); }
-        [data-theme="dark"] .squad-section h3 { color: var(--text-primary); }
-        .player-card { display: flex; align-items: center; gap: 15px; padding: 12px; background: var(--bg-color); border-radius: 8px; margin-bottom: 10px; border-left: 4px solid var(--br-yellow); }
-        .player-number { background: var(--br-blue); color: var(--br-yellow); width: 35px; height: 35px; min-width: 35px; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-weight: 800; font-size: 1rem; }
-        .player-info { min-width: 0; }
-        .player-info strong { display: block; font-size: 0.95rem; }
-        .player-info small { color: var(--text-secondary); font-size: 0.8rem; }
+        /* Squad */
+        .squad-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px}
+        .squad-section h3{font-size:1.1rem;margin-bottom:15px;padding-bottom:5px;border-bottom:2px solid var(--br-green)}
+        .player-card{display:flex;align-items:center;gap:15px;padding:12px;background:var(--bg-color);border-radius:8px;margin-bottom:10px;border-left:4px solid var(--br-yellow)}
+        .player-number{background:var(--br-blue);color:var(--br-yellow);width:35px;height:35px;min-width:35px;display:flex;align-items:center;justify-content:center;border-radius:50%;font-weight:800;font-size:1rem}
+        .player-info strong{display:block;font-size:.95rem}
+        .player-info small{color:var(--text-secondary);font-size:.8rem}
 
-        footer { text-align: center; padding: 25px; background-color: var(--surface-color); color: var(--text-secondary); margin-top: 40px; border-top: 1px solid var(--border-color); font-weight: 600; letter-spacing: 1px; }
-        .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+        /* Buttons */
+        .btn-modern{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:none;border-radius:12px;padding:14px 28px;font-size:1rem;font-weight:700;cursor:pointer;color:#fff;position:relative;overflow:hidden;transition:transform .2s,box-shadow .2s;user-select:none;-webkit-tap-highlight-color:transparent}
+        .btn-modern svg{width:20px;height:20px;flex-shrink:0}
+        .btn-modern:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(0,0,0,.25)}
+        .btn-modern:active{transform:translateY(0) scale(.97)}
+        .btn-modern:disabled{opacity:.6;cursor:not-allowed;transform:none;box-shadow:none}
+        .btn-primary{background:linear-gradient(135deg,var(--br-green),var(--br-green-dark));box-shadow:0 4px 12px rgba(0,156,59,.35)}
+        .btn-secondary{background:linear-gradient(135deg,var(--br-blue),var(--br-blue-dark));box-shadow:0 4px 12px rgba(0,39,118,.35)}
+        .btn-danger{background:linear-gradient(135deg,#ef5350,#c62828);box-shadow:0 4px 12px rgba(229,57,53,.35)}
+        .btn-warning{background:linear-gradient(135deg,#ffca28,#ff8f00);color:#333;box-shadow:0 4px 12px rgba(255,143,0,.35)}
+        .btn-success{background:linear-gradient(135deg,#43a047,#1b5e20);box-shadow:0 4px 12px rgba(46,125,50,.35)}
+        .btn-ghost{background:transparent;border:2px solid var(--border-color);color:var(--text-primary);box-shadow:none}
+        .btn-ghost:hover{background:var(--bg-color)}
+        .btn-sm{padding:8px 14px;font-size:.82rem;border-radius:8px}
+        .btn-block{width:100%}
+        .btn-admin-header{background:linear-gradient(135deg,#42a5f5,#1565c0);color:#fff;border:none;padding:10px 20px;border-radius:20px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:8px;box-shadow:0 2px 5px rgba(0,0,0,.2);font-size:.9rem;transition:transform .2s}
+        .btn-admin-header:hover{transform:scale(1.05)}
 
-        @media (max-width: 768px) { .container { grid-template-columns: 1fr; } .header-actions { justify-content: space-between; padding: 0 10px; } .logos-container { gap: 15px; } .logos-container img, .logo-box, .logo-fallback { height: 60px; } .countdown { flex-wrap: wrap; } .title-wrapper h1 { font-size: 1.6rem; } }
-        @media (max-width: 380px) { .count-box { min-width: 62px; padding: 10px 6px; } .count-box span { font-size: 1.5rem; } }
+        /* Modals */
+        .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:9999;justify-content:center;align-items:flex-start;padding:20px;overflow-y:auto}
+        .modal-overlay.active{display:flex}
+        .modal-box{background:var(--surface-color);width:100%;max-width:700px;padding:25px;border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,.3);margin:auto 0;position:relative;animation:modalIn .25s ease}
+        .modal-box.modal-lg{max-width:1050px}
+        @keyframes modalIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+        .modal-close{position:absolute;top:12px;right:16px;cursor:pointer;font-size:28px;font-weight:700;color:var(--text-secondary);line-height:1;width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:50%;transition:background .2s}
+        .modal-close:hover{background:var(--bg-color)}
+        .modal-box h2{font-size:1.5rem;margin-bottom:20px;padding-bottom:12px;border-bottom:2px solid var(--border-color)}
+        .modal-box input,.modal-box select{width:100%;padding:12px;margin-bottom:10px;border:1px solid var(--border-color);border-radius:8px;background:var(--surface-color);color:var(--text-primary);font-size:1rem}
+        .modal-box input:focus,.modal-box select:focus{border-color:var(--br-green);outline:none;box-shadow:0 0 0 3px rgba(0,156,59,.15)}
+        .modal-box input.input-error{border-color:var(--danger-color);box-shadow:0 0 0 3px rgba(229,57,53,.15)}
+        .modal-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
+        .modal-actions .btn-modern{flex:1;min-width:130px}
+        .form-error{color:var(--danger-color);font-size:.9rem;padding:8px;border-radius:6px;background:rgba(229,57,53,.08);display:none;margin-bottom:8px}
+        .form-error.active{display:block}
 
-        /* ==========================================================================
-           BOTÕES MODERNOS DO BOLÃO
-           ========================================================================== */
-        .btn-modern {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            border: none;
-            border-radius: 12px;
-            padding: 14px 28px;
-            font-size: 1rem;
-            font-weight: 700;
-            cursor: pointer;
-            color: white;
-            position: relative;
-            overflow: hidden;
-            transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
-            user-select: none;
-            -webkit-tap-highlight-color: transparent;
+        /* Bolão form */
+        .bolao-jogo-banner{background:linear-gradient(135deg,var(--br-blue),var(--br-green-dark));color:#fff;border-radius:10px;padding:15px 20px;margin-bottom:20px;text-align:center}
+        .bolao-jogo-banner h3{color:#fff;font-size:1.3rem;margin-bottom:4px}
+        .bolao-jogo-banner p{font-size:.85rem;opacity:.85}
+        .taxa-info-box{background:rgba(255,179,0,.12);border:1px solid var(--warning-color);border-radius:10px;padding:14px 16px;margin-bottom:15px;font-size:.88rem;color:var(--text-primary)}
+        .taxa-info-box strong{color:var(--warning-color)}
+
+        /* Palpites */
+        .palpite-item{display:flex;gap:8px;margin-bottom:10px;align-items:center;padding:12px;background:var(--bg-color);border-radius:10px;border-left:4px solid var(--br-green)}
+        .palpite-item input{flex:1;margin-bottom:0;padding:10px;text-align:center;font-weight:700;font-size:1.1rem}
+        .palpite-vs{font-weight:700;color:var(--text-secondary);font-size:.85rem;white-space:nowrap}
+        .btn-rm{background:linear-gradient(135deg,#ef5350,#c62828);color:#fff;border:none;border-radius:8px;padding:8px 12px;cursor:pointer;font-size:.8rem;font-weight:700;display:flex;align-items:center;gap:4px;white-space:nowrap;transition:transform .15s}
+        .btn-rm:hover{transform:scale(1.05)}
+        .resumo-bolao-box{background:var(--bg-color);padding:15px;border-radius:10px;margin:15px 0;display:flex;justify-content:space-around;text-align:center}
+        .resumo-bolao-box>div{display:flex;flex-direction:column}
+        .resumo-bolao-box strong{font-size:1.5rem;color:var(--br-green)}
+        .resumo-bolao-box small{color:var(--text-secondary);font-size:.8rem}
+
+        /* Comprovante */
+        .comprovante-section{margin-bottom:20px}
+        .comprovante-section h3{font-size:1.05rem;border-bottom:1px solid var(--border-color);padding-bottom:6px;margin-bottom:10px}
+        .comprovante-dados{display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:.9rem}
+        .comprovante-dados div{background:var(--bg-color);padding:8px 12px;border-radius:6px}
+        .comprovante-dados div span{color:var(--text-secondary);font-size:.8rem;display:block}
+        .comprovante-palpites{width:100%;border-collapse:collapse;margin-top:8px}
+        .comprovante-palpites th,.comprovante-palpites td{padding:8px;text-align:center;border:1px solid var(--border-color);font-size:.85rem}
+        .pix-box{text-align:center;margin:15px 0}
+        .pix-box img{max-width:200px;border-radius:10px;border:2px solid var(--border-color)}
+        .pix-chave-box{display:flex;gap:8px;align-items:center;margin-top:10px}
+        .pix-chave-box input{flex:1;margin-bottom:0;font-family:monospace;font-size:.8rem}
+
+        /* Admin */
+        .admin-tabs{display:flex;gap:4px;margin-bottom:20px;border-bottom:2px solid var(--border-color);flex-wrap:wrap;overflow-x:auto}
+        .admin-tab{background:none;border:none;border-bottom:3px solid transparent;padding:10px 14px;cursor:pointer;font-weight:600;color:var(--text-secondary);transition:color .2s;white-space:nowrap;font-size:.9rem}
+        .admin-tab.active{color:var(--br-green);border-bottom-color:var(--br-green)}
+        .admin-tab:hover{color:var(--text-primary)}
+        .admin-tab-content{display:none}
+        .admin-tab-content.active{display:block}
+        .admin-dashboard{display:grid;grid-template-columns:repeat(auto-fit,minmax(165px,1fr));gap:12px;margin-bottom:20px}
+        .admin-stat-card{background:var(--bg-color);border-radius:12px;padding:18px 15px;text-align:center;border-top:4px solid var(--br-green)}
+        .admin-stat-card .stat-value{font-size:1.8rem;font-weight:800;color:var(--br-green)}
+        .admin-stat-card .stat-label{font-size:.75rem;color:var(--text-secondary);text-transform:uppercase;margin-top:4px}
+        .admin-stat-card.stat-yellow .stat-value{color:var(--warning-color)}
+        .admin-stat-card.stat-blue .stat-value{color:var(--br-blue)}
+        .admin-stat-card.stat-red .stat-value{color:var(--danger-color)}
+        [data-theme="dark"] .admin-stat-card.stat-blue .stat-value{color:#90caf9}
+        .admin-filters{display:flex;gap:8px;margin-bottom:15px;flex-wrap:wrap}
+        .admin-filters input,.admin-filters select{flex:1;min-width:130px;padding:10px;border:1px solid var(--border-color);border-radius:8px;background:var(--surface-color);color:var(--text-primary)}
+        .admin-table-scroll{overflow-x:auto}
+        .admin-table{width:100%;border-collapse:collapse;font-size:.83rem;min-width:600px}
+        .admin-table th{background:var(--bg-color);padding:10px;text-align:left;position:sticky;top:0;font-size:.78rem}
+        .admin-table td{padding:9px 10px;border-bottom:1px solid var(--border-color);vertical-align:middle}
+        .badge{padding:3px 8px;border-radius:4px;font-size:.72rem;font-weight:700;text-transform:uppercase;white-space:nowrap}
+        .badge-pago{background:#e8f5e9;color:#2e7d32}
+        .badge-pendente{background:#fff3e0;color:#e65100}
+        [data-theme="dark"] .badge-pago{background:#1b5e20;color:#a5d6a7}
+        [data-theme="dark"] .badge-pendente{background:#4e342e;color:#ffcc80}
+        .admin-empty{text-align:center;padding:30px;color:var(--text-secondary)}
+        .admin-loading{text-align:center;padding:30px;color:var(--text-secondary)}
+        .jogo-card-admin{background:var(--bg-color);border-radius:12px;padding:18px;margin-bottom:12px;border-left:5px solid var(--br-green);cursor:pointer;transition:box-shadow .2s}
+        .jogo-card-admin:hover{box-shadow:0 4px 16px rgba(0,0,0,.12)}
+        .jogo-card-admin h4{margin-bottom:8px;font-size:1.05rem}
+        .jogo-stats{display:flex;gap:20px;flex-wrap:wrap;font-size:.85rem;color:var(--text-secondary)}
+        .jogo-stats span strong{color:var(--text-primary)}
+        .financeiro-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:20px}
+        .financeiro-card{background:var(--bg-color);border-radius:12px;padding:18px;border-left:5px solid var(--br-green)}
+        .financeiro-card .fc-value{font-size:1.6rem;font-weight:800;color:var(--br-green)}
+        .financeiro-card .fc-label{font-size:.78rem;color:var(--text-secondary);text-transform:uppercase;margin-top:4px}
+        .financeiro-card.fc-yellow{border-color:var(--warning-color)}
+        .financeiro-card.fc-yellow .fc-value{color:#e65100}
+        .financeiro-card.fc-blue{border-color:var(--br-blue)}
+        .financeiro-card.fc-blue .fc-value{color:var(--br-blue)}
+        [data-theme="dark"] .financeiro-card.fc-blue .fc-value{color:#90caf9}
+        .pagination{display:flex;gap:8px;align-items:center;justify-content:center;margin-top:15px;flex-wrap:wrap}
+        .pagination button{padding:7px 14px;border:1px solid var(--border-color);border-radius:6px;background:var(--surface-color);color:var(--text-primary);cursor:pointer;font-size:.85rem}
+        .pagination button.active,.pagination button:hover{background:var(--br-green);color:#fff;border-color:var(--br-green)}
+        .pagination button:disabled{opacity:.4;cursor:default}
+
+        /* Voucher */
+        .voucher-box{border:2px solid var(--br-yellow);border-radius:12px;padding:20px;background:var(--bg-color)}
+        .voucher-header{text-align:center;margin-bottom:15px}
+        .voucher-header h3{color:var(--br-blue);font-size:1.3rem}
+        [data-theme="dark"] .voucher-header h3{color:var(--br-yellow)}
+        .voucher-item{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px dashed var(--border-color);font-size:.9rem}
+        .voucher-item:last-child{border:none}
+        .voucher-item span:first-child{color:var(--text-secondary)}
+        .voucher-item span:last-child{font-weight:700}
+
+        footer{text-align:center;padding:25px;background:var(--surface-color);color:var(--text-secondary);margin-top:40px;border-top:1px solid var(--border-color);font-weight:600}
+        .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+        @media(max-width:768px){
+            .container{grid-template-columns:1fr}
+            .header-actions{justify-content:space-between;padding:0 10px}
+            .logos-container{gap:15px}
+            .logos-container img{height:60px}
+            .title-wrapper h1{font-size:1.6rem}
+            .comprovante-dados{grid-template-columns:1fr}
         }
-        .btn-modern svg { width: 20px; height: 20px; flex-shrink: 0; }
-        .btn-modern::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(rgba(255,255,255,0.2), transparent);
-            opacity: 0;
-            transition: opacity 0.2s;
-        }
-        .btn-modern:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,0.25); }
-        .btn-modern:hover::after { opacity: 1; }
-        .btn-modern:active { transform: translateY(0) scale(0.97); box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
-        .btn-modern:disabled { opacity: 0.6; cursor: not-allowed; transform: none; box-shadow: none; }
-
-        .btn-primary { background: linear-gradient(135deg, var(--br-green), var(--br-green-dark)); box-shadow: 0 4px 12px rgba(0,156,59,0.35); }
-        .btn-primary:hover { box-shadow: 0 8px 24px rgba(0,156,59,0.45); }
-
-        .btn-secondary { background: linear-gradient(135deg, var(--br-blue), var(--br-blue-dark)); box-shadow: 0 4px 12px rgba(0,39,118,0.35); }
-        .btn-secondary:hover { box-shadow: 0 8px 24px rgba(0,39,118,0.45); }
-
-        .btn-danger { background: linear-gradient(135deg, #ef5350, #c62828); box-shadow: 0 4px 12px rgba(229,57,53,0.35); }
-        .btn-danger:hover { box-shadow: 0 8px 24px rgba(229,57,53,0.45); }
-
-        .btn-warning { background: linear-gradient(135deg, #ffca28, #ff8f00); color: #333; box-shadow: 0 4px 12px rgba(255,143,0,0.35); }
-        .btn-warning:hover { box-shadow: 0 8px 24px rgba(255,143,0,0.45); }
-
-        .btn-ghost { background: transparent; border: 2px solid var(--border-color); color: var(--text-primary); box-shadow: none; }
-        .btn-ghost:hover { background: var(--bg-color); box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
-
-        .btn-sm { padding: 8px 16px; font-size: 0.85rem; border-radius: 8px; }
-        .btn-block { width: 100%; }
-        .btn-icon-only { padding: 10px; border-radius: 50%; }
-        .btn-icon-only svg { width: 18px; height: 18px; }
-
-        .btn-admin-header {
-            background: linear-gradient(135deg, #42a5f5, #1565c0);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 20px;
-            font-weight: bold;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-            font-size: 0.9rem;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-        .btn-admin-header:hover { transform: scale(1.05); box-shadow: 0 4px 12px rgba(21,101,192,0.4); }
-        .btn-admin-header svg { width: 18px; height: 18px; }
-
-        /* ==========================================================================
-           MODAIS (padrão reutilizável)
-           ========================================================================== */
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.8);
-            z-index: 9999;
-            justify-content: center;
-            align-items: flex-start;
-            padding: 20px;
-            overflow-y: auto;
-        }
-        .modal-overlay.active { display: flex; }
-        .modal-box {
-            background: var(--surface-color);
-            width: 100%;
-            max-width: 700px;
-            padding: 25px;
-            border-radius: 16px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            margin: auto 0;
-            position: relative;
-            animation: modalIn 0.25s ease;
-        }
-        .modal-box.modal-lg { max-width: 1000px; }
-        @keyframes modalIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        .modal-close {
-            position: absolute;
-            top: 12px; right: 16px;
-            cursor: pointer;
-            font-size: 28px;
-            font-weight: bold;
-            color: var(--text-secondary);
-            line-height: 1;
-            width: 36px; height: 36px;
-            display: flex; align-items: center; justify-content: center;
-            border-radius: 50%;
-            transition: background 0.2s;
-        }
-        .modal-close:hover { background: var(--bg-color); color: var(--text-primary); }
-        .modal-box h2 { font-size: 1.5rem; margin-bottom: 20px; padding-bottom: 12px; border-bottom: 2px solid var(--border-color); }
-        .modal-box input, .modal-box select {
-            width: 100%;
-            padding: 12px;
-            margin-bottom: 10px;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            background: var(--surface-color);
-            color: var(--text-primary);
-            font-size: 1rem;
-        }
-        .modal-box input:focus, .modal-box select:focus { border-color: var(--br-green); outline: none; box-shadow: 0 0 0 3px rgba(0,156,59,0.15); }
-        .modal-box input.input-error { border-color: var(--danger-color); box-shadow: 0 0 0 3px rgba(229,57,53,0.15); }
-        .modal-box hr { border: none; border-top: 1px solid var(--border-color); margin: 15px 0; }
-        .modal-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 20px; }
-        .modal-actions .btn-modern { flex: 1; min-width: 140px; }
-
-        /* ==========================================================================
-           PALPITES (lista dentro do modal)
-           ========================================================================== */
-        .palpite-item {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 10px;
-            align-items: center;
-            padding: 12px;
-            background: var(--bg-color);
-            border-radius: 10px;
-            border-left: 4px solid var(--br-green);
-        }
-        .palpite-item input { flex: 1; margin-bottom: 0; padding: 10px; text-align: center; font-weight: bold; font-size: 1.1rem; }
-        .palpite-item .palpite-vs { font-weight: bold; color: var(--text-secondary); font-size: 0.85rem; white-space: nowrap; }
-        .palpite-item .btn-remover-palpite {
-            background: linear-gradient(135deg, #ef5350, #c62828);
-            color: white; border: none; border-radius: 8px;
-            padding: 8px 12px; cursor: pointer; font-size: 0.8rem; font-weight: bold;
-            display: flex; align-items: center; gap: 4px; white-space: nowrap;
-            transition: transform 0.15s, box-shadow 0.15s;
-        }
-        .palpite-item .btn-remover-palpite:hover { transform: scale(1.05); box-shadow: 0 2px 8px rgba(229,57,53,0.4); }
-        .palpite-item .btn-remover-palpite svg { width: 16px; height: 16px; }
-        .palpite-label { font-size: 0.75rem; color: var(--text-secondary); text-align: center; margin-bottom: 2px; }
-
-        .resumo-bolao-box {
-            background: var(--bg-color);
-            padding: 15px;
-            border-radius: 10px;
-            margin: 15px 0;
-            display: flex;
-            justify-content: space-around;
-            text-align: center;
-        }
-        .resumo-bolao-box > div { display: flex; flex-direction: column; }
-        .resumo-bolao-box strong { font-size: 1.5rem; color: var(--br-green); }
-        .resumo-bolao-box small { color: var(--text-secondary); font-size: 0.8rem; }
-
-        .form-error { color: var(--danger-color); font-size: 0.85rem; margin-bottom: 10px; display: none; }
-        .form-error.active { display: block; }
-
-        /* ==========================================================================
-           RESUMO / COMPROVANTE
-           ========================================================================== */
-        .comprovante-section { margin-bottom: 20px; }
-        .comprovante-section h3 { font-size: 1.1rem; margin-bottom: 10px; padding-bottom: 5px; border-bottom: 1px solid var(--border-color); }
-        .comprovante-dados { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 0.9rem; }
-        .comprovante-dados > div { padding: 6px 0; }
-        .comprovante-dados strong { color: var(--text-primary); }
-        .comprovante-dados span { color: var(--text-secondary); }
-        .comprovante-palpites { width: 100%; border-collapse: collapse; margin-top: 8px; }
-        .comprovante-palpites th, .comprovante-palpites td { padding: 8px; text-align: center; border: 1px solid var(--border-color); font-size: 0.85rem; }
-        .pix-box { text-align: center; margin: 15px 0; }
-        .pix-box img { max-width: 200px; border-radius: 10px; border: 2px solid var(--border-color); }
-        .pix-chave-box { display: flex; gap: 8px; align-items: center; margin-top: 10px; }
-        .pix-chave-box input { flex: 1; margin-bottom: 0; font-family: monospace; font-size: 0.85rem; }
-        .pix-chave-box .btn-modern { flex: none; white-space: nowrap; }
-
-        /* ==========================================================================
-           PAINEL ADMINISTRATIVO
-           ========================================================================== */
-        .admin-tabs { display: flex; gap: 5px; margin-bottom: 20px; border-bottom: 2px solid var(--border-color); flex-wrap: wrap; }
-        .admin-tab {
-            padding: 10px 20px;
-            cursor: pointer;
-            border: none;
-            background: transparent;
-            color: var(--text-secondary);
-            font-weight: 600;
-            font-size: 0.95rem;
-            border-bottom: 3px solid transparent;
-            transition: color 0.2s, border-color 0.2s;
-        }
-        .admin-tab.active { color: var(--br-green); border-bottom-color: var(--br-green); }
-        .admin-tab:hover { color: var(--text-primary); }
-        .admin-tab-content { display: none; }
-        .admin-tab-content.active { display: block; }
-
-        .admin-dashboard { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; margin-bottom: 20px; }
-        .admin-stat-card {
-            background: var(--bg-color);
-            padding: 20px;
-            border-radius: 12px;
-            text-align: center;
-            border-left: 4px solid var(--br-green);
-        }
-        .admin-stat-card .stat-value { font-size: 2rem; font-weight: 800; color: var(--br-green); }
-        .admin-stat-card .stat-label { font-size: 0.8rem; color: var(--text-secondary); text-transform: uppercase; margin-top: 5px; }
-
-        .admin-filters { display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap; }
-        .admin-filters input, .admin-filters select { flex: 1; min-width: 150px; padding: 10px; border: 1px solid var(--border-color); border-radius: 8px; background: var(--surface-color); color: var(--text-primary); }
-        .admin-table-scroll { overflow-x: auto; }
-        .admin-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
-        .admin-table th { background: var(--bg-color); padding: 10px; text-align: left; position: sticky; top: 0; }
-        .admin-table td { padding: 10px; border-bottom: 1px solid var(--border-color); }
-        .admin-table .btn-icon { background: none; border: none; cursor: pointer; padding: 6px; border-radius: 6px; color: var(--danger-color); transition: background 0.15s; }
-        .admin-table .btn-icon:hover { background: rgba(229,57,53,0.1); }
-        .admin-table .btn-icon svg { width: 18px; height: 18px; }
-        .admin-empty { text-align: center; padding: 30px; color: var(--text-secondary); }
-
-        .admin-loading { text-align: center; padding: 30px; }
-        .admin-loading::after { content: '⏳ Carregando...'; font-size: 1.1rem; color: var(--text-secondary); }
-
-        @media (max-width: 600px) {
-            .comprovante-dados { grid-template-columns: 1fr; }
-            .modal-actions .btn-modern { min-width: 100%; }
-            .palpite-item { flex-wrap: wrap; }
-            .palpite-item input { min-width: 60px; }
-            .admin-dashboard { grid-template-columns: 1fr 1fr; }
+        @media(max-width:480px){
+            .admin-dashboard{grid-template-columns:1fr 1fr}
+            .pitch-container{height:360px}
+            .count-box{min-width:60px;padding:10px 6px}
+            .count-box span{font-size:1.5rem}
         }
     </style>
 </head>
 <body>
 
-    <a href="#conteudo-principal" class="sr-only">Ir para o conteúdo principal</a>
+<header>
+    <div class="header-actions">
+        <button class="btn-admin-header" id="btn-gerenciar" type="button">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><circle cx="12" cy="8" r="4"/><path d="M20 21a8 8 0 10-16 0"/></svg>
+            Gerenciar
+        </button>
+        <button class="btn-refresh" id="btn-atualizar" type="button">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.51 9a9 9 0 0115 0M20.49 15a9 9 0 01-15 0"/></svg>
+            Atualizar Dados
+        </button>
+        <button class="theme-toggle" id="theme-btn" type="button" aria-label="Alternar tema">🌓</button>
+    </div>
+    <div class="logos-container">
+        <div class="logo-box">
+            <img src="https://upload.wikimedia.org/wikipedia/en/thumb/0/09/FIFA_logo_without_slogan.svg/640px-FIFA_logo_without_slogan.svg.png" alt="FIFA" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+            <div class="logo-fallback">FIFA</div>
+        </div>
+        <div class="logo-box">
+            <img src="https://upload.wikimedia.org/wikipedia/en/thumb/0/09/CBF_logo.svg/640px-CBF_logo.svg.png" alt="CBF" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+            <div class="logo-fallback">CBF</div>
+        </div>
+        <div class="logo-box">
+            <img src="https://upload.wikimedia.org/wikipedia/en/thumb/e/e3/2026_FIFA_World_Cup_emblem.svg/640px-2026_FIFA_World_Cup_emblem.svg.png" alt="Copa 2026" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+            <div class="logo-fallback">Copa 2026</div>
+        </div>
+    </div>
+    <div class="title-wrapper">
+        <h1>🇧🇷 Seleção Brasileira</h1>
+        <p>Copa do Mundo FIFA 2026</p>
+    </div>
+    <div id="api-status"><span class="status-dot" id="api-dot"></span><span id="api-text">Aguardando...</span></div>
+</header>
 
-    <header>
-        <div class="header-actions">
-            <button class="btn-refresh" id="btn-atualizar" type="button" title="Buscar dados da football-data.org">
-                <span>🔄 Atualizar Dados</span>
+<div class="container">
+    <!-- Próximo jogo -->
+    <div class="card card-full">
+        <div class="card-title">⚽ Próximo Jogo</div>
+        <div id="proximo-jogo-content" class="next-match-header">
+            <h3>Brasil x Escócia</h3>
+            <p>24 de junho de 2026 — Copa do Mundo 2026 — Fase de Grupos</p>
+            <div class="countdown" id="countdown-wrap">
+                <div class="count-box"><span id="cd-h">00</span><small>Horas</small></div>
+                <div class="count-box"><span id="cd-m">00</span><small>Min</small></div>
+                <div class="count-box"><span id="cd-s">00</span><small>Seg</small></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bolão -->
+    <div class="card card-full" id="bolao-card">
+        <div class="card-title">🎯 Bolão Oficial</div>
+        <p id="bolao-jogo-info" style="text-align:center;color:var(--text-secondary)">Próximo jogo da Seleção Brasileira</p>
+        <div style="margin-top:15px;font-size:1.2rem;font-weight:700;color:var(--br-green);text-align:center">R$ 5,00 por palpite</div>
+        <button class="btn-modern btn-primary" id="btn-bolao" type="button" style="margin:20px auto 0;max-width:300px">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 010 20M12 2a15 15 0 000 20"/></svg>
+            Fazer Meu Palpite
+        </button>
+    </div>
+
+    <!-- Classificação Grupo C -->
+    <div class="card card-full">
+        <div class="card-title">📊 Classificação — Grupo C</div>
+        <div class="table-scroll">
+            <table>
+                <thead><tr><th>#</th><th>Seleção</th><th>J</th><th>V</th><th>E</th><th>D</th><th>GP</th><th>GC</th><th>SG</th><th>Pts</th></tr></thead>
+                <tbody id="grupo-c-tbody"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Campanha -->
+    <div class="card">
+        <div class="card-title">📅 Campanha 2026</div>
+        <div id="jogos-realizados-content"></div>
+    </div>
+
+    <!-- Escalação -->
+    <div class="card">
+        <div class="card-title">🏟️ Escalação Provável</div>
+        <p style="text-align:center;font-size:.9rem;color:var(--text-secondary)">Disposição tática baseada no último treinamento.</p>
+        <div class="pitch-container" id="pitch">
+            <div class="penalty-area-top"></div><div class="penalty-area-bottom"></div>
+        </div>
+    </div>
+
+    <!-- Elenco -->
+    <div class="card card-full">
+        <div class="card-title">👥 Elenco Convocado</div>
+        <div class="squad-grid" id="squad-grid"></div>
+    </div>
+</div>
+
+<!-- ========== MODAL BOLÃO ========== -->
+<div id="modal-bolao" class="modal-overlay" role="dialog" aria-modal="true" aria-label="Formulário do Bolão">
+    <div class="modal-box">
+        <span class="modal-close" data-close="modal-bolao" role="button" tabindex="0">&times;</span>
+        <h2>🎯 Fazer Palpite</h2>
+        <div class="bolao-jogo-banner" id="bolao-banner">
+            <h3 id="bolao-banner-title">Brasil x Adversário</h3>
+            <p id="bolao-banner-info">Copa do Mundo 2026</p>
+        </div>
+        <input type="text" id="bolao-nome" placeholder="Nome Completo *" autocomplete="name">
+        <input type="tel" id="bolao-contato" placeholder="Telefone com DDD * — (63) 98416-7994" autocomplete="tel">
+        <input type="text" id="bolao-pix" placeholder="Sua Chave PIX (CPF, e-mail, telefone...) *">
+        <select id="bolao-tipo-pix">
+            <option value="email">Chave PIX — E-mail</option>
+            <option value="cpf">Chave PIX — CPF</option>
+            <option value="telefone">Chave PIX — Telefone</option>
+            <option value="aleatoria">Chave PIX — Chave Aleatória</option>
+            <option value="cnpj">Chave PIX — CNPJ</option>
+        </select>
+        <div class="taxa-info-box">
+            ℹ️ <strong>IMPORTANTE:</strong> O bolão possui taxa administrativa de <strong>10%</strong> destinada à manutenção da plataforma.
+            A premiação é calculada sobre o valor líquido arrecadado.<br>
+            Exemplo: 100 palpites × R$ 5,00 = <strong>R$ 500,00</strong> bruto → Taxa: <strong>R$ 50,00</strong> → Premiação: <strong>R$ 450,00</strong>
+        </div>
+        <div class="form-error" id="bolao-form-error"></div>
+        <div id="lista-palpites"></div>
+        <button class="btn-modern btn-ghost btn-block" id="add-palpite" type="button" style="margin-bottom:15px">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M12 5v14M5 12h14"/></svg>
+            Adicionar Palpite
+        </button>
+        <div class="resumo-bolao-box">
+            <div><strong id="qtd-palpites">0</strong><small>Palpites</small></div>
+            <div><strong id="valor-total-bolao">R$ 0,00</strong><small>Total a Pagar</small></div>
+        </div>
+        <div class="modal-actions">
+            <button class="btn-modern btn-ghost" id="cancelar-bolao" type="button">Cancelar</button>
+            <button class="btn-modern btn-primary" id="confirmar-bolao" type="button">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M5 13l4 4L19 7"/></svg>
+                Confirmar Participação
             </button>
-            <button class="btn-admin-header" id="btn-gerenciar" type="button" title="Painel Administrativo">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3h7v7H3zM14 3h7v7h-7zM14 14h7v7h-7zM3 14h7v7H3z"/></svg>
-                <span>Gerenciar</span>
+        </div>
+    </div>
+</div>
+
+<!-- ========== MODAL COMPROVANTE ========== -->
+<div id="modal-resumo" class="modal-overlay" role="dialog" aria-modal="true" aria-label="Comprovante">
+    <div class="modal-box modal-lg">
+        <span class="modal-close" data-close="modal-resumo" role="button" tabindex="0">&times;</span>
+        <h2>✅ Aposta Registrada!</h2>
+        <div id="resumo-body"></div>
+    </div>
+</div>
+
+<!-- ========== MODAL ADMIN LOGIN ========== -->
+<div id="modal-admin-login" class="modal-overlay" role="dialog" aria-modal="true" aria-label="Login Administrativo">
+    <div class="modal-box" style="max-width:380px">
+        <span class="modal-close" data-close="modal-admin-login" role="button" tabindex="0">&times;</span>
+        <h2 style="text-align:center">🔐 Painel Admin</h2>
+        <input type="password" id="admin-senha" placeholder="Senha" style="text-align:center;font-size:1.1rem;letter-spacing:4px" autocomplete="current-password">
+        <div class="form-error" id="admin-login-error"></div>
+        <div class="modal-actions">
+            <button class="btn-modern btn-ghost" id="admin-login-cancel" type="button">Cancelar</button>
+            <button class="btn-modern btn-secondary" id="admin-login-confirm" type="button">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4M10 17l5-5-5-5M15 12H3"/></svg>
+                Entrar
             </button>
-            <button class="theme-toggle" id="theme-btn" type="button" title="Alternar Tema" aria-label="Alternar entre tema claro e escuro">🌓</button>
+        </div>
+    </div>
+</div>
+
+<!-- ========== MODAL PAINEL ADMIN ========== -->
+<div id="modal-admin-panel" class="modal-overlay" role="dialog" aria-modal="true" aria-label="Painel Administrativo">
+    <div class="modal-box modal-lg">
+        <span class="modal-close" data-close="modal-admin-panel" role="button" tabindex="0">&times;</span>
+        <h2>⚙️ Painel Administrativo</h2>
+        <div class="admin-tabs">
+            <button class="admin-tab active" data-tab="dashboard">📊 Dashboard</button>
+            <button class="admin-tab" data-tab="jogos">⚽ Jogos</button>
+            <button class="admin-tab" data-tab="apostas">🎯 Apostas</button>
+            <button class="admin-tab" data-tab="participantes">👥 Participantes</button>
+            <button class="admin-tab" data-tab="palpites">📋 Palpites</button>
+            <button class="admin-tab" data-tab="financeiro">💰 Financeiro</button>
         </div>
 
-        <div class="logos-container">
-            <div class="logo-box">
-                <img src="https://commons.wikimedia.org/wiki/Special:FilePath/2026%20FIFA%20World%20Cup%20emblem%20(with%20wordmark).svg?width=300" alt="Copa do Mundo FIFA 2026" class="logo-wc" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                <div class="logo-fallback">COPA DO<br>MUNDO 2026</div>
+        <!-- Tab: Dashboard -->
+        <div class="admin-tab-content active" id="admin-tab-dashboard">
+            <div class="admin-dashboard" id="admin-dashboard-stats">
+                <div class="admin-stat-card"><div class="stat-value" id="stat-participantes">—</div><div class="stat-label">👥 Participantes</div></div>
+                <div class="admin-stat-card"><div class="stat-value" id="stat-palpites">—</div><div class="stat-label">🎯 Palpites</div></div>
+                <div class="admin-stat-card"><div class="stat-value" id="stat-jogos">—</div><div class="stat-label">⚽ Jogos</div></div>
+                <div class="admin-stat-card stat-yellow"><div class="stat-value" id="stat-bruto">—</div><div class="stat-label">💰 Arrecadação Bruta</div></div>
+                <div class="admin-stat-card stat-red"><div class="stat-value" id="stat-taxa">—</div><div class="stat-label">📉 Taxa Administrativa</div></div>
+                <div class="admin-stat-card stat-blue"><div class="stat-value" id="stat-liquido">—</div><div class="stat-label">🏆 Premiação Líquida</div></div>
+                <div class="admin-stat-card"><div class="stat-value" id="stat-pago">—</div><div class="stat-label">✅ Total Pago</div></div>
+                <div class="admin-stat-card stat-red"><div class="stat-value" id="stat-pendente">—</div><div class="stat-label">⏳ Total Pendente</div></div>
+                <div class="admin-stat-card"><div class="stat-value" id="stat-ticket">—</div><div class="stat-label">📈 Ticket Médio</div></div>
+                <div class="admin-stat-card"><div class="stat-value" id="stat-media">—</div><div class="stat-label">🎯 Média Palpites</div></div>
             </div>
-            <div class="logo-box">
-                <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Confedera%C3%A7%C3%A3o%20Brasileira%20de%20Futebol%20logo%20(2020).svg?width=300" alt="CBF - Confederação Brasileira de Futebol" class="logo-cbf-img" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                <div class="logo-fallback">🇧🇷 CBF</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:15px;margin-top:10px" id="dash-tops"></div>
+        </div>
+
+        <!-- Tab: Jogos -->
+        <div class="admin-tab-content" id="admin-tab-jogos">
+            <div id="admin-jogos-list"><div class="admin-loading">Carregando jogos...</div></div>
+        </div>
+
+        <!-- Tab: Apostas -->
+        <div class="admin-tab-content" id="admin-tab-apostas">
+            <div class="admin-filters">
+                <input type="text" id="filtro-aposta-search" placeholder="🔍 Nome ou contato...">
+                <select id="filtro-aposta-jogo"><option value="">Todos os jogos</option></select>
+                <select id="filtro-aposta-status">
+                    <option value="">Todos os status</option>
+                    <option value="PENDENTE">⏳ Pendente</option>
+                    <option value="PAGO">✅ Pago</option>
+                </select>
+                <button class="btn-modern btn-primary btn-sm" id="btn-filtrar-apostas">Filtrar</button>
+                <button class="btn-modern btn-ghost btn-sm" id="btn-export-apostas">⬇ CSV</button>
             </div>
-            <div class="logo-box">
-                <img src="https://commons.wikimedia.org/wiki/Special:FilePath/FIFA%20logo%20without%20slogan.svg?width=300" alt="FIFA" class="logo-fifa" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                <div class="logo-fallback">FIFA</div>
-            </div>
-        </div>
-
-        <div class="title-wrapper">
-            <h1>Seleção Brasileira</h1>
-            <p>Copa do Mundo FIFA 2026™ | Acompanhamento Oficial</p>
-        </div>
-
-        <div id="api-status" role="status" aria-live="polite">
-            <span class="status-dot" id="api-dot"></span> <span id="api-text">Pronto para atualização</span>
-        </div>
-
-        <p class="data-disclaimer">
-            Dados de contexto (elenco, campanha e estatísticas) são ilustrativos e podem estar desatualizados.
-            Use "Atualizar Dados" para buscar técnico e próximo jogo em tempo real via football-data.org
-            (limite de 100 requisições/dia e 10/minuto no plano gratuito; cada atualização usa 1).
-        </p>
-    </header>
-
-    <main class="container" id="conteudo-principal">
-        <div class="card card-full">
-            <h2 class="card-title">⏳ Próximo Confronto</h2>
-            <div class="next-match-header" id="proximo-jogo-content"></div>
-        </div>
-
-        <div class="card card-full" id="bolao-card">
-            <h2 class="card-title">🎯 Bolão Oficial da Copa</h2>
-            <div style="text-align:center">
-                <p id="bolao-jogo-info">Próximo jogo da Seleção Brasileira</p>
-                <div style="margin-top:15px; font-size:1.2rem; font-weight:bold; color:var(--br-green);">R$ 5,00 por palpite</div>
-                <button class="btn-modern btn-primary" id="btn-bolao" type="button" style="margin-top:20px;">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
-                    Participar do Bolão
-                </button>
-            </div>
-        </div>
-
-        <div class="card card-half">
-            <h2 class="card-title">🏆 Classificação - Grupo C</h2>
-            <div class="table-scroll">
-                <table>
-                    <caption class="sr-only">Classificação atual do Grupo C na Copa do Mundo 2026</caption>
-                    <thead><tr><th scope="col" style="text-align: left;">Seleção</th><th scope="col">Pts</th><th scope="col">J</th><th scope="col">V</th><th scope="col">SG</th></tr></thead>
-                    <tbody id="grupo-content"></tbody>
+            <div class="admin-table-scroll">
+                <table class="admin-table">
+                    <thead><tr>
+                        <th>Nome</th><th>Contato</th><th>Jogo</th><th>Palpites</th><th>Valor</th><th>Status</th><th>Ações</th>
+                    </tr></thead>
+                    <tbody id="admin-apostas-tbody"></tbody>
                 </table>
             </div>
-            <div style="margin-top: 15px; font-size: 0.8rem; color: var(--text-secondary);">* Os dois primeiros colocados avançam para a fase eliminatória.</div>
+            <div class="pagination" id="apostas-pagination"></div>
         </div>
 
-        <div class="card card-half">
-            <h2 class="card-title">✅ Campanha - Copa 2026</h2>
-            <div id="jogos-realizados-content"></div>
-        </div>
-
-        <div class="card card-full">
-            <h2 class="card-title">⚽ Escalação Provável / Tática (4-2-3-1)</h2>
-            <p style="text-align: center; font-size: 0.9rem; color: var(--text-secondary);">Disposição tática baseada no último treinamento para o próximo jogo.</p>
-            <div class="pitch-container" id="pitch">
-                <div class="penalty-area-top"></div>
-                <div class="penalty-area-bottom"></div>
-                <div id="pitch-players"></div>
+        <!-- Tab: Participantes -->
+        <div class="admin-tab-content" id="admin-tab-participantes">
+            <div class="admin-filters">
+                <input type="text" id="filtro-participante" placeholder="🔍 Nome ou contato...">
+                <input type="date" id="filtro-data-participante">
+                <button class="btn-modern btn-primary btn-sm" id="btn-filtrar-participantes">Filtrar</button>
+                <button class="btn-modern btn-ghost btn-sm" id="btn-exportar-participantes">⬇ CSV</button>
+            </div>
+            <div class="admin-table-scroll">
+                <table class="admin-table">
+                    <thead><tr><th>Nome</th><th>Contato</th><th>Chave PIX</th><th>Apostas</th><th>Palpites</th><th>Total</th><th>Data</th><th>Ações</th></tr></thead>
+                    <tbody id="admin-participantes-tbody"></tbody>
+                </table>
             </div>
         </div>
 
-        <div class="card card-full">
-            <h2 class="card-title">📋 Comissão Técnica Oficial</h2>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;" id="comissao-content"></div>
-            <div style="margin-top: 15px; font-size: 0.8rem; color: var(--text-secondary);">* Técnico atualizado automaticamente via football-data.org. Demais cargos: dados anunciados pela CBF em 26/05/2025 (mantidos fixos, pois a API não os disponibiliza).</div>
-        </div>
-
-        <div class="card card-full">
-            <h2 class="card-title">👥 Elenco Convocado - 26 Jogadores</h2>
-            <div class="squad-grid">
-                <div class="squad-section"><h3>Goleiros</h3><div id="elenco-goleiros"></div></div>
-                <div class="squad-section"><h3>Defensores</h3><div id="elenco-defensores"></div></div>
-                <div class="squad-section"><h3>Meio-campistas</h3><div id="elenco-meias"></div></div>
-                <div class="squad-section"><h3>Atacantes</h3><div id="elenco-atacantes"></div></div>
+        <!-- Tab: Palpites -->
+        <div class="admin-tab-content" id="admin-tab-palpites">
+            <div class="admin-filters">
+                <input type="text" id="filtro-palpite" placeholder="🔍 Participante...">
+                <select id="filtro-palpite-jogo"><option value="">Todos os jogos</option></select>
+                <input type="date" id="filtro-data-palpite">
+                <button class="btn-modern btn-primary btn-sm" id="btn-filtrar-palpites">Filtrar</button>
+                <button class="btn-modern btn-ghost btn-sm" id="btn-exportar-palpites">⬇ CSV</button>
+            </div>
+            <div class="admin-table-scroll">
+                <table class="admin-table">
+                    <thead><tr><th>Participante</th><th>Contato</th><th>Jogo</th><th>Placar</th><th>Status Pgto</th><th>Data</th><th>Ações</th></tr></thead>
+                    <tbody id="admin-palpites-tbody"></tbody>
+                </table>
             </div>
         </div>
-    </main>
 
-    <footer>CRIAÇÃO: LEONARDO LIMA</footer>
+        <!-- Tab: Financeiro -->
+        <div class="admin-tab-content" id="admin-tab-financeiro">
+            <div class="admin-filters" style="margin-bottom:20px">
+                <select id="filtro-fin-jogo"><option value="">Todos os jogos</option></select>
+                <select id="filtro-fin-status">
+                    <option value="">Todos</option>
+                    <option value="PAGO">✅ Pago</option>
+                    <option value="PENDENTE">⏳ Pendente</option>
+                </select>
+                <button class="btn-modern btn-primary btn-sm" id="btn-filtrar-fin">Atualizar</button>
+                <button class="btn-modern btn-ghost btn-sm" id="btn-export-fin">⬇ CSV</button>
+            </div>
+            <div class="financeiro-grid" id="financeiro-cards"></div>
+            <div class="admin-table-scroll">
+                <table class="admin-table">
+                    <thead><tr><th>Nome</th><th>Jogo</th><th>Palpites</th><th>Valor</th><th>Status</th><th>Validado</th><th>Ação</th></tr></thead>
+                    <tbody id="financeiro-tbody"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
 
-    <!-- ===================== MODAL: BOLÃO (Participar) ===================== -->
-    <div id="modal-bolao" class="modal-overlay">
-        <div class="modal-box">
-            <span class="modal-close" data-close="modal-bolao" role="button" tabindex="0" aria-label="Fechar">&times;</span>
-            <h2>🎯 Participar do Bolão</h2>
-            <input type="text" id="bolao-nome" placeholder="Nome Completo *">
-            <input type="text" id="bolao-whatsapp" placeholder="WhatsApp *">
-            <input type="email" id="bolao-email" placeholder="Email (Opcional)">
-            <div class="form-error" id="bolao-form-error"></div>
-            <hr>
-            <h3 style="font-size:1rem; margin-bottom:10px;">Seus Palpites</h3>
-            <div id="lista-palpites"></div>
-            <button class="btn-modern btn-ghost btn-block" id="add-palpite" type="button" style="margin-bottom:15px;">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
-                Adicionar Palpite
+<!-- ========== MODAL DETALHE JOGO ========== -->
+<div id="modal-jogo-detalhe" class="modal-overlay" role="dialog" aria-modal="true">
+    <div class="modal-box modal-lg">
+        <span class="modal-close" data-close="modal-jogo-detalhe" role="button" tabindex="0">&times;</span>
+        <div id="jogo-detalhe-body"></div>
+    </div>
+</div>
+
+<!-- ========== MODAL VOUCHER ========== -->
+<div id="modal-voucher" class="modal-overlay" role="dialog" aria-modal="true">
+    <div class="modal-box">
+        <span class="modal-close" data-close="modal-voucher" role="button" tabindex="0">&times;</span>
+        <div id="voucher-body"></div>
+        <div class="modal-actions" style="margin-top:15px">
+            <button class="btn-modern btn-ghost" id="btn-imprimir-voucher">🖨️ Imprimir</button>
+        </div>
+    </div>
+</div>
+
+<footer>🇧🇷 Bolão Copa do Mundo 2026 — Desenvolvido com ❤️ para a torcida brasileira</footer>
+
+<script>
+/* ==========================================================================
+   CONFIGURAÇÃO
+   ========================================================================== */
+const PROXY_BASE     = "https://copa2026.leo2005lima.workers.dev";
+const FETCH_TIMEOUT  = 8000;
+const VALOR_PALPITE  = 5.00;
+const ADMIN_WHATSAPP = "5563984167994";
+
+const PIX_CHAVE = "xxxleoxxx2008@gmail.com";
+const PIX_NOME  = "LEONARDO COELHO DE SOUSA LIMA";
+const PIX_CIDADE = "PALMAS";
+
+let adminToken = null;
+let jogoAtual  = null; // {id, adversario, data_jogo, competicao, fase, label}
+let palpitesBolao = [];
+let apostasPage = 1;
+
+/* ==========================================================================
+   DADOS LOCAIS DE FALLBACK
+   ========================================================================== */
+const dataCopa = {
+    proximoJogo: { adversario:"Escócia", dataISO:"2026-06-24T22:00:00-03:00", dataStr:"24 de junho de 2026", horaStr:"22:00 (Brasília)", local:"Levi's Stadium, San Francisco", fase:"Fase de Grupos", competicao:"Copa do Mundo 2026" },
+    grupoC:[
+        {selecao:"Brasil",pts:4,j:2,v:1,e:1,d:0,gp:4,gc:1,flag:"🇧🇷"},
+        {selecao:"Marrocos",pts:4,j:2,v:1,e:1,d:0,gp:2,gc:1,flag:"🇲🇦"},
+        {selecao:"Escócia",pts:3,j:2,v:1,e:0,d:1,gp:1,gc:1,flag:"🏴󠁧󠁢󠁳󠁣󠁴󠁿"},
+        {selecao:"Haiti",pts:0,j:2,v:0,e:0,d:2,gp:0,gc:4,flag:"🇭🇹"}
+    ],
+    jogos:[
+        {data:"13/06/2026",adv:"Marrocos",placar:"1-1",info:"Vini Jr (BR); En-Nesyri (MA)"},
+        {data:"19/06/2026",adv:"Haiti",placar:"3-0",info:"Vini Jr, Rodrygo, Marquinhos"}
+    ],
+    comissao:[
+        {cargo:"Técnico",nome:"Carlo Ancelotti"},{cargo:"Auxiliar",nome:"Francesco Mauri"},
+        {cargo:"Prep. Físico",nome:"Mino Fulco"},{cargo:"Trein. Goleiros",nome:"Taffarel"},
+        {cargo:"Médico Chefe",nome:"Rodrigo Lasmar"}
+    ],
+    elenco:[
+        {num:1,nome:"Alisson",pos:"Goleiro",clube:"Liverpool",setor:"gk"},
+        {num:23,nome:"Ederson",pos:"Goleiro",clube:"Man City",setor:"gk"},
+        {num:12,nome:"Bento",pos:"Goleiro",clube:"Al-Nassr",setor:"gk"},
+        {num:4,nome:"Marquinhos",pos:"Zagueiro",clube:"PSG",setor:"def"},
+        {num:3,nome:"Gabriel M.",pos:"Zagueiro",clube:"Arsenal",setor:"def"},
+        {num:14,nome:"Militão",pos:"Zagueiro",clube:"Real Madrid",setor:"def"},
+        {num:2,nome:"Danilo",pos:"Lateral-Dir",clube:"Juventus",setor:"def"},
+        {num:6,nome:"Wendell",pos:"Lateral-Esq",clube:"Porto",setor:"def"},
+        {num:5,nome:"Casemiro",pos:"Volante",clube:"Man Utd",setor:"mid"},
+        {num:8,nome:"B. Guimarães",pos:"Volante",clube:"Newcastle",setor:"mid"},
+        {num:15,nome:"João Gomes",pos:"Volante",clube:"Wolves",setor:"mid"},
+        {num:10,nome:"Paquetá",pos:"Meia",clube:"West Ham",setor:"mid"},
+        {num:20,nome:"Andreas P.",pos:"Meia",clube:"Atlético-MG",setor:"mid"},
+        {num:7,nome:"Vini Jr",pos:"Atacante",clube:"Real Madrid",setor:"att"},
+        {num:11,nome:"Rodrygo",pos:"Atacante",clube:"Real Madrid",setor:"att"},
+        {num:22,nome:"Raphinha",pos:"Atacante",clube:"Barcelona",setor:"att"},
+        {num:9,nome:"Endrick",pos:"Atacante",clube:"Real Madrid",setor:"att"},
+        {num:19,nome:"Gabigol",pos:"Atacante",clube:"Flamengo",setor:"att"},
+        {num:17,nome:"Savinho",pos:"Atacante",clube:"Man City",setor:"att"},
+        {num:21,nome:"Pedro",pos:"Centroavante",clube:"Flamengo",setor:"att"},
+        {num:18,nome:"Evanilson",pos:"Centroavante",clube:"Porto",setor:"att"},
+        {num:13,nome:"Artur",pos:"Meio-campo",clube:"Leipzig",setor:"mid"},
+        {num:16,nome:"Gerson",pos:"Meia",clube:"Flamengo",setor:"mid"},
+        {num:24,nome:"Ayrton L.",pos:"Lateral",clube:"Inter Miami",setor:"def"},
+        {num:25,nome:"Carlos A.",pos:"Lateral",clube:"Ajax",setor:"def"},
+        {num:26,nome:"Ivan",pos:"Goleiro",clube:"Zenit",setor:"gk"}
+    ],
+    escalacao:[
+        {num:1,nome:"Alisson",top:"88%",left:"50%"},
+        {num:2,nome:"Danilo",top:"72%",left:"82%"},
+        {num:4,nome:"Marquinhos",top:"75%",left:"65%"},
+        {num:3,nome:"Gabriel M.",top:"75%",left:"35%"},
+        {num:6,nome:"Wendell",top:"72%",left:"18%"},
+        {num:8,nome:"B. Guim.",top:"55%",left:"65%"},
+        {num:15,nome:"J. Gomes",top:"55%",left:"35%"},
+        {num:10,nome:"Paquetá",top:"36%",left:"50%"},
+        {num:22,nome:"Raphinha",top:"28%",left:"82%"},
+        {num:7,nome:"Vini Jr",top:"28%",left:"18%"},
+        {num:11,nome:"Rodrygo",top:"14%",left:"50%"}
+    ]
+};
+
+/* ==========================================================================
+   UTILIDADES
+   ========================================================================== */
+function esc(s){if(s==null)return'';return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;')}
+function fmtBRL(v){return 'R$ '+Number(v||0).toFixed(2).replace('.',',')}
+function fmtDate(d){if(!d)return'—';try{return new Date(d).toLocaleString('pt-BR',{timeZone:'America/Sao_Paulo'})}catch{return d}}
+function fmtDateOnly(d){if(!d)return'—';try{return new Date(d).toLocaleDateString('pt-BR',{timeZone:'America/Sao_Paulo'})}catch{return d}}
+function openModal(id){document.getElementById(id).classList.add('active');document.body.style.overflow='hidden'}
+function closeModal(id){document.getElementById(id).classList.remove('active');document.body.style.overflow=''}
+function toggleTheme(){const h=document.documentElement;const dark=h.getAttribute('data-theme')==='dark';h[dark?'removeAttribute':'setAttribute']('data-theme','dark');try{localStorage.setItem('theme',dark?'light':'dark')}catch(e){}}
+
+function applyPhoneMask(input){
+    input.addEventListener('input',()=>{
+        let v=input.value.replace(/\D/g,'');
+        if(v.length>11)v=v.slice(0,11);
+        if(v.length<=2) v=v;
+        else if(v.length<=7) v='('+v.slice(0,2)+') '+v.slice(2);
+        else v='('+v.slice(0,2)+') '+v.slice(2,7)+'-'+v.slice(7);
+        input.value=v;
+    });
+}
+
+function gerarBrCode(chave,nome,cidade,valor){
+    function crc16(s){let c=0xFFFF;for(let i=0;i<s.length;i++){c^=s.charCodeAt(i)<<8;for(let j=0;j<8;j++)c=(c&0x8000)?((c<<1)^0x1021):(c<<1);c&=0xFFFF}return c.toString(16).toUpperCase().padStart(4,'0')}
+    function f(id,v){return id+v.length.toString().padStart(2,'0')+v}
+    const mai=f('00','BR.GOV.BCB.PIX')+f('01',chave);
+    let p=f('00','01')+f('26',mai)+f('52','0000')+f('53','986');
+    if(valor)p+=f('54',valor.toFixed(2));
+    p+=f('58','BR')+f('59',nome.substring(0,25))+f('60',cidade.substring(0,15))+f('62',f('05','***'))+'6304';
+    return p+crc16(p);
+}
+
+/* ==========================================================================
+   API FETCH DA COPA
+   ========================================================================== */
+async function fetchLiveDadosCopa(){
+    const btn=document.getElementById('btn-atualizar');
+    const dot=document.getElementById('api-dot');
+    const txt=document.getElementById('api-text');
+    btn.disabled=true; btn.innerHTML='⏳ Atualizando...';
+    dot.style.background='var(--warning-color)'; txt.innerText='Buscando dados...';
+    try{
+        const ctrl=new AbortController();
+        const tid=setTimeout(()=>ctrl.abort(),FETCH_TIMEOUT);
+        const res=await fetch(`${PROXY_BASE}/competitions/WC/matches`,{signal:ctrl.signal});
+        clearTimeout(tid);
+        if(!res.ok)throw new Error(`HTTP ${res.status}`);
+        const data=await res.json();
+        processarDadosCopa(data);
+        dot.style.background='var(--br-green)'; txt.innerText='Dados atualizados ✓';
+    }catch(e){
+        dot.style.background='var(--danger-color)'; txt.innerText='Erro: '+e.message;
+        renderAllData();
+    }finally{
+        btn.disabled=false; btn.innerHTML='🔄 Atualizar Dados';
+    }
+}
+
+function processarDadosCopa(data){
+    const matches=data.matches||[];
+    const brMatches=matches.filter(m=>{
+        const h=(m.homeTeam?.name||'').toLowerCase(), a=(m.awayTeam?.name||'').toLowerCase();
+        return h.includes('braz')||h.includes('bras')||a.includes('braz')||a.includes('bras');
+    });
+    const agora=Date.now();
+    const proximas=brMatches.filter(m=>new Date(m.utcDate).getTime()>agora-2*60*60*1000).sort((a,b)=>new Date(a.utcDate)-new Date(b.utcDate));
+    if(proximas.length>0){
+        const m=proximas[0];
+        const isBrasil=(m.homeTeam?.name||'').toLowerCase().includes('braz')||(m.homeTeam?.name||'').toLowerCase().includes('bras');
+        const adv=isBrasil?(m.awayTeam?.shortName||m.awayTeam?.name):(m.homeTeam?.shortName||m.homeTeam?.name);
+        dataCopa.proximoJogo.adversario=adv||dataCopa.proximoJogo.adversario;
+        dataCopa.proximoJogo.dataISO=m.utcDate;
+        dataCopa.proximoJogo.fase=traduzirFase(m.stage);
+    }
+    // Jogos passados do Brasil
+    const passados=brMatches.filter(m=>m.status==='FINISHED').sort((a,b)=>new Date(b.utcDate)-new Date(a.utcDate));
+    if(passados.length>0){
+        dataCopa.jogos=passados.slice(0,5).map(m=>{
+            const isBr=(m.homeTeam?.name||'').toLowerCase().includes('braz')||(m.homeTeam?.name||'').toLowerCase().includes('bras');
+            const adv=isBr?(m.awayTeam?.shortName||m.awayTeam?.name):(m.homeTeam?.shortName||m.homeTeam?.name);
+            const gpBr=isBr?m.score?.fullTime?.home:m.score?.fullTime?.away;
+            const gcBr=isBr?m.score?.fullTime?.away:m.score?.fullTime?.home;
+            const d=new Date(m.utcDate).toLocaleDateString('pt-BR',{timeZone:'America/Sao_Paulo',day:'2-digit',month:'2-digit',year:'numeric'});
+            return {data:d,adv,placar:`${gpBr??'?'}-${gcBr??'?'}`,info:m.stage?traduzirFase(m.stage):''};
+        });
+    }
+    renderAllData();
+}
+
+function traduzirFase(s){const m={GROUP_STAGE:'Fase de Grupos',ROUND_OF_16:'Oitavas de Final',QUARTER_FINALS:'Quartas de Final',SEMI_FINALS:'Semifinais',THIRD_PLACE:'Disputa 3º Lugar',FINAL:'Final'};return m[s]||s||''}
+
+/* ==========================================================================
+   RENDER
+   ========================================================================== */
+function renderAllData(){
+    renderProximoJogo();
+    renderGrupoC();
+    renderJogosRealizados();
+    renderPitch();
+    renderSquad();
+    iniciarCountdown();
+    carregarProximaPartidaParaBolao();
+}
+
+function renderProximoJogo(){
+    const j=dataCopa.proximoJogo;
+    document.getElementById('proximo-jogo-content').innerHTML=`
+        <h3>🇧🇷 Brasil × ${esc(j.adversario)}</h3>
+        <p>${esc(j.dataStr)} — ${esc(j.horaStr)}</p>
+        <p style="font-size:.85rem;color:var(--text-secondary)">${esc(j.local||'')} — ${esc(j.fase)} — ${esc(j.competicao)}</p>
+    `;
+    document.getElementById('bolao-jogo-info').textContent=`Brasil × ${j.adversario} — ${j.competicao}`;
+}
+
+function renderGrupoC(){
+    const t=document.getElementById('grupo-c-tbody');
+    t.innerHTML=dataCopa.grupoC.map((s,i)=>`
+        <tr class="${s.selecao==='Brasil'?'highlight-row':''}">
+            <td>${i+1}</td><td style="text-align:left">${s.flag} ${esc(s.selecao)}</td>
+            <td>${s.j}</td><td>${s.v}</td><td>${s.e}</td><td>${s.d}</td>
+            <td>${s.gp}</td><td>${s.gc}</td><td>${s.gp-s.gc>=0?'+':''}${s.gp-s.gc}</td>
+            <td><strong>${s.pts}</strong></td>
+        </tr>`).join('');
+}
+
+function renderJogosRealizados(){
+    const el=document.getElementById('jogos-realizados-content');
+    el.innerHTML=dataCopa.jogos.map(j=>`
+        <div class="list-item">
+            <div><strong>Brasil ${esc(j.placar)} ${esc(j.adv)}</strong><br><small>${esc(j.data)} ${j.info?'— '+esc(j.info):''}</small></div>
+        </div>`).join('');
+}
+
+function renderPitch(){
+    const c=document.getElementById('pitch');
+    dataCopa.escalacao.forEach(p=>{
+        const d=document.createElement('div');
+        d.className='pitch-player';
+        d.style.top=p.top; d.style.left=p.left;
+        d.innerHTML=`<div class="dot">${p.num}</div><div class="name">${esc(p.nome)}</div>`;
+        c.appendChild(d);
+    });
+}
+
+function renderSquad(){
+    const g=document.getElementById('squad-grid');
+    const setores={gk:'🧤 Goleiros',def:'🛡️ Defesa',mid:'⚙️ Meio-campo',att:'⚡ Ataque'};
+    g.innerHTML=Object.entries(setores).map(([s,lbl])=>`
+        <div class="squad-section">
+            <h3>${lbl}</h3>
+            ${dataCopa.elenco.filter(p=>p.setor===s).map(p=>`
+                <div class="player-card">
+                    <div class="player-number">${p.num}</div>
+                    <div class="player-info"><strong>${esc(p.nome)}</strong><small>${esc(p.pos)} — ${esc(p.clube)}</small></div>
+                </div>`).join('')}
+        </div>`).join('');
+}
+
+/* ==========================================================================
+   COUNTDOWN
+   ========================================================================== */
+let cdownId=null;
+function iniciarCountdown(){
+    if(cdownId)clearInterval(cdownId);
+    const target=new Date(dataCopa.proximoJogo.dataISO).getTime();
+    function tick(){
+        const diff=target-Date.now();
+        if(diff<=0){document.getElementById('cd-h').textContent='00';document.getElementById('cd-m').textContent='00';document.getElementById('cd-s').textContent='00';return}
+        const h=Math.floor(diff/3600000);
+        const m=Math.floor((diff%3600000)/60000);
+        const s=Math.floor((diff%60000)/1000);
+        document.getElementById('cd-h').textContent=String(h).padStart(2,'0');
+        document.getElementById('cd-m').textContent=String(m).padStart(2,'0');
+        document.getElementById('cd-s').textContent=String(s).padStart(2,'0');
+    }
+    tick(); cdownId=setInterval(tick,1000);
+}
+
+/* ==========================================================================
+   BOLÃO — PRÓXIMA PARTIDA
+   ========================================================================== */
+async function carregarProximaPartidaParaBolao(){
+    try{
+        const res=await fetch(`${PROXY_BASE}/api/proxima-partida`);
+        if(res.ok){
+            const j=await res.json();
+            jogoAtual=j;
+            document.getElementById('bolao-banner-title').textContent=`Brasil × ${j.adversario}`;
+            document.getElementById('bolao-banner-info').textContent=`${j.competicao} — ${j.fase} — ${fmtDateOnly(j.data_jogo)}`;
+            document.getElementById('bolao-jogo-info').textContent=`Brasil × ${j.adversario} — ${j.competicao}`;
+        }
+    }catch(e){}
+}
+
+/* ==========================================================================
+   BOLÃO — PALPITES
+   ========================================================================== */
+function abrirBolao(){
+    palpitesBolao=[];
+    document.getElementById('lista-palpites').innerHTML='';
+    document.getElementById('bolao-nome').value='';
+    document.getElementById('bolao-contato').value='';
+    document.getElementById('bolao-pix').value='';
+    document.getElementById('bolao-tipo-pix').value='email';
+    document.getElementById('bolao-form-error').classList.remove('active');
+    atualizarResumoBolao();
+    adicionarCampoPalpite();
+    openModal('modal-bolao');
+    setTimeout(()=>document.getElementById('bolao-nome').focus(),150);
+}
+
+function fecharBolao(){closeModal('modal-bolao')}
+
+function adicionarCampoPalpite(){
+    if(palpitesBolao.length>=30){alert('Máximo de 30 palpites por aposta.');return}
+    const idx=palpitesBolao.length;
+    palpitesBolao.push({gols_brasil:'',gols_adversario:''});
+    const adv=jogoAtual?.adversario||dataCopa.proximoJogo.adversario;
+    const div=document.createElement('div');
+    div.className='palpite-item'; div.dataset.index=idx;
+    div.innerHTML=`
+        <div style="display:flex;flex-direction:column;flex:1;gap:2px">
+            <div style="font-size:.72rem;color:var(--text-secondary);text-align:center">🇧🇷 Brasil</div>
+            <input type="number" min="0" max="50" placeholder="0" value="" class="gols-brasil">
+        </div>
+        <span class="palpite-vs">×</span>
+        <div style="display:flex;flex-direction:column;flex:1;gap:2px">
+            <div style="font-size:.72rem;color:var(--text-secondary);text-align:center">${esc(adv)}</div>
+            <input type="number" min="0" max="50" placeholder="0" value="" class="gols-adv">
+        </div>
+        <button type="button" class="btn-rm">✕</button>
+    `;
+    div.querySelector('.gols-brasil').addEventListener('input',e=>{palpitesBolao[parseInt(div.dataset.index)].gols_brasil=e.target.value});
+    div.querySelector('.gols-adv').addEventListener('input',e=>{palpitesBolao[parseInt(div.dataset.index)].gols_adversario=e.target.value});
+    div.querySelector('.btn-rm').addEventListener('click',()=>removerPalpite(div));
+    document.getElementById('lista-palpites').appendChild(div);
+    atualizarResumoBolao();
+}
+
+function removerPalpite(el){
+    const idx=parseInt(el.dataset.index);
+    if(!confirm('Remover este palpite?'))return;
+    palpitesBolao.splice(idx,1);
+    el.remove();
+    document.querySelectorAll('.palpite-item').forEach((e,i)=>{e.dataset.index=i;});
+    atualizarResumoBolao();
+}
+
+function atualizarResumoBolao(){
+    const n=palpitesBolao.length;
+    document.getElementById('qtd-palpites').textContent=n;
+    document.getElementById('valor-total-bolao').textContent=fmtBRL(n*VALOR_PALPITE);
+}
+
+function validarBolao(){
+    const nome=document.getElementById('bolao-nome').value.trim();
+    const contato=document.getElementById('bolao-contato').value.replace(/\D/g,'');
+    const pix=document.getElementById('bolao-pix').value.trim();
+    const err=document.getElementById('bolao-form-error');
+    document.getElementById('bolao-nome').classList.remove('input-error');
+    document.getElementById('bolao-contato').classList.remove('input-error');
+    document.getElementById('bolao-pix').classList.remove('input-error');
+    err.classList.remove('active');
+    if(!nome){document.getElementById('bolao-nome').classList.add('input-error');err.innerText='⚠️ Nome é obrigatório.';err.classList.add('active');return false}
+    if(contato.length<10||contato.length>11){document.getElementById('bolao-contato').classList.add('input-error');err.innerText='⚠️ Telefone inválido. Informe DDD + número (10 ou 11 dígitos).';err.classList.add('active');return false}
+    if(!pix){document.getElementById('bolao-pix').classList.add('input-error');err.innerText='⚠️ Chave PIX é obrigatória.';err.classList.add('active');return false}
+    if(palpitesBolao.length===0){err.innerText='⚠️ Adicione pelo menos 1 palpite.';err.classList.add('active');return false}
+    for(let i=0;i<palpitesBolao.length;i++){
+        const p=palpitesBolao[i];
+        const b=parseInt(p.gols_brasil),a=parseInt(p.gols_adversario);
+        if(isNaN(b)||b<0||isNaN(a)||a<0){err.innerText=`⚠️ Palpite ${i+1}: placar inválido.`;err.classList.add('active');return false}
+    }
+    return true;
+}
+
+async function enviarBolao(){
+    if(!validarBolao())return;
+    const nome=document.getElementById('bolao-nome').value.trim();
+    const contatoRaw=document.getElementById('bolao-contato').value.replace(/\D/g,'');
+    const pix=document.getElementById('bolao-pix').value.trim();
+    const tipoPix=document.getElementById('bolao-tipo-pix').value;
+    const btn=document.getElementById('confirmar-bolao');
+    btn.disabled=true; btn.innerHTML='⏳ Enviando...';
+    try{
+        const ctrl=new AbortController();
+        const tid=setTimeout(()=>ctrl.abort(),FETCH_TIMEOUT);
+        const res=await fetch(`${PROXY_BASE}/api/bolao/participar`,{
+            method:'POST',headers:{'Content-Type':'application/json'},
+            body:JSON.stringify({
+                nome, contato:contatoRaw, pix_key:pix, tipo_pix:tipoPix,
+                jogo_id: jogoAtual?.id||null,
+                palpites: palpitesBolao.map(p=>({gols_brasil:parseInt(p.gols_brasil),gols_adversario:parseInt(p.gols_adversario)}))
+            }),signal:ctrl.signal
+        });
+        clearTimeout(tid);
+        if(!res.ok){const e=await res.json().catch(()=>({}));throw new Error(e.error||`HTTP ${res.status}`)}
+        const result=await res.json();
+        closeModal('modal-bolao');
+        mostrarComprovante({...result,nome,contato:contatoRaw,pix_key:pix,tipo_pix:tipoPix,palpites:palpitesBolao});
+    }catch(e){
+        const err=document.getElementById('bolao-form-error');
+        err.innerText='⚠️ '+(e.name==='AbortError'?'Tempo esgotado. Tente novamente.':e.message);
+        err.classList.add('active');
+    }finally{
+        btn.disabled=false;btn.innerHTML='✅ Confirmar Participação';
+    }
+}
+
+/* ==========================================================================
+   COMPROVANTE
+   ========================================================================== */
+function mostrarComprovante(dados){
+    const n=dados.palpites.length;
+    const valor=n*VALOR_PALPITE;
+    const jogo=jogoAtual||dataCopa.proximoJogo;
+    const jogoLabel=`Brasil × ${esc(jogoAtual?.adversario||dataCopa.proximoJogo.adversario)}`;
+    const brCode=gerarBrCode(PIX_CHAVE,PIX_NOME,PIX_CIDADE,valor);
+    const qrUrl=`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(brCode)}`;
+    const agora=new Date().toLocaleString('pt-BR',{timeZone:'America/Sao_Paulo'});
+    const contato=dados.contato.replace(/(\d{2})(\d{4,5})(\d{4})/,'($1) $2-$3');
+
+    const palHtml=dados.palpites.map((p,i)=>`<tr><td>${i+1}</td><td>${esc(jogoLabel)}</td><td><strong>${p.gols_brasil} × ${p.gols_adversario}</strong></td></tr>`).join('');
+
+    const msg=`Olá!\n\nAcabei de realizar uma aposta no Bolão da Copa 2026.\n\nNome: ${dados.nome}\nContato: ${contato}\nJogo: ${jogoLabel}\nQuantidade de palpites: ${n}\nValor pago: ${fmtBRL(valor)}\n\nSegue meu comprovante.`;
+
+    document.getElementById('resumo-body').innerHTML=`
+        <div class="comprovante-section">
+            <h3>👤 Dados do Participante</h3>
+            <div class="comprovante-dados">
+                <div><span>Nome</span>${esc(dados.nome)}</div>
+                <div><span>Contato</span>${esc(contato)}</div>
+                <div><span>Chave PIX</span>${esc(dados.pix_key)}</div>
+                <div><span>Tipo PIX</span>${esc(dados.tipo_pix)}</div>
+                <div><span>Data/Hora</span>${esc(agora)}</div>
+                <div><span>ID Aposta</span><small>${esc(dados.id)}</small></div>
+            </div>
+        </div>
+        <div class="comprovante-section">
+            <h3>📋 Palpites</h3>
+            <table class="comprovante-palpites">
+                <thead><tr><th>#</th><th>Jogo</th><th>Placar</th></tr></thead>
+                <tbody>${palHtml}</tbody>
+            </table>
+            <div style="margin-top:10px;display:flex;justify-content:space-between;padding:10px;background:var(--bg-color);border-radius:8px;font-size:.9rem;flex-wrap:wrap;gap:8px">
+                <span>Palpites: <strong>${n}</strong></span>
+                <span>Unitário: <strong>${fmtBRL(VALOR_PALPITE)}</strong></span>
+                <span>Total: <strong style="color:var(--br-green)">${fmtBRL(valor)}</strong></span>
+            </div>
+            <p style="font-size:.8rem;color:var(--text-secondary);margin-top:8px">A taxa administrativa de 10% já está prevista nas regras do bolão.</p>
+        </div>
+        <div class="comprovante-section">
+            <h3>💳 Pagamento via PIX</h3>
+            <div class="pix-box">
+                <img src="${esc(qrUrl)}" alt="QR Code PIX" onerror="this.style.display='none'">
+                <p style="margin-top:8px;font-size:.85rem"><strong>${esc(PIX_NOME)}</strong></p>
+                <p style="font-size:.8rem;color:var(--text-secondary)">${esc(PIX_CHAVE)}</p>
+                <div class="pix-chave-box">
+                    <input type="text" id="pix-brcode" value="${esc(brCode)}" readonly>
+                    <button class="btn-modern btn-warning btn-sm" id="btn-copiar-pix">📋 Copiar</button>
+                </div>
+            </div>
+        </div>
+        <div class="modal-actions">
+            <button class="btn-modern btn-ghost" id="btn-nova-aposta">Nova Aposta</button>
+            <button class="btn-modern btn-success" id="btn-whatsapp">
+                📎 Enviar Comprovante
             </button>
-            <div class="resumo-bolao-box">
-                <div><strong id="qtd-palpites">0</strong><small>Palpites</small></div>
-                <div><strong id="valor-total">R$ 0,00</strong><small>Total a Pagar</small></div>
-            </div>
-            <div class="modal-actions">
-                <button class="btn-modern btn-ghost" id="cancelar-bolao" type="button">Cancelar</button>
-                <button class="btn-modern btn-primary" id="confirmar-bolao" type="button">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 13l4 4L19 7"/></svg>
-                    Confirmar Participação
-                </button>
-            </div>
+            <button class="btn-modern btn-secondary" id="btn-imprimir-comp">🖨️ Imprimir</button>
         </div>
-    </div>
+    `;
+    document.getElementById('btn-copiar-pix').onclick=()=>{
+        const el=document.getElementById('pix-brcode');el.select();
+        try{navigator.clipboard.writeText(el.value).then(()=>alert('✅ Código PIX copiado!'))}catch(e){document.execCommand('copy');alert('✅ Código PIX copiado!')}
+    };
+    document.getElementById('btn-nova-aposta').onclick=()=>{closeModal('modal-resumo');abrirBolao()};
+    document.getElementById('btn-whatsapp').onclick=()=>{window.open(`https://wa.me/${ADMIN_WHATSAPP}?text=${encodeURIComponent(msg)}`,'_blank')};
+    document.getElementById('btn-imprimir-comp').onclick=()=>{
+        const c=document.getElementById('resumo-body').innerHTML;
+        const w=window.open('','_blank');
+        w.document.write(`<html><head><title>Comprovante Bolão Copa 2026</title><style>body{font-family:sans-serif;padding:20px}table{width:100%;border-collapse:collapse}td,th{border:1px solid #ddd;padding:8px;text-align:center}.comprovante-dados{display:grid;grid-template-columns:1fr 1fr;gap:8px}</style></head><body><h2>🎯 Comprovante Bolão Copa 2026</h2>${c}</body></html>`);
+        w.document.close();setTimeout(()=>w.print(),400);
+    };
+    openModal('modal-resumo');
+}
 
-    <!-- ===================== MODAL: RESUMO / COMPROVANTE ===================== -->
-    <div id="modal-resumo" class="modal-overlay">
-        <div class="modal-box" id="resumo-content">
-            <span class="modal-close" data-close="modal-resumo" role="button" tabindex="0" aria-label="Fechar">&times;</span>
-            <h2>✅ Comprovante de Participação</h2>
-            <div id="resumo-body"></div>
-        </div>
-    </div>
+/* ==========================================================================
+   ADMIN — LOGIN
+   ========================================================================== */
+function abrirAdminLogin(){
+    document.getElementById('admin-senha').value='';
+    document.getElementById('admin-login-error').classList.remove('active');
+    openModal('modal-admin-login');
+    setTimeout(()=>document.getElementById('admin-senha').focus(),100);
+}
 
-    <!-- ===================== MODAL: LOGIN ADMIN ===================== -->
-    <div id="modal-admin-login" class="modal-overlay">
-        <div class="modal-box" style="max-width:400px;">
-            <span class="modal-close" data-close="modal-admin-login" role="button" tabindex="0" aria-label="Fechar">&times;</span>
-            <h2>🔒 Acesso Administrativo</h2>
-            <p style="color:var(--text-secondary); font-size:0.9rem; margin-bottom:15px;">Digite a senha de acesso ao painel de gerenciamento.</p>
-            <input type="password" id="admin-senha" placeholder="Senha" style="text-align:center; font-size:1.1rem; letter-spacing:4px;">
-            <div class="form-error" id="admin-login-error"></div>
-            <div class="modal-actions">
-                <button class="btn-modern btn-ghost" id="admin-login-cancel" type="button">Cancelar</button>
-                <button class="btn-modern btn-secondary" id="admin-login-confirm" type="button">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4M10 17l5-5-5-5M15 12H3"/></svg>
-                    Entrar
-                </button>
+async function fazerLoginAdmin(){
+    const senha=document.getElementById('admin-senha').value;
+    const err=document.getElementById('admin-login-error');
+    const btn=document.getElementById('admin-login-confirm');
+    if(!senha){err.innerText='⚠️ Digite a senha.';err.classList.add('active');return}
+    btn.disabled=true;btn.innerHTML='⏳ Validando...';err.classList.remove('active');
+    try{
+        const ctrl=new AbortController();
+        const tid=setTimeout(()=>ctrl.abort(),FETCH_TIMEOUT);
+        const res=await fetch(`${PROXY_BASE}/api/admin/login`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({password:senha}),signal:ctrl.signal});
+        clearTimeout(tid);
+        if(!res.ok){const e=await res.json().catch(()=>({}));throw new Error(e.error||'Senha incorreta')}
+        const d=await res.json();
+        adminToken=d.token;
+        closeModal('modal-admin-login');
+        abrirPainelAdmin();
+    }catch(e){
+        err.innerText='⚠️ '+(e.name==='AbortError'?'Tempo esgotado.':e.message);
+        err.classList.add('active');
+    }finally{btn.disabled=false;btn.innerHTML='Entrar'}
+}
+
+/* ==========================================================================
+   ADMIN — PAINEL
+   ========================================================================== */
+function abrirPainelAdmin(){
+    openModal('modal-admin-panel');
+    switchAdminTab('dashboard');
+    carregarJogosParaFiltros();
+}
+
+function switchAdminTab(tab){
+    document.querySelectorAll('.admin-tab').forEach(t=>t.classList.toggle('active',t.dataset.tab===tab));
+    document.querySelectorAll('.admin-tab-content').forEach(c=>c.classList.toggle('active',c.id===`admin-tab-${tab}`));
+    if(tab==='dashboard')carregarDashboard();
+    if(tab==='jogos')carregarJogos();
+    if(tab==='apostas'){apostasPage=1;carregarApostas()}
+    if(tab==='participantes')carregarParticipantes();
+    if(tab==='palpites')carregarPalpites();
+    if(tab==='financeiro')carregarFinanceiro();
+}
+
+async function adminFetch(endpoint,opts={}){
+    const res=await fetch(`${PROXY_BASE}${endpoint}`,{...opts,headers:{...opts.headers,'Authorization':`Bearer ${adminToken}`}});
+    if(res.status===401){adminToken=null;closeModal('modal-admin-panel');abrirAdminLogin();throw new Error('Sessão expirada')}
+    if(!res.ok)throw new Error(`HTTP ${res.status}`);
+    return res;
+}
+
+/* Dashboard */
+async function carregarDashboard(){
+    const el=document.getElementById('admin-dashboard-stats');
+    try{
+        const res=await adminFetch('/api/admin/dashboard');
+        const d=await res.json();
+        document.getElementById('stat-participantes').textContent=d.total_participantes;
+        document.getElementById('stat-palpites').textContent=d.total_palpites;
+        document.getElementById('stat-jogos').textContent=d.total_jogos;
+        document.getElementById('stat-bruto').textContent=fmtBRL(d.arrecadacao_bruta);
+        document.getElementById('stat-taxa').textContent=fmtBRL(d.taxa_administrativa);
+        document.getElementById('stat-liquido').textContent=fmtBRL(d.premiacao_liquida);
+        document.getElementById('stat-pago').textContent=fmtBRL(d.total_pago);
+        document.getElementById('stat-pendente').textContent=fmtBRL(d.total_pendente);
+        document.getElementById('stat-ticket').textContent=fmtBRL(d.ticket_medio);
+        document.getElementById('stat-media').textContent=Number(d.media_palpites).toFixed(1);
+
+        const tops=document.getElementById('dash-tops');
+        tops.innerHTML=`
+            <div style="background:var(--bg-color);border-radius:10px;padding:15px">
+                <strong style="color:var(--br-green)">🏅 Top Participantes</strong>
+                <table class="admin-table" style="margin-top:8px">
+                    ${d.top_participantes.map((p,i)=>`<tr><td>${i+1}</td><td>${esc(p.nome)}</td><td><strong>${p.qtd}</strong> palpites</td></tr>`).join('')}
+                </table>
             </div>
-        </div>
-    </div>
-
-    <!-- ===================== MODAL: PAINEL ADMIN ===================== -->
-    <div id="modal-admin-panel" class="modal-overlay">
-        <div class="modal-box modal-lg">
-            <span class="modal-close" data-close="modal-admin-panel" role="button" tabindex="0" aria-label="Fechar">&times;</span>
-            <h2>⚙️ Painel Administrativo</h2>
-            <div class="admin-tabs">
-                <button class="admin-tab active" data-tab="dashboard">📊 Dashboard</button>
-                <button class="admin-tab" data-tab="participantes">👥 Participantes</button>
-                <button class="admin-tab" data-tab="palpites">🎯 Palpites</button>
+            <div style="background:var(--bg-color);border-radius:10px;padding:15px">
+                <strong style="color:var(--br-green)">🏆 Placares Mais Apostados</strong>
+                <table class="admin-table" style="margin-top:8px">
+                    ${d.top_placares.map((p,i)=>`<tr><td>${i+1}</td><td>Brasil ${p.gols_brasil} × ${p.gols_adversario}</td><td><strong>${p.qtd}</strong>×</td></tr>`).join('')}
+                </table>
             </div>
+        `;
+    }catch(e){el.innerHTML=`<div class="admin-empty">Erro: ${esc(e.message)}</div>`}
+}
 
-            <!-- Dashboard -->
-            <div class="admin-tab-content active" id="admin-tab-dashboard">
-                <div class="admin-dashboard" id="admin-dashboard-stats">
-                    <div class="admin-stat-card"><div class="stat-value" id="stat-participantes">0</div><div class="stat-label">Participantes</div></div>
-                    <div class="admin-stat-card"><div class="stat-value" id="stat-palpites">0</div><div class="stat-label">Palpites</div></div>
-                    <div class="admin-stat-card"><div class="stat-value" id="stat-arrecadado">R$ 0</div><div class="stat-label">Arrecadado</div></div>
-                    <div class="admin-stat-card"><div class="stat-value" id="stat-media">0</div><div class="stat-label">Média/Participante</div></div>
+/* Jogos */
+async function carregarJogos(){
+    const el=document.getElementById('admin-jogos-list');
+    el.innerHTML='<div class="admin-loading">Carregando jogos...</div>';
+    try{
+        const res=await adminFetch('/api/admin/jogos');
+        const {jogos}=await res.json();
+        if(!jogos.length){el.innerHTML='<div class="admin-empty">Nenhum jogo cadastrado.</div>';return}
+        el.innerHTML=jogos.map(j=>`
+            <div class="jogo-card-admin" onclick="verDetalheJogo('${esc(j.id)}')">
+                <h4>🇧🇷 Brasil × ${esc(j.adversario)} <small style="font-weight:400;color:var(--text-secondary)">— ${esc(j.fase)}</small></h4>
+                <p style="font-size:.83rem;color:var(--text-secondary);margin-bottom:8px">${fmtDateOnly(j.data_jogo)} — ${esc(j.competicao)}</p>
+                <div class="jogo-stats">
+                    <span>👥 <strong>${j.total_participantes}</strong> participantes</span>
+                    <span>🎯 <strong>${j.total_palpites}</strong> palpites</span>
+                    <span>💰 Bruto: <strong>${fmtBRL(j.arrecadacao_bruta)}</strong></span>
+                    <span>📉 Taxa: <strong>${fmtBRL(j.taxa_administrativa)}</strong></span>
+                    <span>🏆 Prêmio: <strong>${fmtBRL(j.premiacao_liquida)}</strong></span>
                 </div>
+            </div>`).join('');
+    }catch(e){el.innerHTML=`<div class="admin-empty">Erro: ${esc(e.message)}</div>`}
+}
+
+async function verDetalheJogo(jogoId){
+    const body=document.getElementById('jogo-detalhe-body');
+    body.innerHTML='<div class="admin-loading">Carregando detalhes...</div>';
+    openModal('modal-jogo-detalhe');
+    try{
+        const res=await adminFetch(`/api/admin/jogos/${jogoId}`);
+        const {jogo,apostas,top_placares,financeiro}=await res.json();
+        body.innerHTML=`
+            <h2>⚽ Brasil × ${esc(jogo.adversario)}</h2>
+            <p style="color:var(--text-secondary);margin-bottom:15px">${esc(jogo.competicao)} — ${esc(jogo.fase)} — ${fmtDateOnly(jogo.data_jogo)}</p>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:20px">
+                <div class="admin-stat-card"><div class="stat-value">${financeiro.total_apostas}</div><div class="stat-label">Apostas</div></div>
+                <div class="admin-stat-card stat-yellow"><div class="stat-value">${fmtBRL(financeiro.arrecadacao_bruta)}</div><div class="stat-label">Arrecadação Bruta</div></div>
+                <div class="admin-stat-card stat-red"><div class="stat-value">${fmtBRL(financeiro.taxa_administrativa)}</div><div class="stat-label">Taxa (10%)</div></div>
+                <div class="admin-stat-card stat-blue"><div class="stat-value">${fmtBRL(financeiro.premiacao_liquida)}</div><div class="stat-label">Premiação</div></div>
+                <div class="admin-stat-card"><div class="stat-value">${fmtBRL(financeiro.total_pago)}</div><div class="stat-label">✅ Pago</div></div>
+                <div class="admin-stat-card stat-red"><div class="stat-value">${fmtBRL(financeiro.total_pendente)}</div><div class="stat-label">⏳ Pendente</div></div>
             </div>
-
-            <!-- Participantes -->
-            <div class="admin-tab-content" id="admin-tab-participantes">
-                <div class="admin-filters">
-                    <input type="text" id="filtro-participante" placeholder="🔍 Buscar por nome ou WhatsApp...">
-                    <input type="date" id="filtro-data-participante">
-                    <button class="btn-modern btn-primary btn-sm" id="btn-filtrar-participantes">Filtrar</button>
-                    <button class="btn-modern btn-ghost btn-sm" id="btn-exportar-participantes">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2"/></svg>
-                        Exportar CSV
-                    </button>
-                </div>
-                <div class="admin-table-scroll">
-                    <table class="admin-table">
-                        <thead><tr><th>Nome</th><th>Contato</th><th>Data/Hora</th><th>Palpites</th><th>Valor</th><th></th></tr></thead>
-                        <tbody id="admin-participantes-tbody"></tbody>
-                    </table>
-                </div>
+            <h3 style="margin-bottom:10px">🏆 Placares Mais Apostados</h3>
+            <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px">
+                ${top_placares.map(p=>`<span style="background:var(--bg-color);padding:6px 12px;border-radius:8px;font-size:.9rem">Brasil ${p.gols_brasil}×${p.gols_adversario} <strong>(${p.qtd}×)</strong></span>`).join('')}
             </div>
-
-            <!-- Palpites -->
-            <div class="admin-tab-content" id="admin-tab-palpites">
-                <div class="admin-filters">
-                    <input type="text" id="filtro-palpite" placeholder="🔍 Buscar participante...">
-                    <input type="text" id="filtro-jogo" placeholder="Filtrar por jogo...">
-                    <input type="date" id="filtro-data-palpite">
-                    <button class="btn-modern btn-primary btn-sm" id="btn-filtrar-palpites">Filtrar</button>
-                    <button class="btn-modern btn-ghost btn-sm" id="btn-exportar-palpites">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2"/></svg>
-                        Exportar CSV
-                    </button>
-                </div>
-                <div class="admin-table-scroll">
-                    <table class="admin-table">
-                        <thead><tr><th>Participante</th><th>Contato</th><th>Jogo</th><th>Palpite</th><th>Data/Hora</th><th></th></tr></thead>
-                        <tbody id="admin-palpites-tbody"></tbody>
-                    </table>
-                </div>
+            <h3 style="margin-bottom:10px">👥 Apostas</h3>
+            <div class="admin-table-scroll">
+                <table class="admin-table">
+                    <thead><tr><th>Nome</th><th>Contato</th><th>Palpites</th><th>Valor</th><th>Status</th><th>Ações</th></tr></thead>
+                    <tbody>${apostas.map(a=>`
+                        <tr>
+                            <td>${esc(a.nome)}</td>
+                            <td>${esc(a.contato)}</td>
+                            <td>${a.qtd_palpites}</td>
+                            <td>${fmtBRL(a.valor_total)}</td>
+                            <td><span class="badge badge-${a.status_pagamento==='PAGO'?'pago':'pendente'}">${a.status_pagamento}</span></td>
+                            <td style="display:flex;gap:5px;flex-wrap:wrap">
+                                <button class="btn-modern btn-sm btn-secondary" onclick="abrirVoucher('${esc(a.id)}')">🏆</button>
+                                ${a.status_pagamento==='PENDENTE'
+                                    ?`<button class="btn-modern btn-sm btn-success" onclick="validarPagamento('${esc(a.id)}','PAGO')">✅</button>`
+                                    :`<button class="btn-modern btn-sm btn-warning" onclick="validarPagamento('${esc(a.id)}','PENDENTE')">↩️</button>`}
+                                <button class="btn-modern btn-sm btn-danger" onclick="excluirAposta('${esc(a.id)}')">🗑</button>
+                            </td>
+                        </tr>`).join('')}</tbody>
+                </table>
             </div>
-        </div>
-    </div>
+        `;
+    }catch(e){body.innerHTML=`<div class="admin-empty">Erro: ${esc(e.message)}</div>`}
+}
 
-    <script>
-        /* ==========================================================================
-           CONFIGURAÇÃO
-           ========================================================================== */
-        const PROXY_BASE = "https://copa2026.leo2005lima.workers.dev";
-        const FETCH_TIMEOUT_MS = 8000;
-        const VALOR_PALPITE = 5.00;
+/* Apostas */
+async function carregarApostas(){
+    const tbody=document.getElementById('admin-apostas-tbody');
+    tbody.innerHTML='<tr><td colspan="7" class="admin-loading">Carregando...</td></tr>';
+    try{
+        const search=document.getElementById('filtro-aposta-search').value;
+        const jogoId=document.getElementById('filtro-aposta-jogo').value;
+        const status=document.getElementById('filtro-aposta-status').value;
+        let url=`/api/admin/apostas?page=${apostasPage}`;
+        if(search)url+=`&search=${encodeURIComponent(search)}`;
+        if(jogoId)url+=`&jogo_id=${encodeURIComponent(jogoId)}`;
+        if(status)url+=`&status=${encodeURIComponent(status)}`;
+        const res=await adminFetch(url);
+        const {apostas,total,total_pages}=await res.json();
+        if(!apostas.length){tbody.innerHTML='<tr><td colspan="7" class="admin-empty">Nenhuma aposta encontrada.</td></tr>';document.getElementById('apostas-pagination').innerHTML='';return}
+        tbody.innerHTML=apostas.map(a=>`
+            <tr>
+                <td><strong>${esc(a.nome)}</strong></td>
+                <td>${esc(a.contato)}</td>
+                <td><small>Brasil × ${esc(a.adversario)}</small></td>
+                <td>${a.qtd_palpites}</td>
+                <td>${fmtBRL(a.valor_total)}</td>
+                <td><span class="badge badge-${a.status_pagamento==='PAGO'?'pago':'pendente'}">${a.status_pagamento}</span></td>
+                <td style="display:flex;gap:4px;flex-wrap:wrap">
+                    <button class="btn-modern btn-sm btn-secondary" onclick="abrirVoucher('${esc(a.id)}')">🏆</button>
+                    ${a.status_pagamento==='PENDENTE'
+                        ?`<button class="btn-modern btn-sm btn-success" onclick="validarPagamento('${esc(a.id)}','PAGO')">✅</button>`
+                        :`<button class="btn-modern btn-sm btn-warning" onclick="validarPagamento('${esc(a.id)}','PENDENTE')">↩️</button>`}
+                    <button class="btn-modern btn-sm btn-danger" onclick="excluirAposta('${esc(a.id)}')">🗑</button>
+                </td>
+            </tr>`).join('');
+        // Paginação
+        const pag=document.getElementById('apostas-pagination');
+        pag.innerHTML='';
+        const btnPrev=document.createElement('button');btnPrev.textContent='‹';btnPrev.disabled=apostasPage<=1;
+        btnPrev.onclick=()=>{apostasPage--;carregarApostas()};pag.appendChild(btnPrev);
+        const info=document.createElement('span');info.textContent=`Pág ${apostasPage}/${total_pages||1} (${total} apostas)`;info.style.fontSize='.82rem';info.style.color='var(--text-secondary)';pag.appendChild(info);
+        const btnNext=document.createElement('button');btnNext.textContent='›';btnNext.disabled=apostasPage>=(total_pages||1);
+        btnNext.onclick=()=>{apostasPage++;carregarApostas()};pag.appendChild(btnNext);
+    }catch(e){tbody.innerHTML=`<tr><td colspan="7" class="admin-empty">Erro: ${esc(e.message)}</td></tr>`}
+}
 
-        // CONFIGURAÇÃO PIX — altere para sua chave real
-        const PIX_CHAVE = "xxxleoxxx2008@gmail.com";
-        const PIX_NOME = "LEONARDO COELHO DE SOUSA LIMA";
-        const PIX_CIDADE = "PALMAS/TO";
+/* Participantes */
+async function carregarParticipantes(){
+    const tbody=document.getElementById('admin-participantes-tbody');
+    tbody.innerHTML='<tr><td colspan="8" class="admin-loading">Carregando...</td></tr>';
+    try{
+        const search=document.getElementById('filtro-participante').value;
+        const data=document.getElementById('filtro-data-participante').value;
+        let url='/api/admin/participantes?';
+        if(search)url+=`search=${encodeURIComponent(search)}&`;
+        if(data)url+=`data=${encodeURIComponent(data)}&`;
+        const res=await adminFetch(url);
+        const {participantes}=await res.json();
+        if(!participantes.length){tbody.innerHTML='<tr><td colspan="8" class="admin-empty">Nenhum participante.</td></tr>';return}
+        tbody.innerHTML=participantes.map(p=>`<tr>
+            <td><strong>${esc(p.nome)}</strong></td>
+            <td>${esc(p.contato)}</td>
+            <td style="font-size:.78rem">${esc(p.pix_key||'—')}<br><small>${esc(p.tipo_pix||'')}</small></td>
+            <td>${p.total_apostas}</td><td>${p.total_palpites}</td>
+            <td>${fmtBRL(p.valor_total_apostas)}</td>
+            <td style="font-size:.78rem">${fmtDate(p.data_cadastro)}</td>
+            <td><button class="btn-modern btn-sm btn-danger" onclick="excluirParticipante('${esc(p.id)}')">🗑</button></td>
+        </tr>`).join('');
+    }catch(e){tbody.innerHTML=`<tr><td colspan="8" class="admin-empty">Erro: ${esc(e.message)}</td></tr>`}
+}
 
-        const LIMITE_REQUISICOES_DIA = 100;
-        const LIMITE_REQUISICOES_MINUTO = 10;
-        const CUSTO_REQUISICOES_POR_ATUALIZACAO = 1;
-        const CHAVE_CONTADOR_API = 'copa2026_api_calls';
-        const CHAVE_CONTADOR_MINUTO = 'copa2026_api_calls_minuto';
+/* Palpites */
+async function carregarPalpites(){
+    const tbody=document.getElementById('admin-palpites-tbody');
+    tbody.innerHTML='<tr><td colspan="7" class="admin-loading">Carregando...</td></tr>';
+    try{
+        const search=document.getElementById('filtro-palpite').value;
+        const jogoId=document.getElementById('filtro-palpite-jogo').value;
+        const data=document.getElementById('filtro-data-palpite').value;
+        let url='/api/admin/palpites?';
+        if(search)url+=`search=${encodeURIComponent(search)}&`;
+        if(jogoId)url+=`jogo_id=${encodeURIComponent(jogoId)}&`;
+        if(data)url+=`data=${encodeURIComponent(data)}&`;
+        const res=await adminFetch(url);
+        const {palpites}=await res.json();
+        if(!palpites.length){tbody.innerHTML='<tr><td colspan="7" class="admin-empty">Nenhum palpite.</td></tr>';return}
+        tbody.innerHTML=palpites.map(p=>`<tr>
+            <td><strong>${esc(p.participante_nome)}</strong></td>
+            <td>${esc(p.participante_contato)}</td>
+            <td><small>Brasil × ${esc(p.adversario)}</small></td>
+            <td><strong>🇧🇷 ${p.gols_brasil} × ${p.gols_adversario}</strong></td>
+            <td><span class="badge badge-${p.status_pagamento==='PAGO'?'pago':'pendente'}">${p.status_pagamento}</span></td>
+            <td style="font-size:.78rem">${fmtDate(p.data_palpite)}</td>
+            <td><button class="btn-modern btn-sm btn-danger" onclick="excluirPalpite('${esc(p.id)}')">🗑</button></td>
+        </tr>`).join('');
+    }catch(e){tbody.innerHTML=`<tr><td colspan="7" class="admin-empty">Erro: ${esc(e.message)}</td></tr>`}
+}
 
-        // Token admin em memória (não persiste em localStorage por segurança)
-        let adminToken = null;
+/* Financeiro */
+async function carregarFinanceiro(){
+    const cards=document.getElementById('financeiro-cards');
+    const tbody=document.getElementById('financeiro-tbody');
+    cards.innerHTML='<div class="admin-loading">Carregando...</div>';
+    tbody.innerHTML='<tr><td colspan="7" class="admin-loading">Carregando...</td></tr>';
+    try{
+        const jogoId=document.getElementById('filtro-fin-jogo').value;
+        const status=document.getElementById('filtro-fin-status').value;
+        let url=`/api/admin/apostas?page=1`;
+        if(jogoId)url+=`&jogo_id=${encodeURIComponent(jogoId)}`;
+        if(status)url+=`&status=${encodeURIComponent(status)}`;
+        const [dashRes,apostasRes]=await Promise.all([adminFetch('/api/admin/dashboard'),adminFetch(url)]);
+        const dash=await dashRes.json();
+        const {apostas}=await apostasRes.json();
 
-        function getContadorRequisicoesHoje() {
-            const hojeStr = new Date().toISOString().slice(0, 10);
-            try { const s = JSON.parse(localStorage.getItem(CHAVE_CONTADOR_API) || 'null'); if (s && s.data === hojeStr) return s.contagem; } catch (e) {}
-            return 0;
-        }
-        function getContadorRequisicoesUltimoMinuto() {
-            try { const t = JSON.parse(localStorage.getItem(CHAVE_CONTADOR_MINUTO) || '[]'); return t.filter(x => Date.now() - x < 60000).length; } catch (e) { return 0; }
-        }
-        function registrarRequisicoes(q) {
-            const hojeStr = new Date().toISOString().slice(0, 10);
-            try { localStorage.setItem(CHAVE_CONTADOR_API, JSON.stringify({ data: hojeStr, contagem: getContadorRequisicoesHoje() + q })); } catch (e) {}
-            try { const agora = Date.now(); const t = JSON.parse(localStorage.getItem(CHAVE_CONTADOR_MINUTO) || '[]'); const r = t.filter(x => agora - x < 60000); for (let i = 0; i < q; i++) r.push(agora); localStorage.setItem(CHAVE_CONTADOR_MINUTO, JSON.stringify(r)); } catch (e) {}
-        }
+        cards.innerHTML=`
+            <div class="financeiro-card"><div class="fc-value">${fmtBRL(dash.arrecadacao_bruta)}</div><div class="fc-label">💰 Arrecadação Bruta</div></div>
+            <div class="financeiro-card fc-yellow"><div class="fc-value">${fmtBRL(dash.taxa_administrativa)}</div><div class="fc-label">📉 Taxa Admin (10%)</div></div>
+            <div class="financeiro-card fc-blue"><div class="fc-value">${fmtBRL(dash.premiacao_liquida)}</div><div class="fc-label">🏆 Premiação Líquida</div></div>
+            <div class="financeiro-card"><div class="fc-value">${fmtBRL(dash.total_pago)}</div><div class="fc-label">✅ Total Confirmado</div></div>
+            <div class="financeiro-card fc-yellow"><div class="fc-value">${fmtBRL(dash.total_pendente)}</div><div class="fc-label">⏳ Total Pendente</div></div>
+            <div class="financeiro-card fc-blue"><div class="fc-value">${fmtBRL(dash.ticket_medio)}</div><div class="fc-label">📈 Ticket Médio</div></div>
+        `;
+        tbody.innerHTML=apostas.map(a=>`<tr>
+            <td><strong>${esc(a.nome)}</strong></td>
+            <td><small>Brasil × ${esc(a.adversario)}</small></td>
+            <td>${a.qtd_palpites}</td>
+            <td>${fmtBRL(a.valor_total)}</td>
+            <td><span class="badge badge-${a.status_pagamento==='PAGO'?'pago':'pendente'}">${a.status_pagamento}</span></td>
+            <td style="font-size:.78rem">${a.data_validacao?fmtDate(a.data_validacao)+'<br><small>'+esc(a.validado_por||'')+'</small>':'—'}</td>
+            <td>
+                ${a.status_pagamento==='PENDENTE'
+                    ?`<button class="btn-modern btn-sm btn-success" onclick="validarPagamento('${esc(a.id)}','PAGO')">✅ Validar</button>`
+                    :`<button class="btn-modern btn-sm btn-warning" onclick="validarPagamento('${esc(a.id)}','PENDENTE')">↩️ Reverter</button>`}
+            </td>
+        </tr>`).join('');
+    }catch(e){cards.innerHTML=`<div class="admin-empty">Erro: ${esc(e.message)}</div>`}
+}
 
-        function toggleTheme() {
-            const html = document.documentElement;
-            if (html.getAttribute('data-theme') === 'dark') { html.removeAttribute('data-theme'); safeSetTheme('light'); }
-            else { html.setAttribute('data-theme', 'dark'); safeSetTheme('dark'); }
-        }
-        function safeSetTheme(v) { try { localStorage.setItem('theme', v); } catch (e) {} }
+/* Carregar jogos para filtros */
+async function carregarJogosParaFiltros(){
+    try{
+        const res=await adminFetch('/api/admin/jogos');
+        const {jogos}=await res.json();
+        const opts=jogos.map(j=>`<option value="${esc(j.id)}">Brasil × ${esc(j.adversario)}</option>`).join('');
+        ['filtro-aposta-jogo','filtro-palpite-jogo','filtro-fin-jogo'].forEach(id=>{
+            const el=document.getElementById(id);
+            el.innerHTML='<option value="">Todos os jogos</option>'+opts;
+        });
+    }catch(e){}
+}
 
-        const dataCopa2026 = {
-            proximoJogo: { adversario: "Escócia", bandeira: "🏴", dataStr: "24 de junho de 2026", horaStr: "22:00 (Horário de Brasília)", local: "Levi's Stadium, San Francisco", fase: "Fase de Grupos - 3ª Rodada", dataISO: "2026-06-24T22:00:00-03:00" },
-            grupoC: [
-                { selecao: "Brasil", pts: 4, j: 2, v: 1, e: 1, d: 0, gp: 4, gc: 1, flag: "🇧🇷" },
-                { selecao: "Marrocos", pts: 4, j: 2, v: 1, e: 1, d: 0, gp: 2, gc: 1, flag: "🇲🇦" },
-                { selecao: "Escócia", pts: 3, j: 2, v: 1, e: 0, d: 1, gp: 1, gc: 1, flag: "🏴" },
-                { selecao: "Haiti", pts: 0, j: 2, v: 0, e: 0, d: 2, gp: 0, gc: 4, flag: "🇭🇹" }
-            ],
-            jogosRealizados: [
-                { data: "13/06/2026", local: "Lumen Field", adv: "Marrocos", placar: "1 - 1", info: "Gols: Vini Jr (BR); En-Nesyri (MA)" },
-                { data: "19/06/2026", local: "Rose Bowl", adv: "Haiti", placar: "3 - 0", info: "Gols: Vini Jr, Rodrygo, Marquinhos (BR)" }
-            ],
-            comissao: [
-                { cargo: "Técnico", nome: "Carlo Ancelotti" }, { cargo: "Auxiliar Técnico", nome: "Francesco Mauri" },
-                { cargo: "Preparador Físico", nome: "Mino Fulco" }, { cargo: "Treinador de Goleiros", nome: "Cláudio Taffarel" },
-                { cargo: "Médico Chefe", nome: "Rodrigo Lasmar" }
-            ],
-            elenco: [
-                { num: 1, nome: "Alisson", pos: "Goleiro", clube: "Liverpool", setor: "gk" }, { num: 23, nome: "Ederson", pos: "Goleiro", clube: "Man City", setor: "gk" },
-                { num: 12, nome: "Bento", pos: "Goleiro", clube: "Al-Nassr", setor: "gk" }, { num: 4, nome: "Marquinhos", pos: "Zagueiro", clube: "PSG", setor: "def" },
-                { num: 3, nome: "Gabriel Magalhães", pos: "Zagueiro", clube: "Arsenal", setor: "def" }, { num: 14, nome: "Éder Militão", pos: "Zagueiro", clube: "Real Madrid", setor: "def" },
-                { num: 2, nome: "Danilo", pos: "Lateral-Dir", clube: "Juventus", setor: "def" }, { num: 6, nome: "Wendell", pos: "Lateral-Esq", clube: "Porto", setor: "def" },
-                { num: 8, nome: "Bruno Guimarães", pos: "Volante", clube: "Newcastle", setor: "mid" }, { num: 15, nome: "João Gomes", pos: "Volante", clube: "Wolverhampton", setor: "mid" },
-                { num: 10, nome: "Lucas Paquetá", pos: "Meia", clube: "West Ham", setor: "mid" }, { num: 7, nome: "Vini Jr", pos: "Atacante", clube: "Real Madrid", setor: "att" },
-                { num: 11, nome: "Rodrygo", pos: "Atacante", clube: "Real Madrid", setor: "att" }, { num: 22, nome: "Raphinha", pos: "Atacante", clube: "Barcelona", setor: "att" },
-                { num: 9, nome: "Endrick", pos: "Atacante", clube: "Real Madrid", setor: "att" }
-            ],
-            escalacao: [
-                { num: 1, nome: "Alisson", top: "88%", left: "50%" }, { num: 2, nome: "Danilo", top: "72%", left: "85%" },
-                { num: 4, nome: "Marquinhos", top: "75%", left: "68%" }, { num: 3, nome: "Gabriel M.", top: "75%", left: "32%" },
-                { num: 6, nome: "Wendell", top: "72%", left: "15%" }, { num: 8, nome: "B. Guimarães", top: "55%", left: "65%" },
-                { num: 15, nome: "João Gomes", top: "55%", left: "35%" }, { num: 10, nome: "Paquetá", top: "35%", left: "50%" },
-                { num: 22, nome: "Raphinha", top: "28%", left: "85%" }, { num: 7, nome: "Vini Jr", top: "28%", left: "15%" },
-                { num: 11, nome: "Rodrygo", top: "15%", left: "50%" }
-            ]
+/* ==========================================================================
+   ADMIN — AÇÕES
+   ========================================================================== */
+async function validarPagamento(apostaId,status){
+    const label=status==='PAGO'?'validar como PAGO':'marcar como PENDENTE';
+    if(!confirm(`Deseja ${label}?`))return;
+    try{
+        await adminFetch(`/api/admin/pagamento/${apostaId}`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({status,validado_por:'admin'})});
+        alert(`✅ Status atualizado: ${status}`);
+        // Recarregar tab ativa
+        const tabAtiva=document.querySelector('.admin-tab.active')?.dataset?.tab;
+        if(tabAtiva==='apostas')carregarApostas();
+        else if(tabAtiva==='financeiro')carregarFinanceiro();
+        else if(tabAtiva==='dashboard')carregarDashboard();
+        carregarJogos();
+    }catch(e){alert('Erro: '+e.message)}
+}
+
+async function excluirAposta(id){
+    if(!confirm('Excluir esta aposta e todos os palpites vinculados?'))return;
+    try{
+        await adminFetch(`/api/admin/aposta/${id}`,{method:'DELETE'});
+        const tab=document.querySelector('.admin-tab.active')?.dataset?.tab;
+        if(tab==='apostas')carregarApostas();
+        else if(tab==='financeiro')carregarFinanceiro();
+        carregarDashboard();
+    }catch(e){alert('Erro: '+e.message)}
+}
+
+async function excluirParticipante(id){
+    if(!confirm('Excluir este participante, suas apostas e todos os palpites?'))return;
+    try{
+        await adminFetch(`/api/admin/participante/${id}`,{method:'DELETE'});
+        carregarParticipantes();carregarDashboard();
+    }catch(e){alert('Erro: '+e.message)}
+}
+
+async function excluirPalpite(id){
+    if(!confirm('Excluir este palpite?'))return;
+    try{
+        await adminFetch(`/api/admin/palpite/${id}`,{method:'DELETE'});
+        carregarPalpites();carregarDashboard();
+    }catch(e){alert('Erro: '+e.message)}
+}
+
+async function abrirVoucher(apostaId){
+    const body=document.getElementById('voucher-body');
+    body.innerHTML='<div class="admin-loading">Gerando voucher...</div>';
+    openModal('modal-voucher');
+    try{
+        const res=await adminFetch(`/api/admin/voucher/${apostaId}`);
+        const v=await res.json();
+        const palHtml=v.palpites.map((p,i)=>`<div class="voucher-item"><span>#${i+1} Brasil × ${esc(v.jogo.adversario)}</span><span>🇧🇷 ${p.gols_brasil} × ${p.gols_adversario}</span></div>`).join('');
+        body.innerHTML=`
+            <div class="voucher-box">
+                <div class="voucher-header">
+                    <h3>🏆 Voucher — Bolão Copa 2026</h3>
+                    <p style="font-size:.85rem;color:var(--text-secondary);margin-top:4px">Gerado em ${fmtDate(v.gerado_em)}</p>
+                </div>
+                <div class="voucher-item"><span>Nome</span><span>${esc(v.nome)}</span></div>
+                <div class="voucher-item"><span>Contato</span><span>${esc(v.contato)}</span></div>
+                <div class="voucher-item"><span>Chave PIX</span><span>${esc(v.pix_key||'—')}</span></div>
+                <div class="voucher-item"><span>Tipo PIX</span><span>${esc(v.tipo_pix||'—')}</span></div>
+                <hr style="border-color:var(--border-color);margin:10px 0">
+                <div class="voucher-item"><span>Jogo</span><span>Brasil × ${esc(v.jogo.adversario)}</span></div>
+                <div class="voucher-item"><span>Data do Jogo</span><span>${fmtDateOnly(v.jogo.data)}</span></div>
+                <div class="voucher-item"><span>Competição</span><span>${esc(v.jogo.fase)}</span></div>
+                <hr style="border-color:var(--border-color);margin:10px 0">
+                ${palHtml}
+                <hr style="border-color:var(--border-color);margin:10px 0">
+                <div class="voucher-item"><span>Valor Total</span><span>${fmtBRL(v.financeiro.valor_total)}</span></div>
+                <div class="voucher-item"><span>Taxa Admin (10%)</span><span>${fmtBRL(v.financeiro.taxa_administrativa)}</span></div>
+                <div class="voucher-item"><span>Status</span><span><span class="badge badge-${v.status_pagamento==='PAGO'?'pago':'pendente'}">${v.status_pagamento}</span></span></div>
+                ${v.data_validacao?`<div class="voucher-item"><span>Validado em</span><span>${fmtDate(v.data_validacao)}</span></div>`:''}
+            </div>
+        `;
+        document.getElementById('btn-imprimir-voucher').onclick=()=>{
+            const c=body.innerHTML;
+            const w=window.open('','_blank');
+            w.document.write(`<html><head><title>Voucher Bolão Copa 2026</title><style>body{font-family:sans-serif;padding:20px}.voucher-box{border:2px solid #ffdf00;border-radius:8px;padding:20px}.voucher-item{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px dashed #ddd}hr{border-color:#ddd;margin:8px 0}</style></head><body>${c}</body></html>`);
+            w.document.close();setTimeout(()=>w.print(),400);
         };
+    }catch(e){body.innerHTML=`<div class="admin-empty">Erro: ${esc(e.message)}</div>`}
+}
 
-        let targetDate = new Date(dataCopa2026.proximoJogo.dataISO).getTime();
-        let countdownIntervalId = null;
+async function exportarDados(tipo,jogoId){
+    try{
+        let url=`/api/admin/export?tipo=${tipo}`;
+        if(jogoId)url+=`&jogo_id=${encodeURIComponent(jogoId)}`;
+        const res=await adminFetch(url);
+        const blob=await res.blob();
+        const a=document.createElement('a');
+        a.href=URL.createObjectURL(blob);a.download=`${tipo}.csv`;a.click();
+        URL.revokeObjectURL(a.href);
+    }catch(e){alert('Erro ao exportar: '+e.message)}
+}
 
-        function escapeHTML(str) {
-            if (str === null || str === undefined) return '';
-            return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
-        }
+/* ==========================================================================
+   INICIALIZAÇÃO
+   ========================================================================== */
+function initApp(){
+    // Tema
+    document.getElementById('theme-btn').addEventListener('click',toggleTheme);
+    // Atualizar dados
+    document.getElementById('btn-atualizar').addEventListener('click',fetchLiveDadosCopa);
+    // Bolão
+    document.getElementById('btn-bolao').addEventListener('click',abrirBolao);
+    document.getElementById('add-palpite').addEventListener('click',adicionarCampoPalpite);
+    document.getElementById('confirmar-bolao').addEventListener('click',enviarBolao);
+    document.getElementById('cancelar-bolao').addEventListener('click',fecharBolao);
+    // Máscara de telefone
+    applyPhoneMask(document.getElementById('bolao-contato'));
+    // Admin
+    document.getElementById('btn-gerenciar').addEventListener('click',abrirAdminLogin);
+    document.getElementById('admin-login-confirm').addEventListener('click',fazerLoginAdmin);
+    document.getElementById('admin-login-cancel').addEventListener('click',()=>closeModal('modal-admin-login'));
+    document.getElementById('admin-senha').addEventListener('keydown',e=>{if(e.key==='Enter')fazerLoginAdmin()});
+    // Tabs
+    document.querySelectorAll('.admin-tab').forEach(t=>t.addEventListener('click',()=>switchAdminTab(t.dataset.tab)));
+    // Filtros apostas
+    document.getElementById('btn-filtrar-apostas').addEventListener('click',()=>{apostasPage=1;carregarApostas()});
+    document.getElementById('btn-export-apostas').addEventListener('click',()=>exportarDados('apostas',document.getElementById('filtro-aposta-jogo').value));
+    // Filtros participantes
+    document.getElementById('btn-filtrar-participantes').addEventListener('click',carregarParticipantes);
+    document.getElementById('btn-exportar-participantes').addEventListener('click',()=>exportarDados('participantes'));
+    // Filtros palpites
+    document.getElementById('btn-filtrar-palpites').addEventListener('click',carregarPalpites);
+    document.getElementById('btn-exportar-palpites').addEventListener('click',()=>exportarDados('palpites',document.getElementById('filtro-palpite-jogo').value));
+    // Filtros financeiro
+    document.getElementById('btn-filtrar-fin').addEventListener('click',carregarFinanceiro);
+    document.getElementById('btn-export-fin').addEventListener('click',()=>exportarDados('apostas',document.getElementById('filtro-fin-jogo').value));
+    // Fechar modais
+    document.querySelectorAll('.modal-close').forEach(el=>{
+        const t=el.dataset.close;
+        el.addEventListener('click',()=>closeModal(t));
+        el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();closeModal(t)}});
+    });
+    document.querySelectorAll('.modal-overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)closeModal(o.id)}));
+    document.addEventListener('keydown',e=>{if(e.key==='Escape')document.querySelectorAll('.modal-overlay.active').forEach(m=>closeModal(m.id))});
 
-        /* ==========================================================================
-           API: BUSCA DE DADOS DA COPA
-           ========================================================================== */
-        async function fetchLiveDadosCopa() {
-            const btn = document.getElementById('btn-atualizar');
-            const apiStatus = document.getElementById('api-text');
-            const apiDot = document.getElementById('api-dot');
-            if (!PROXY_BASE || PROXY_BASE.includes("COLOQUE_AQUI")) { apiStatus.innerText = "Proxy não configurado. Exibindo dados locais."; apiDot.style.backgroundColor = "var(--warning-color)"; renderAllData(); return; }
-            const usadasHoje = getContadorRequisicoesHoje();
-            const usadasUltimoMinuto = getContadorRequisicoesUltimoMinuto();
-            if (usadasHoje + CUSTO_REQUISICOES_POR_ATUALIZACAO > LIMITE_REQUISICOES_DIA) { apiStatus.innerText = `Limite diário atingido (${usadasHoje}/${LIMITE_REQUISICOES_DIA}).`; apiDot.style.backgroundColor = "var(--danger-color)"; renderAllData(); return; }
-            if (usadasUltimoMinuto + CUSTO_REQUISICOES_POR_ATUALIZACAO > LIMITE_REQUISICOES_MINUTO) { apiStatus.innerText = `Limite de ${LIMITE_REQUISICOES_MINUTO}/min atingido.`; apiDot.style.backgroundColor = "var(--danger-color)"; renderAllData(); return; }
-            btn.disabled = true; btn.innerHTML = "<span>⏳ Consultando...</span>";
-            apiStatus.innerText = `Conectando... (${usadasHoje}/${LIMITE_REQUISICOES_DIA} hoje)`;
-            apiDot.style.backgroundColor = "var(--warning-color)";
-            const controller = new AbortController();
-            const timeoutId = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
-            registrarRequisicoes(CUSTO_REQUISICOES_POR_ATUALIZACAO);
-            try {
-                const res = await fetch(`${PROXY_BASE}/competitions/WC/matches`, { signal: controller.signal });
-                if (!res.ok) throw new Error(`HTTP ${res.status}`);
-                const data = await res.json();
-                if (data.errorCode || data.error) throw new Error("API: " + JSON.stringify(data.error || data.message));
-                const jogos = (data.matches || []).filter(m => (m.homeTeam && m.homeTeam.name === 'Brazil') || (m.awayTeam && m.awayTeam.name === 'Brazil'));
-                if (jogos.length > 0) {
-                    const ord = [...jogos].sort((a, b) => new Date(a.utcDate) - new Date(b.utcDate));
-                    const prox = ord.find(m => m.status === 'SCHEDULED' || m.status === 'TIMED') || ord[ord.length - 1];
-                    const ehCasa = prox.homeTeam && prox.homeTeam.name === 'Brazil';
-                    dataCopa2026.proximoJogo.adversario = ehCasa ? (prox.awayTeam ? prox.awayTeam.name : "A definir") : (prox.homeTeam ? prox.homeTeam.name : "A definir");
-                    const d = new Date(prox.utcDate);
-                    dataCopa2026.proximoJogo.dataISO = prox.utcDate;
-                    dataCopa2026.proximoJogo.dataStr = d.toLocaleDateString('pt-BR', { timeZone: 'America/Sao_Paulo' });
-                    dataCopa2026.proximoJogo.horaStr = d.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit', timeZone: 'America/Sao_Paulo' }) + " (Horário de Brasília)";
-                    dataCopa2026.proximoJogo.local = prox.venue || "Local a confirmar";
-                    dataCopa2026.proximoJogo.fase = prox.stage ? prox.stage.replaceAll('_', ' ') : "Copa do Mundo FIFA 2026";
-                    const tBr = ehCasa ? prox.homeTeam : prox.awayTeam;
-                    if (tBr && tBr.coach && tBr.coach.name) dataCopa2026.comissao[0].nome = tBr.coach.name;
-                }
-                apiStatus.innerText = `Sincronizado (${getContadorRequisicoesHoje()}/${LIMITE_REQUISICOES_DIA})`;
-                apiDot.style.backgroundColor = "var(--br-green)";
-                btn.innerHTML = "<span>✅ Atualizado!</span>";
-            } catch (error) {
-                if (error.name === 'AbortError') { apiStatus.innerText = "Timeout. Usando dados locais."; } else { apiStatus.innerText = "Erro na API. Dados locais."; }
-                apiDot.style.backgroundColor = "var(--danger-color)";
-                btn.innerHTML = "<span>❌ Falha</span>";
-            } finally { clearTimeout(timeoutId); }
-            renderAllData();
-            setTimeout(() => { btn.disabled = false; btn.innerHTML = "<span>🔄 Atualizar Dados</span>"; }, 3000);
-        }
+    renderAllData();
+}
 
-        /* ==========================================================================
-           RENDERIZAÇÃO
-           ========================================================================== */
-        function renderAllData() { renderProximoJogo(); renderGrupo(); renderCampanha(); renderComissao(); renderElenco(); renderPitch(); updateCountdown(); startCountdownInterval(); }
-        function renderProximoJogo() {
-            const pj = dataCopa2026.proximoJogo;
-            document.getElementById('proximo-jogo-content').innerHTML = `
-                <h3>🇧🇷 Brasil vs ${escapeHTML(pj.adversario)}</h3>
-                <p><strong>${escapeHTML(pj.fase)}</strong></p>
-                <p>${escapeHTML(pj.dataStr)} - ${escapeHTML(pj.horaStr)} | ${escapeHTML(pj.local)}</p>
-                <div class="countdown" id="countdown-timer">
-                    <div class="count-box"><span id="cd-days">00</span><small>Dias</small></div>
-                    <div class="count-box"><span id="cd-hours">00</span><small>Horas</small></div>
-                    <div class="count-box"><span id="cd-mins">00</span><small>Min</small></div>
-                    <div class="count-box"><span id="cd-secs">00</span><small>Seg</small></div>
-                </div>`;
-            const parsed = new Date(pj.dataISO).getTime();
-            targetDate = Number.isNaN(parsed) ? targetDate : parsed;
-        }
-        function renderGrupo() {
-            let html = '';
-            dataCopa2026.grupoC.forEach(t => { const s = t.gp - t.gc; html += `<tr class="${t.selecao === 'Brasil' ? 'highlight-row' : ''}"><td style="text-align: left;">${t.flag} ${escapeHTML(t.selecao)}</td><td><strong>${t.pts}</strong></td><td>${t.j}</td><td>${t.v}</td><td>${s > 0 ? '+' + s : s}</td></tr>`; });
-            document.getElementById('grupo-content').innerHTML = html;
-        }
-        function renderCampanha() {
-            let html = '';
-            dataCopa2026.jogosRealizados.forEach(j => { html += `<div class="list-item" style="flex-direction:column;align-items:flex-start;gap:5px;"><div style="width:100%;display:flex;justify-content:space-between;flex-wrap:wrap;gap:4px;"><strong>🇧🇷 Brasil ${escapeHTML(j.placar)} ${escapeHTML(j.adv)}</strong><span style="color:var(--text-secondary);font-size:0.85rem;">${escapeHTML(j.data)}</span></div><div style="font-size:0.85rem;color:var(--text-secondary);">📍 ${escapeHTML(j.local)}<br>⚽ ${escapeHTML(j.info)}</div></div>`; });
-            document.getElementById('jogos-realizados-content').innerHTML = html;
-        }
-        function renderComissao() {
-            let html = '';
-            dataCopa2026.comissao.forEach(c => { html += `<div style="background:var(--bg-color);padding:10px;border-radius:6px;border-left:3px solid var(--br-green);"><small style="color:var(--text-secondary);display:block;font-size:0.75rem;text-transform:uppercase;">${escapeHTML(c.cargo)}</small><strong>${escapeHTML(c.nome)}</strong></div>`; });
-            document.getElementById('comissao-content').innerHTML = html;
-        }
-        function renderElenco() {
-            const sec = { gk: document.getElementById('elenco-goleiros'), def: document.getElementById('elenco-defensores'), mid: document.getElementById('elenco-meias'), att: document.getElementById('elenco-atacantes') };
-            let h = { gk: '', def: '', mid: '', att: '' };
-            dataCopa2026.elenco.forEach(j => { if (!h.hasOwnProperty(j.setor)) return; h[j.setor] += `<div class="player-card"><div class="player-number">${escapeHTML(j.num)}</div><div class="player-info"><strong>${escapeHTML(j.nome)}</strong><small>${escapeHTML(j.pos)} | ${escapeHTML(j.clube)}</small></div></div>`; });
-            sec.gk.innerHTML = h.gk; sec.def.innerHTML = h.def; sec.mid.innerHTML = h.mid; sec.att.innerHTML = h.att;
-        }
-        function renderPitch() {
-            let html = '';
-            dataCopa2026.escalacao.forEach(j => { html += `<div class="pitch-player" style="top:${j.top};left:${j.left};"><div class="dot">${escapeHTML(j.num)}</div><div class="name">${escapeHTML(j.nome)}</div></div>`; });
-            document.getElementById('pitch-players').innerHTML = html;
-        }
-
-        /* ==========================================================================
-           CONTAGEM REGRESSIVA
-           ========================================================================== */
-        function updateCountdown() {
-            const distance = targetDate - Date.now();
-            if (distance < 0) { const t = document.getElementById("countdown-timer"); if (t) t.innerHTML = "<div class='count-box' style='width:100%;background:var(--br-green);'><span style='font-size:1.5rem;'>PARTIDA EM ANDAMENTO OU FINALIZADA</span></div>"; if (countdownIntervalId) { clearInterval(countdownIntervalId); countdownIntervalId = null; } return; }
-            const d = document.getElementById("cd-days");
-            if (d) { d.innerText = Math.floor(distance / 86400000).toString().padStart(2, '0'); document.getElementById("cd-hours").innerText = Math.floor((distance % 86400000) / 3600000).toString().padStart(2, '0'); document.getElementById("cd-mins").innerText = Math.floor((distance % 3600000) / 60000).toString().padStart(2, '0'); document.getElementById("cd-secs").innerText = Math.floor((distance % 60000) / 1000).toString().padStart(2, '0'); }
-        }
-        function startCountdownInterval() { if (countdownIntervalId) clearInterval(countdownIntervalId); countdownIntervalId = setInterval(updateCountdown, 1000); }
-
-        /* ==========================================================================
-           SISTEMA DE BOLÃO
-           ========================================================================== */
-        let palpitesBolao = [];
-
-        function abrirBolao() {
-            palpitesBolao = [];
-            document.getElementById('lista-palpites').innerHTML = '';
-            document.getElementById('bolao-nome').value = '';
-            document.getElementById('bolao-whatsapp').value = '';
-            document.getElementById('bolao-email').value = '';
-            document.getElementById('bolao-form-error').classList.remove('active');
-            adicionarCampoPalpite();
-            openModal('modal-bolao');
-        }
-
-        function fecharBolao() { closeModal('modal-bolao'); }
-
-        function atualizarResumoBolao() {
-            document.getElementById('qtd-palpites').innerText = palpitesBolao.length;
-            document.getElementById('valor-total').innerText = 'R$ ' + (palpitesBolao.length * VALOR_PALPITE).toFixed(2).replace('.', ',');
-        }
-
-        function adicionarCampoPalpite() {
-            const idx = palpitesBolao.length;
-            palpitesBolao.push({ brasil: '', adversario: '' });
-
-            const div = document.createElement('div');
-            div.className = 'palpite-item';
-            div.dataset.index = idx;
-            div.innerHTML = `
-                <div style="display:flex;flex-direction:column;flex:1;gap:2px;">
-                    <div class="palpite-label">🇧🇷 Brasil</div>
-                    <input type="number" min="0" placeholder="0" class="brasil-gols" inputmode="numeric">
-                </div>
-                <span class="palpite-vs">×</span>
-                <div style="display:flex;flex-direction:column;flex:1;gap:2px;">
-                    <div class="palpite-label">Adversário</div>
-                    <input type="number" min="0" placeholder="0" class="adv-gols" inputmode="numeric">
-                </div>
-                <button class="btn-remover-palpite" type="button" title="Remover palpite">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>
-                    Remover
-                </button>
-            `;
-
-            const brasilInput = div.querySelector('.brasil-gols');
-            const advInput = div.querySelector('.adv-gols');
-            brasilInput.addEventListener('input', () => { palpitesBolao[parseInt(div.dataset.index)].brasil = brasilInput.value; });
-            advInput.addEventListener('input', () => { palpitesBolao[parseInt(div.dataset.index)].adversario = advInput.value; });
-
-            div.querySelector('.btn-remover-palpite').addEventListener('click', () => removerPalpite(div));
-
-            document.getElementById('lista-palpites').appendChild(div);
-            atualizarResumoBolao();
-        }
-
-        function removerPalpite(palpiteDiv) {
-            const idx = parseInt(palpiteDiv.dataset.index);
-            if (!confirm('Deseja realmente remover este palpite?')) return;
-            palpitesBolao.splice(idx, 1);
-            palpiteDiv.remove();
-            // Reindexa os elementos restantes
-            document.querySelectorAll('.palpite-item').forEach((el, i) => { el.dataset.index = i; });
-            atualizarResumoBolao();
-        }
-
-        function validarFormularioBolao() {
-            const nome = document.getElementById('bolao-nome').value.trim();
-            const whatsapp = document.getElementById('bolao-whatsapp').value.trim();
-            const errorEl = document.getElementById('bolao-form-error');
-
-            // Limpa erros visuais
-            document.getElementById('bolao-nome').classList.remove('input-error');
-            document.getElementById('bolao-whatsapp').classList.remove('input-error');
-            errorEl.classList.remove('active');
-
-            if (!nome) { document.getElementById('bolao-nome').classList.add('input-error'); errorEl.innerText = '⚠️ Nome é obrigatório.'; errorEl.classList.add('active'); return false; }
-            if (!whatsapp) { document.getElementById('bolao-whatsapp').classList.add('input-error'); errorEl.innerText = '⚠️ WhatsApp é obrigatório.'; errorEl.classList.add('active'); return false; }
-            if (palpitesBolao.length === 0) { errorEl.innerText = '⚠️ Adicione pelo menos 1 palpite.'; errorEl.classList.add('active'); return false; }
-
-            // Valida cada palpite
-            for (let i = 0; i < palpitesBolao.length; i++) {
-                const p = palpitesBolao[i];
-                if (p.brasil === '' || p.adversario === '' || isNaN(parseInt(p.brasil)) || isNaN(parseInt(p.adversario))) {
-                    errorEl.innerText = `⚠️ Preencha o placar do palpite ${i + 1} corretamente.`;
-                    errorEl.classList.add('active');
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
-        async function enviarBolao() {
-            if (!validarFormularioBolao()) return;
-
-            const nome = document.getElementById('bolao-nome').value.trim();
-            const whatsapp = document.getElementById('bolao-whatsapp').value.trim();
-            const email = document.getElementById('bolao-email').value.trim();
-            const jogoDesc = `Brasil vs ${dataCopa2026.proximoJogo.adversario} (${dataCopa2026.proximoJogo.dataStr})`;
-
-            const palpites = palpitesBolao.map(p => ({
-                brasil: parseInt(p.brasil),
-                adversario: parseInt(p.adversario),
-                jogo_desc: jogoDesc
-            }));
-
-            const btn = document.getElementById('confirmar-bolao');
-            btn.disabled = true;
-            btn.innerHTML = '<span>⏳ Enviando...</span>';
-
-            try {
-                const controller = new AbortController();
-                const timeoutId = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
-                const response = await fetch(`${PROXY_BASE}/api/bolao/participar`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ nome, whatsapp, email, jogo_id: 'PROXIMO_JOGO', palpites }),
-                    signal: controller.signal
-                });
-                clearTimeout(timeoutId);
-
-                if (!response.ok) {
-                    const err = await response.json().catch(() => ({}));
-                    throw new Error(err.error || `HTTP ${response.status}`);
-                }
-
-                const resultado = await response.json();
-                fecharBolao();
-                mostrarResumo({ ...resultado, nome, whatsapp, email, palpites, jogoDesc });
-            } catch (error) {
-                const errorEl = document.getElementById('bolao-form-error');
-                if (error.name === 'AbortError') { errorEl.innerText = '⚠️ Tempo esgotado. Tente novamente.'; }
-                else { errorEl.innerText = '⚠️ Erro: ' + error.message; }
-                errorEl.classList.add('active');
-            } finally {
-                btn.disabled = false;
-                btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 13l4 4L19 7"/></svg>Confirmar Participação';
-            }
-        }
-
-        /* ==========================================================================
-           RESUMO / COMPROVANTE
-           ========================================================================== */
-        function gerarBrCodePix(chave, nome, cidade, valor) {
-            function crc16(str) {
-                let crc = 0xFFFF;
-                for (let i = 0; i < str.length; i++) {
-                    crc ^= str.charCodeAt(i) << 8;
-                    for (let j = 0; j < 8; j++) { crc = (crc & 0x8000) ? ((crc << 1) ^ 0x1021) : (crc << 1); crc &= 0xFFFF; }
-                }
-                return crc.toString(16).toUpperCase().padStart(4, '0');
-            }
-            function field(id, val) { return id + val.length.toString().padStart(2, '0') + val; }
-            const mai = field('00', 'BR.GOV.BCB.PIX') + field('01', chave);
-            let payload = field('00', '01') + field('26', mai) + field('52', '0000') + field('53', '986');
-            if (valor) payload += field('54', valor.toFixed(2));
-            payload += field('58', 'BR') + field('59', nome.substring(0, 25)) + field('60', cidade.substring(0, 15)) + field('62', field('05', '***')) + '6304';
-            return payload + crc16(payload);
-        }
-
-        function mostrarResumo(dados) {
-            const valorTotal = (dados.palpites.length * VALOR_PALPITE).toFixed(2).replace('.', ',');
-            const brCode = gerarBrCodePix(PIX_CHAVE, PIX_NOME, PIX_CIDADE, dados.palpites.length * VALOR_PALPITE);
-            const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(brCode)}`;
-            const dataHora = new Date(dados.data_hora || Date.now()).toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' });
-
-            let palpitesHtml = '';
-            dados.palpites.forEach((p, i) => {
-                palpitesHtml += `<tr><td>${i + 1}</td><td>${escapeHTML(p.jogo_desc || dados.jogoDesc || 'Próximo jogo')}</td><td><strong>${p.brasil} × ${p.adversario}</strong></td></tr>`;
-            });
-
-            document.getElementById('resumo-body').innerHTML = `
-                <div class="comprovante-section">
-                    <h3>👤 Dados do Participante</h3>
-                    <div class="comprovante-dados">
-                        <div><span>Nome:</span> <strong>${escapeHTML(dados.nome)}</strong></div>
-                        <div><span>Contato:</span> <strong>${escapeHTML(dados.whatsapp)}</strong></div>
-                        ${dados.email ? `<div><span>Email:</span> <strong>${escapeHTML(dados.email)}</strong></div>` : ''}
-                        <div><span>Data/Hora:</span> <strong>${escapeHTML(dataHora)}</strong></div>
-                        <div><span>ID:</span> <strong style="font-size:0.75rem;">${escapeHTML(dados.id)}</strong></div>
-                    </div>
-                </div>
-                <div class="comprovante-section">
-                    <h3>📋 Resumo da Aposta</h3>
-                    <table class="comprovante-palpites">
-                        <thead><tr><th>#</th><th>Jogo</th><th>Placar</th></tr></thead>
-                        <tbody>${palpitesHtml}</tbody>
-                    </table>
-                    <div style="margin-top:10px; display:flex; justify-content:space-between; padding:10px; background:var(--bg-color); border-radius:8px;">
-                        <span>Palpites: <strong>${dados.palpites.length}</strong></span>
-                        <span>Valor unitário: <strong>R$ ${VALOR_PALPITE.toFixed(2).replace('.', ',')}</strong></span>
-                        <span>Total: <strong style="color:var(--br-green);">R$ ${valorTotal}</strong></span>
-                    </div>
-                </div>
-                <div class="comprovante-section">
-                    <h3>💳 Pagamento via PIX</h3>
-                    <div class="pix-box">
-                        <img src="${qrUrl}" alt="QR Code PIX" onerror="this.style.display='none'">
-                        <div class="pix-chave-box">
-                            <input type="text" id="pix-chave-copia" value="${escapeHTML(brCode)}" readonly>
-                            <button class="btn-modern btn-warning btn-sm" id="btn-copiar-pix" type="button">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
-                                Copiar
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-actions">
-                    <button class="btn-modern btn-ghost" id="btn-voltar-editar" type="button">← Voltar e Editar</button>
-                    <button class="btn-modern btn-primary" id="btn-confirmar-resumo" type="button">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 13l4 4L19 7"/></svg>
-                        Confirmar
-                    </button>
-                    <button class="btn-modern btn-secondary" id="btn-imprimir-resumo" type="button">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9V2h12v7M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2M6 14h12v8H6z"/></svg>
-                        Imprimir
-                    </button>
-                    <button class="btn-modern btn-secondary" id="btn-compartilhar-resumo" type="button">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8M16 6l-4-4-4 4M12 2v13"/></svg>
-                        Compartilhar
-                    </button>
-                </div>
-            `;
-
-            // Eventos dos botões do resumo
-            document.getElementById('btn-copiar-pix').addEventListener('click', copiarChavePix);
-            document.getElementById('btn-voltar-editar').addEventListener('click', () => { closeModal('modal-resumo'); abrirBolao(); });
-            document.getElementById('btn-confirmar-resumo').addEventListener('click', () => { closeModal('modal-resumo'); });
-            document.getElementById('btn-imprimir-resumo').addEventListener('click', imprimirResumo);
-            document.getElementById('btn-compartilhar-resumo').addEventListener('click', compartilharComprovante);
-
-            openModal('modal-resumo');
-        }
-
-        function copiarChavePix() {
-            const input = document.getElementById('pix-chave-copia');
-            input.select();
-            input.setSelectionRange(0, 99999);
-            try { navigator.clipboard.writeText(input.value).then(() => { alert('✅ Chave PIX copiada!'); }); }
-            catch (e) { document.execCommand('copy'); alert('✅ Chave PIX copiada!'); }
-        }
-
-        function imprimirResumo() {
-            const content = document.getElementById('resumo-body').innerHTML;
-            const w = window.open('', '_blank');
-            w.document.write(`<html><head><title>Comprovante - Bolão Copa 2026</title><style>body{font-family:sans-serif;padding:20px;}h2{color:#009c3b;}h3{border-bottom:1px solid #ccc;padding-bottom:5px;}table{width:100%;border-collapse:collapse;}td,th{border:1px solid #ddd;padding:8px;text-align:center;}.comprovante-dados{display:grid;grid-template-columns:1fr 1fr;gap:5px;}</style></head><body><h2>🎯 Comprovante - Bolão Copa 2026</h2>${content}</body></html>`);
-            w.document.close();
-            w.focus();
-            setTimeout(() => w.print(), 500);
-        }
-
-        async function compartilharComprovante() {
-            const nome = document.querySelector('#resumo-body strong')?.textContent || 'Participante';
-            const texto = `🎯 Bolão Copa 2026 - Comprovante de ${nome}\n\nParticipação registrada com sucesso!`;
-            if (navigator.share) {
-                try { await navigator.share({ title: 'Comprovante Bolão Copa 2026', text: texto }); } catch (e) {}
-            } else {
-                navigator.clipboard.writeText(texto).then(() => alert('✅ Comprovante copiado para a área de transferência!'));
-            }
-        }
-
-        /* ==========================================================================
-           PAINEL ADMINISTRATIVO
-           ========================================================================== */
-        function abrirAdminLogin() {
-            document.getElementById('admin-senha').value = '';
-            document.getElementById('admin-login-error').classList.remove('active');
-            openModal('modal-admin-login');
-            setTimeout(() => document.getElementById('admin-senha').focus(), 100);
-        }
-
-        async function fazerLoginAdmin() {
-            const senha = document.getElementById('admin-senha').value;
-            const errorEl = document.getElementById('admin-login-error');
-            const btn = document.getElementById('admin-login-confirm');
-            if (!senha) { errorEl.innerText = '⚠️ Digite a senha.'; errorEl.classList.add('active'); return; }
-
-            btn.disabled = true;
-            btn.innerHTML = '<span>⏳ Validando...</span>';
-            errorEl.classList.remove('active');
-
-            try {
-                const controller = new AbortController();
-                const timeoutId = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
-                const response = await fetch(`${PROXY_BASE}/api/admin/login`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ password: senha }),
-                    signal: controller.signal
-                });
-                clearTimeout(timeoutId);
-
-                if (!response.ok) { const err = await response.json().catch(() => ({})); throw new Error(err.error || 'Senha incorreta'); }
-
-                const data = await response.json();
-                adminToken = data.token;
-                closeModal('modal-admin-login');
-                abrirPainelAdmin();
-            } catch (error) {
-                if (error.name === 'AbortError') { errorEl.innerText = '⚠️ Tempo esgotado.'; }
-                else { errorEl.innerText = '⚠️ ' + error.message; }
-                errorEl.classList.add('active');
-            } finally {
-                btn.disabled = false;
-                btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4M10 17l5-5-5-5M15 12H3"/></svg>Entrar';
-            }
-        }
-
-        function abrirPainelAdmin() {
-            openModal('modal-admin-panel');
-            // Carrega dashboard por padrão
-            switchAdminTab('dashboard');
-            carregarDashboard();
-        }
-
-        function switchAdminTab(tabName) {
-            document.querySelectorAll('.admin-tab').forEach(t => t.classList.toggle('active', t.dataset.tab === tabName));
-            document.querySelectorAll('.admin-tab-content').forEach(c => c.classList.toggle('active', c.id === `admin-tab-${tabName}`));
-            if (tabName === 'dashboard') carregarDashboard();
-            if (tabName === 'participantes') carregarParticipantes();
-            if (tabName === 'palpites') carregarPalpites();
-        }
-
-        async function adminFetch(endpoint) {
-            const response = await fetch(`${PROXY_BASE}${endpoint}`, { headers: { 'Authorization': `Bearer ${adminToken}` } });
-            if (response.status === 401) { adminToken = null; closeModal('modal-admin-panel'); abrirAdminLogin(); throw new Error('Sessão expirada'); }
-            if (!response.ok) throw new Error(`HTTP ${response.status}`);
-            return response;
-        }
-
-        async function carregarDashboard() {
-            const el = document.getElementById('admin-dashboard-stats');
-            el.innerHTML = '<div class="admin-loading"></div>';
-            try {
-                const res = await adminFetch('/api/admin/dashboard');
-                const data = await res.json();
-                document.getElementById('stat-participantes').innerText = data.total_participantes;
-                document.getElementById('stat-palpites').innerText = data.total_palpites;
-                document.getElementById('stat-arrecadado').innerText = 'R$ ' + data.valor_arrecadado.toFixed(2).replace('.', ',');
-                document.getElementById('stat-media').innerText = data.media_palpites_por_participante.toFixed(1);
-            } catch (e) {
-                el.innerHTML = '<div class="admin-empty">Erro ao carregar: ' + escapeHTML(e.message) + '</div>';
-            }
-        }
-
-        async function carregarParticipantes() {
-            const tbody = document.getElementById('admin-participantes-tbody');
-            tbody.innerHTML = '<tr><td colspan="6" class="admin-loading"></td></tr>';
-            try {
-                const search = document.getElementById('filtro-participante').value;
-                const data = document.getElementById('filtro-data-participante').value;
-                let url = '/api/admin/participantes?';
-                if (search) url += `search=${encodeURIComponent(search)}&`;
-                if (data) url += `data=${encodeURIComponent(data)}&`;
-                const res = await adminFetch(url);
-                const result = await res.json();
-                if (result.participantes.length === 0) { tbody.innerHTML = '<tr><td colspan="6" class="admin-empty">Nenhum participante encontrado.</td></tr>'; return; }
-                tbody.innerHTML = result.participantes.map(p => `
-                    <tr>
-                        <td><strong>${escapeHTML(p.nome)}</strong></td>
-                        <td>${escapeHTML(p.whatsapp)}</td>
-                        <td style="font-size:0.8rem;">${new Date(p.data_hora).toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' })}</td>
-                        <td>${escapeHTML(Math.round(p.valor_total / VALOR_PALPITE))}</td>
-                        <td><strong>R$ ${p.valor_total.toFixed(2).replace('.', ',')}</strong></td>
-                        <td><button class="btn-icon" onclick="excluirParticipante('${escapeHTML(p.id)}')" title="Excluir"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg></button></td>
-                    </tr>
-                `).join('');
-            } catch (e) {
-                tbody.innerHTML = `<tr><td colspan="6" class="admin-empty">Erro: ${escapeHTML(e.message)}</td></tr>`;
-            }
-        }
-
-        async function carregarPalpites() {
-            const tbody = document.getElementById('admin-palpites-tbody');
-            tbody.innerHTML = '<tr><td colspan="6" class="admin-loading"></td></tr>';
-            try {
-                const search = document.getElementById('filtro-palpite').value;
-                const jogo = document.getElementById('filtro-jogo').value;
-                const data = document.getElementById('filtro-data-palpite').value;
-                let url = '/api/admin/palpites?';
-                if (search) url += `search=${encodeURIComponent(search)}&`;
-                if (jogo) url += `jogo=${encodeURIComponent(jogo)}&`;
-                if (data) url += `data=${encodeURIComponent(data)}&`;
-                const res = await adminFetch(url);
-                const result = await res.json();
-                if (result.palpites.length === 0) { tbody.innerHTML = '<tr><td colspan="6" class="admin-empty">Nenhum palpite encontrado.</td></tr>'; return; }
-                tbody.innerHTML = result.palpites.map(p => `
-                    <tr>
-                        <td><strong>${escapeHTML(p.participante_nome)}</strong></td>
-                        <td>${escapeHTML(p.participante_whatsapp)}</td>
-                        <td style="font-size:0.8rem;">${escapeHTML(p.jogo_desc || p.jogo_id)}</td>
-                        <td><strong>${p.brasil} × ${p.adversario}</strong></td>
-                        <td style="font-size:0.8rem;">${new Date(p.data_hora).toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' })}</td>
-                        <td><button class="btn-icon" onclick="excluirPalpite('${escapeHTML(p.id)}')" title="Excluir"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg></button></td>
-                    </tr>
-                `).join('');
-            } catch (e) {
-                tbody.innerHTML = `<tr><td colspan="6" class="admin-empty">Erro: ${escapeHTML(e.message)}</td></tr>`;
-            }
-        }
-
-        async function excluirParticipante(id) {
-            if (!confirm('Excluir este participante e TODOS os seus palpites?')) return;
-            try {
-                await adminFetch(`/api/admin/participante/${id}`, { method: 'DELETE' });
-                carregarParticipantes();
-                carregarDashboard();
-            } catch (e) { alert('Erro: ' + e.message); }
-        }
-
-        async function excluirPalpite(id) {
-            if (!confirm('Excluir este palpite?')) return;
-            try {
-                const res = await fetch(`${PROXY_BASE}/api/admin/palpite/${id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${adminToken}` } });
-                if (!res.ok) throw new Error('Falha ao excluir');
-                carregarPalpites();
-                carregarDashboard();
-            } catch (e) { alert('Erro: ' + e.message); }
-        }
-
-        async function exportarDados(tipo) {
-            try {
-                const res = await adminFetch(`/api/admin/export?tipo=${tipo}`);
-                const blob = await res.blob();
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = `${tipo}.csv`;
-                a.click();
-                URL.revokeObjectURL(url);
-            } catch (e) { alert('Erro ao exportar: ' + e.message); }
-        }
-
-        /* ==========================================================================
-           UTILITÁRIOS DE MODAL
-           ========================================================================== */
-        function openModal(id) { document.getElementById(id).classList.add('active'); document.body.style.overflow = 'hidden'; }
-        function closeModal(id) { document.getElementById(id).classList.remove('active'); document.body.style.overflow = ''; }
-
-        /* ==========================================================================
-           INICIALIZAÇÃO
-           ========================================================================== */
-        function initApp() {
-            document.getElementById('theme-btn').addEventListener('click', toggleTheme);
-            document.getElementById('btn-atualizar').addEventListener('click', fetchLiveDadosCopa);
-            document.getElementById('btn-bolao').addEventListener('click', abrirBolao);
-            document.getElementById('add-palpite').addEventListener('click', adicionarCampoPalpite);
-            document.getElementById('confirmar-bolao').addEventListener('click', enviarBolao);
-            document.getElementById('cancelar-bolao').addEventListener('click', fecharBolao);
-            document.getElementById('btn-gerenciar').addEventListener('click', abrirAdminLogin);
-            document.getElementById('admin-login-confirm').addEventListener('click', fazerLoginAdmin);
-            document.getElementById('admin-login-cancel').addEventListener('click', () => closeModal('modal-admin-login'));
-            document.getElementById('admin-senha').addEventListener('keydown', (e) => { if (e.key === 'Enter') fazerLoginAdmin(); });
-
-            // Fechar modais (botão × e teclado)
-            document.querySelectorAll('.modal-close').forEach(el => {
-                const target = el.dataset.close;
-                el.addEventListener('click', () => closeModal(target));
-                el.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); closeModal(target); } });
-            });
-
-            // Fechar modal clicando no overlay
-            document.querySelectorAll('.modal-overlay').forEach(overlay => {
-                overlay.addEventListener('click', (e) => { if (e.target === overlay) closeModal(overlay.id); });
-            });
-
-            // ESC fecha qualquer modal
-            document.addEventListener('keydown', (e) => { if (e.key === 'Escape') document.querySelectorAll('.modal-overlay.active').forEach(m => closeModal(m.id)); });
-
-            // Tabs do painel admin
-            document.querySelectorAll('.admin-tab').forEach(tab => tab.addEventListener('click', () => switchAdminTab(tab.dataset.tab)));
-
-            // Filtros e exportações admin
-            document.getElementById('btn-filtrar-participantes').addEventListener('click', carregarParticipantes);
-            document.getElementById('btn-filtrar-palpites').addEventListener('click', carregarPalpites);
-            document.getElementById('btn-exportar-participantes').addEventListener('click', () => exportarDados('participantes'));
-            document.getElementById('btn-exportar-palpites').addEventListener('click', () => exportarDados('palpites'));
-
-            renderAllData();
-        }
-
-        document.addEventListener('DOMContentLoaded', initApp);
-    </script>
+document.addEventListener('DOMContentLoaded',initApp);
+</script>
 </body>
 </html>
