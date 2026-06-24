@@ -105,21 +105,21 @@
         z-index: 100;
     }
     .header-top {
-        display: grid;
-        grid-template-columns: 1fr auto 1fr;
+        display: flex;
         align-items: center;
-        padding: 10px 24px;
+        justify-content: space-between;
+        padding: 12px 24px;
         max-width: 1400px;
         margin: 0 auto;
         gap: 12px;
+        flex-wrap: wrap;
     }
-    .header-brand { display: flex; align-items: center; gap: 12px; justify-content: flex-start; }
-    .header-brand .logos-container { display: flex; align-items: center; gap: 8px; }
-    .logo-flag { height: 32px; width: auto; object-fit: contain; border-radius: 3px; filter: drop-shadow(0 1px 3px rgba(0,0,0,.4)); }
-    .header-center { display: flex; flex-direction: column; align-items: center; text-align: center; }
+    .header-brand { display: flex; align-items: center; gap: 14px; }
+    .header-brand .logos-container { display: flex; align-items: center; gap: 10px; }
+    .logo-flag { height: 36px; width: auto; object-fit: contain; border-radius: 3px; filter: drop-shadow(0 1px 3px rgba(0,0,0,.4)); }
     .header-brand h1 { color: #fff; font-size: 1.25rem; font-weight: 800; letter-spacing: .5px; margin: 0; text-transform: uppercase; }
     .header-brand h1 span { color: var(--yellow); }
-    .header-actions { display: flex; align-items: center; gap: 8px; flex-wrap: nowrap; justify-content: flex-end; }
+    .header-actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
     #api-status {
         display: flex; align-items: center; gap: 6px;
         font-size: .75rem; color: rgba(255,255,255,.8);
@@ -540,11 +540,7 @@
     /* ── RESPONSIVO ───────────────────────────────────────── */
     @media(max-width:768px){
         *{ box-sizing:border-box; }
-        /* Header mobile: empilhar verticalmente */
-        .header-top { grid-template-columns: 1fr; gap:6px; padding:10px 14px; }
-        .header-brand { justify-content: center; }
-        .header-center { order: -1; }
-        .header-actions { justify-content: center; flex-wrap:wrap; gap:6px; }
+
         /* Jogos realizados */
         #jogos-realizados-content table { font-size:.78rem; }
         #jogos-realizados-content th, #jogos-realizados-content td { padding:7px 4px; }
@@ -603,6 +599,14 @@
         .btn-modern { padding:8px 12px; font-size:.82rem; }
         .voucher-item { flex-direction:column; gap:2px; }
         .voucher-item span:first-child { font-size:.7rem; }
+    }
+    footer {
+        text-align: center;
+        padding: 16px 20px;
+        font-size: .78rem;
+        color: var(--text-3);
+        border-top: 1px solid var(--border);
+        margin-top: 32px;
     }
     .sr-only { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }
 
@@ -670,20 +674,17 @@
 
 <header>
     <div class="header-top">
-        <!-- Coluna esquerda: bandeiras -->
         <div class="header-brand">
             <div class="logos-container">
                 <img class="logo-flag" id="flag-br" src="https://flagcdn.com/h40/br.png" alt="Brasil" onerror="this.style.display='none'">
-                <span style="color:rgba(255,255,255,.5);font-size:.85rem">×</span>
+                <span style="color:rgba(255,255,255,.5);font-size:.9rem">×</span>
                 <img class="logo-flag" id="flag-adv" src="https://flagcdn.com/h40/gb-sct.png" alt="Adversário" onerror="this.style.display='none'">
             </div>
+            <div>
+                <h1>🎯 <span>Bolão</span> dos Amigos</h1>
+                <p id="header-subtitle" style="font-size:.72rem;color:rgba(255,255,255,.65);margin-top:1px;font-weight:500">Faça seu palpite e torça com a gente!</p>
+            </div>
         </div>
-        <!-- Coluna central: título centralizado -->
-        <div class="header-center">
-            <h1>🎯 <span>Bolão</span> dos Amigos</h1>
-            <p id="header-subtitle" style="font-size:.7rem;color:rgba(255,255,255,.65);margin-top:2px;font-weight:500">Faça seu palpite e torça com a gente!</p>
-        </div>
-        <!-- Coluna direita: botões -->
         <div class="header-actions">
             <div id="api-status"><span class="sdot" id="api-dot"></span><span id="api-text">Aguardando...</span></div>
             <button class="btn-admin-header" id="btn-gerenciar" type="button">👤 Gerenciar</button>
