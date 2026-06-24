@@ -1826,12 +1826,10 @@ async function verDetalheJogo(jogoId){
             </div>
             <h3 style="margin-bottom:10px">🏆 Placares Mais Apostados</h3>
             <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px">
-                ${top_placares.map(p=>`<span style="background:var(--bg);padding:6px 12px;border-radius:8px;font-size:.9rem">Brasil ${p.gols_brasil}×${p.gols_adversario} <strong>(${p.qtd}×)</strong></span>`).join('')}
+                ${top_placares.map(pl=>'<span style="background:var(--bg);padding:6px 12px;border-radius:8px;font-size:.9rem;border:1px solid var(--border)">Brasil '+pl.gols_brasil+'×'+pl.gols_adversario+' <strong>('+pl.qtd+'×)</strong></span>').join('')}
             </div>
             <h3 style="margin-bottom:10px">👥 Apostas</h3>
-            <div class="admin-table-scroll">
-                <table class="admin-table">
-                    <thead><tr><th>Nome</th><th>Contato</th><th>Palpites</th><th>Valor</th><th>Status</th><th>Ações</th></tr></thead>
+            <div class="adm-scroll"><table class="adm-table">
                     <thead><tr><th>Nome</th><th>Contato</th><th>Chave PIX</th><th>Palpites</th><th>Valor</th><th>Recebe</th><th>Status</th><th>Ações</th></tr></thead>
                     <tbody>${apostas.map(a=>{
                         const pals=(a.palpites_lista||[]).map(p=>'<span style="background:var(--bg);padding:2px 7px;border-radius:10px;font-size:.75rem;white-space:nowrap;border:1px solid var(--border)">'+p.gols_brasil+'×'+p.gols_adversario+(a.vencedor&&p.gols_brasil===jogo.placar_brasil&&p.gols_adversario===jogo.placar_adversario?' 🏆':'')+'</span>').join(' ');
@@ -1854,9 +1852,7 @@ async function verDetalheJogo(jogoId){
                             '<button class="btn-modern btn-sm btn-danger" data-aid="'+esc(a.id)+'" onclick="excluirApostaById(this)" title="Excluir">🗑</button>'+
                             '</td></tr>';
                     }).join('')}</tbody>
-                </table>
-            </div>
-            ${(()=>{
+                </table></div>${(()=>{
                 if(jogo.placar_brasil===null||jogo.placar_adversario===null)return '';
                 if(financeiro.qtd_vencedores>0){
                     return '<div style="margin-top:18px;padding:14px;background:var(--green-lt);border:1px solid #a5d6a7;border-left:4px solid var(--green);border-radius:var(--r-md)">'
