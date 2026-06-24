@@ -736,6 +736,15 @@
     </div>
 
     <!-- Campanha -->
+
+    <!-- Card Vencedores último bolão -->
+    <div class="card card-full" id="card-vencedores" style="display:none">
+        <div class="card-title">🏆 Vencedores do Último Bolão</div>
+        <div id="vencedores-body" style="padding:0 20px 20px">
+            <div class="loading">Carregando...</div>
+        </div>
+    </div>
+
     <div class="card">
         <div class="card-title">📅 Jogos Realizados</div>
         <div id="jogos-realizados-content"></div>
@@ -1789,23 +1798,59 @@ async function verDetalheJogo(jogoId){
             <div class="admin-table-scroll">
                 <table class="admin-table">
                     <thead><tr><th>Nome</th><th>Contato</th><th>Palpites</th><th>Valor</th><th>Status</th><th>Ações</th></tr></thead>
-                    <tbody>${apostas.map(a=>`
-                        <tr>
-                            <td>${esc(a.nome)}</td>
-                            <td>${esc(a.contato)}</td>
-                            <td>${a.qtd_palpites}</td>
-                            <td>${fmtBRL(a.valor_total)}</td>
-                            <td><span class="badge badge-${a.status_pagamento==='PAGO'?'pago':'pendente'}">${a.status_pagamento}</span></td>
-                            <td style="display:flex;gap:5px;flex-wrap:wrap">
-                                <button class="btn-modern btn-sm btn-secondary" onclick="abrirVoucher('${esc(a.id)}')" title="Ver Comprovante">📋 Comprovante</button>
-                                ${a.status_pagamento==='PENDENTE'
-                                    ?`<button class="btn-modern btn-sm btn-success" onclick="validarPagamento('${esc(a.id)}','PAGO')" title="Confirmar pagamento">✅ Validar</button>`
-                                    :`<button class="btn-modern btn-sm btn-warning" onclick="validarPagamento('${esc(a.id)}','PENDENTE')" title="Reverter para pendente">↩️ Reverter</button>`}
-                                <button class="btn-modern btn-sm btn-danger" onclick="excluirAposta('${esc(a.id)}')" title="Excluir aposta e palpites">🗑 Excluir</button>
-                            </td>
-                        </tr>`).join('')}</tbody>
+                    <thead><tr><th>Nome</th><th>Contato</th><th>Chave PIX</th><th>Palpites</th><th>Valor</th><th>Recebe</th><th>Status</th><th>Ações</th></tr></thead>
+                    <tbody>${apostas.map(a=>{
+                        const pals=(a.palpites_lista||[]).map(p=>'<span style="background:var(--bg);padding:2px 7px;border-radius:10px;font-size:.75rem;white-space:nowrap;border:1px solid var(--border)">'+p.gols_brasil+'×'+p.gols_adversario+(a.vencedor&&p.gols_brasil===jogo.placar_brasil&&p.gols_adversario===jogo.placar_adversario?' 🏆':'')+'</span>').join(' ');
+                        const recebeCell=a.vencedor
+                            ?'<td style="font-weight:700;color:var(--green)">'+fmtBRL(a.valor_a_receber)+'</td>'
+                            :'<td style="color:var(--text-3)">—</td>';
+                        return '<tr'+(a.vencedor?' style="background:var(--green-lt)"':'')+'>'+
+                            '<td style="font-weight:'+(a.vencedor?'700':'400')+'">'+esc(a.nome)+(a.vencedor?' 🏆':'')+  '</td>'+
+                            '<td>'+esc(a.contato)+'</td>'+
+                            '<td style="font-size:.78rem">'+esc(a.pix_key||'—')+'<br><small style="color:var(--text-3)">'+esc(a.tipo_pix||'')+'</small></td>'+
+                            '<td><div style="display:flex;flex-wrap:wrap;gap:3px">'+pals+'</div></td>'+
+                            '<td>'+fmtBRL(a.valor_total)+'</td>'+
+                            recebeCell+
+                            '<td><span class="badge badge-'+(a.status_pagamento==='PAGO'?'pago':'pendente')+'">'+a.status_pagamento+'</span></td>'+
+                            '<td style="white-space:nowrap">'+
+                            '<button class="btn-modern btn-sm btn-secondary" data-aid="'+esc(a.id)+'" onclick="abrirVoucherById(this)" title="Ver Comprovante">📋</button> '+
+                            (a.status_pagamento==='PENDENTE'
+                                ?'<button class="btn-modern btn-sm btn-success" data-aid="'+esc(a.id)+'" data-st="PAGO" onclick="validarPagamentoById(this)" title="Confirmar pagamento">✅</button>'
+                                :'<button class="btn-modern btn-sm btn-warning" data-aid="'+esc(a.id)+'" data-st="PENDENTE" onclick="validarPagamentoById(this)" title="Reverter">↩️</button>')+' '+
+                            '<button class="btn-modern btn-sm btn-danger" data-aid="'+esc(a.id)+'" onclick="excluirApostaById(this)" title="Excluir">🗑</button>'+
+                            '</td></tr>';
+                    }).join('')}</tbody>
                 </table>
             </div>
+            ${(()=>{
+                if(jogo.placar_brasil===null||jogo.placar_adversario===null)return '';
+                if(financeiro.qtd_vencedores>0){
+                    return '<div style="margin-top:18px;padding:14px;background:var(--green-lt);border:1px solid #a5d6a7;border-left:4px solid var(--green);border-radius:var(--r-md)">'
+                        +'<strong style="color:var(--green-dk)">🏆 '+financeiro.qtd_vencedores+' vencedor'+(financeiro.qtd_vencedores>1?'es':'')+' — Prêmio individual: '+fmtBRL(financeiro.valor_individual)+'</strong>'
+                        +'</div>';
+                } else {
+                    const devRows=apostas.filter(a=>a.status_pagamento==='PAGO').map(a=>'<tr>'
+                        +'<td>'+esc(a.nome)+'</td>'
+                        +'<td style="font-size:.78rem">'+esc(a.pix_key||'—')+'</td>'
+                        +'<td>'+fmtBRL(a.valor_total)+'</td>'
+                        +'<td style="color:var(--red)">— '+fmtBRL(a.valor_total*0.1)+'</td>'
+                        +'<td style="font-weight:700;color:var(--blue)">'+fmtBRL(a.valor_total*0.9)+'</td>'
+                        +'</tr>').join('');
+                    const totPago=apostas.filter(a=>a.status_pagamento==='PAGO').reduce((s,a)=>s+a.valor_total,0);
+                    return '<div style="margin-top:18px;padding:14px;background:var(--orange-lt);border:1px solid #ffcc80;border-left:4px solid var(--orange);border-radius:var(--r-md)">'
+                        +'<strong style="color:var(--orange)">⚠️ Nenhum acertador — Lista de Devolução</strong>'
+                        +'<table style="width:100%;border-collapse:collapse;font-size:.8rem;margin-top:10px">'
+                        +'<thead><tr><th style="text-align:left;padding:5px 8px;border-bottom:1px solid #ffcc80">Nome</th><th style="text-align:left;padding:5px 8px;border-bottom:1px solid #ffcc80">Chave PIX</th><th style="text-align:right;padding:5px 8px;border-bottom:1px solid #ffcc80">Pago</th><th style="text-align:right;padding:5px 8px;border-bottom:1px solid #ffcc80">Taxa 10%</th><th style="text-align:right;padding:5px 8px;border-bottom:1px solid #ffcc80">A Devolver</th></tr></thead>'
+                        +'<tbody>'+devRows+'</tbody>'
+                        +'<tfoot><tr style="font-weight:700;border-top:2px solid #ffcc80">'
+                        +'<td colspan="2" style="padding:6px 8px">Total</td>'
+                        +'<td style="text-align:right;padding:6px 8px">'+fmtBRL(totPago)+'</td>'
+                        +'<td style="text-align:right;padding:6px 8px;color:var(--red)">— '+fmtBRL(totPago*0.1)+'</td>'
+                        +'<td style="text-align:right;padding:6px 8px;color:var(--blue)">'+fmtBRL(totPago*0.9)+'</td>'
+                        +'</tr></tfoot>'
+                        +'</table></div>';
+                }
+            })()}
         `;
     }catch(e){body.innerHTML=`<div class="empty">Erro: ${esc(e.message)}</div>`}
 }
@@ -1824,6 +1869,9 @@ async function registrarResultado(jogoId){
 }
 
 function abrirGanhadoresById(btn){abrirGanhadores(btn.dataset.jid);}
+function abrirVoucherById(btn){abrirVoucher(btn.dataset.aid);}
+function validarPagamentoById(btn){validarPagamento(btn.dataset.aid,btn.dataset.st);}
+function excluirApostaById(btn){excluirAposta(btn.dataset.aid);}
 async function abrirGanhadores(jogoId){
     const body=document.getElementById('ganhadores-body');
     body.innerHTML='<div class="loading">Calculando ganhadores...</div>';
@@ -2107,6 +2155,53 @@ async function exportarDados(tipo,jogoId){
 }
 
 /* ── Init ────────────────────────────────────────────────────────────────── */
+async function carregarUltimoResultado(){
+    try{
+        const res=await fetch(PROXY_BASE+'/api/ultimo-resultado');
+        if(!res.ok)return;
+        const d=await res.json();
+        const card=document.getElementById('card-vencedores');
+        const body=document.getElementById('vencedores-body');
+        if(!card||!body)return;
+        if(!d.resultado_disponivel){card.style.display='none';return;}
+        card.style.display='';
+        const j=d.jogo;
+        const fin=d.financeiro;
+        const placar='Brasil '+j.placar_brasil+' × '+j.placar_adversario+' '+esc(j.adversario);
+        if(d.sem_ganhadores){
+            body.innerHTML='<div style="padding:4px 0 10px">'
+                +'<p style="font-size:.88rem;color:var(--text-3);margin-bottom:12px">'+esc(placar)+'</p>'
+                +'<div style="background:var(--orange-lt);border:1px solid #ffcc80;border-left:4px solid var(--orange);border-radius:var(--r-sm);padding:12px 14px;font-size:.85rem;color:var(--text)">'
+                +'<strong>Nenhum participante acertou o placar exato.</strong><br>'
+                +'Os valores serão devolvidos via PIX com desconto da taxa de 10%.'
+                +'</div></div>';
+        } else {
+            const rows=d.vencedores.map((v,i)=>'<tr>'
+                +'<td style="text-align:left;font-weight:600">'+esc(v.nome)+'</td>'
+                +'<td style="text-align:center">'+esc(v.palpite)+'</td>'
+                +'<td style="text-align:right;font-weight:700;color:var(--green)">'+fmtBRL(v.valor_ganho)+'</td>'
+                +'</tr>').join('');
+            body.innerHTML='<div style="margin-bottom:10px">'
+                +'<p style="font-size:.82rem;color:var(--text-3);margin-bottom:12px">'+esc(placar)+'&nbsp;&nbsp;'
+                +'<span style="background:var(--green-lt);color:var(--green-dk);padding:2px 8px;border-radius:12px;font-size:.72rem;font-weight:700">'
+                +fin.qtd_vencedores+' vencedor'+(fin.qtd_vencedores>1?'es':'')+'</span></p>'
+                +'<table style="width:100%;border-collapse:collapse;font-size:.82rem">'
+                +'<thead><tr>'
+                +'<th style="text-align:left;padding:7px 10px;font-size:.7rem;font-weight:700;text-transform:uppercase;color:var(--text-3);border-bottom:2px solid var(--border)">Participante</th>'
+                +'<th style="text-align:center;padding:7px 10px;font-size:.7rem;font-weight:700;text-transform:uppercase;color:var(--text-3);border-bottom:2px solid var(--border)">Palpite</th>'
+                +'<th style="text-align:right;padding:7px 10px;font-size:.7rem;font-weight:700;text-transform:uppercase;color:var(--text-3);border-bottom:2px solid var(--border)">Valor Ganho</th>'
+                +'</tr></thead>'
+                +'<tbody>'+rows+'</tbody></table>'
+                +'<div style="display:flex;gap:14px;margin-top:12px;flex-wrap:wrap">'
+                +'<span style="font-size:.78rem;color:var(--text-3)">Arrecadado: <strong>'+fmtBRL(fin.arrecadacao_bruta)+'</strong></span>'
+                +'<span style="font-size:.78rem;color:var(--text-3)">Taxa: <strong>'+fmtBRL(fin.taxa_administrativa)+'</strong></span>'
+                +'<span style="font-size:.78rem;color:var(--text-3)">Prêmio: <strong style="color:var(--green)">'+fmtBRL(fin.premiacao_liquida)+'</strong></span>'
+                +'</div>'
+                +'</div>';
+        }
+    }catch(e){console.warn('[Vencedores]',e.message);}
+}
+
 function initApp(){
     document.getElementById('theme-btn').addEventListener('click',toggleTheme);
     document.getElementById('btn-atualizar').addEventListener('click',()=>fetchLiveDadosCopa(false));
@@ -2136,7 +2231,7 @@ function initApp(){
     document.querySelectorAll('.modal-overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)closeModal(o.id)}));
     document.addEventListener('keydown',e=>{if(e.key==='Escape')document.querySelectorAll('.modal-overlay.active').forEach(m=>closeModal(m.id))});
     renderAllData();
-    setTimeout(()=>{fetchLiveDadosCopa(true);carregarProximaPartidaParaBolao();carregarStandings(dataCopa.faseAtual||'GROUP_STAGE');},200);
+    setTimeout(()=>{fetchLiveDadosCopa(true);carregarProximaPartidaParaBolao();carregarStandings(dataCopa.faseAtual||'GROUP_STAGE');carregarUltimoResultado();},200);
 }
 document.addEventListener('DOMContentLoaded',initApp);
 </script>
