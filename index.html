@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="description" content="Bolão dos Amigos — Participe e torça pelo Brasil!">
     <meta name="theme-color" content="#009c3b">
     <meta property="og:title" content="Bolão dos Amigos">
@@ -78,9 +78,9 @@
         .btn-block{width:100%}
 
         /* ── Modais ── */
-        .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.78);z-index:9999;justify-content:center;align-items:flex-start;padding:18px;overflow-y:auto}
+        .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.78);z-index:9999;justify-content:center;align-items:flex-start;padding:12px;overflow-y:auto}
         .modal-overlay.active{display:flex}
-        .modal-box{background:var(--sf);width:100%;max-width:680px;padding:24px;border-radius:14px;box-shadow:0 20px 60px rgba(0,0,0,.3);margin:auto 0;position:relative;animation:mIn .22s ease}
+        .modal-box{background:var(--sf);width:100%;max-width:680px;padding:24px;border-radius:14px;box-shadow:0 20px 60px rgba(0,0,0,.3);margin:auto 0;position:relative;animation:mIn .22s ease;box-sizing:border-box}
         .modal-box.modal-lg{max-width:1020px}
         @keyframes mIn{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
         .modal-close{position:absolute;top:10px;right:14px;cursor:pointer;font-size:26px;font-weight:700;color:var(--ts);line-height:1;width:34px;height:34px;display:flex;align-items:center;justify-content:center;border-radius:50%;transition:background .2s;border:none;background:transparent}
@@ -211,19 +211,54 @@
         .player-info small{color:var(--ts);font-size:.78rem}
 
         @media(max-width:768px){
-            .container{grid-template-columns:1fr}
-            .header-actions{justify-content:space-between;padding:0 8px}
-            .logos-container{gap:12px}
-            .logo-flag{height:52px}
-            .title-wrapper h1{font-size:1.5rem}
+            .container{grid-template-columns:1fr;padding:0 12px;margin:18px auto}
+            .header-actions{justify-content:space-between;padding:0 6px}
+            .logos-container{gap:10px}
+            .logo-flag{height:48px}
+            .title-wrapper h1{font-size:1.4rem;letter-spacing:1px}
+            .title-wrapper p{font-size:.85rem}
             .comp-dados{grid-template-columns:1fr}
+            .modal-box{padding:18px 14px}
+            .modal-actions{flex-direction:column}
+            .modal-actions .btn-modern{width:100%;min-width:unset}
+            .card{padding:16px 14px}
+            .card-title{font-size:1.15rem}
+            .bolao-banner-stats{flex-direction:column;gap:6px;align-items:center}
+            .resumo-bolao-box{gap:10px}
+            .squad-grid{grid-template-columns:1fr}
+            .fin-grid{grid-template-columns:1fr 1fr}
+            .ganhador-item{flex-direction:column;align-items:flex-start}
+            .ganhador-item>div:last-child{text-align:left}
+            .adm-scroll{font-size:.78rem}
+            .admin-filters{flex-direction:column}
+            .admin-filters input,.admin-filters select{width:100%;min-width:unset}
+            header{padding:14px 14px 20px;text-align:center}
+            #api-status{font-size:.75rem}
         }
         @media(max-width:480px){
+            .container{padding:0 10px;gap:14px}
             .admin-dash{grid-template-columns:1fr 1fr}
-            .pitch-container{height:340px}
-            .count-box{min-width:58px;padding:9px 5px}
-            .count-box span{font-size:1.4rem}
-            header{padding:14px 14px 22px}
+            .pitch-container{height:320px}
+            .count-box{min-width:52px;padding:8px 4px}
+            .count-box span{font-size:1.25rem}
+            .count-box small{font-size:.62rem}
+            .countdown{gap:8px}
+            header{padding:12px 12px 18px}
+            .title-wrapper h1{font-size:1.2rem}
+            .logo-flag{height:40px}
+            .logos-container{gap:8px}
+            .palpite-item{flex-wrap:wrap;gap:6px}
+            .palpite-item input{min-width:60px}
+            .btn-modern{padding:11px 14px;font-size:.88rem}
+            .modal-box{padding:14px 12px;border-radius:10px}
+            .modal-box h2{font-size:1.2rem}
+            .fin-grid{grid-template-columns:1fr}
+            .voucher-item{flex-direction:column;gap:2px}
+            .voucher-item span:last-child{font-weight:700;color:var(--tp)}
+            .resultado-form{flex-direction:column;align-items:flex-start}
+            .resultado-form input[type=number]{width:100%}
+            .admin-tabs{gap:0}
+            .admin-tab{padding:8px 9px;font-size:.78rem}
         }
     </style>
 </head>
