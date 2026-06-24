@@ -362,8 +362,13 @@
         border-radius: var(--r-md); padding: 16px 20px;
         margin-bottom: 16px; text-align: center;
         border-bottom: 3px solid var(--yellow);
+        color: #fff;
     }
+    .bolao-jogo-banner * { color: #fff; }
     .bolao-jogo-banner h3 { color: #fff; font-size: 1.1rem; margin-bottom: 4px; }
+    .bolao-jogo-banner p  { color: rgba(255,255,255,.8); font-size: .82rem; }
+    .bolao-jogo-banner .bolao-banner-stats { color: rgba(255,255,255,.85); }
+    .bolao-jogo-banner .bolao-banner-stats strong { color: var(--yellow); }
     .bolao-banner-stats {
         display: flex; justify-content: center; gap: 16px;
         margin-top: 10px; font-size: .78rem; flex-wrap: wrap;
@@ -1725,19 +1730,28 @@ async function carregarJogos(){
         const res=await adminFetch('/api/admin/jogos');
         const {jogos}=await res.json();
         if(!jogos.length){el.innerHTML='<div class="empty">Nenhum jogo cadastrado.</div>';return}
-        el.innerHTML=jogos.map(j=>`
-            <div class="jogo-card-adm" onclick="verDetalheJogo('${esc(j.id)}')">
-                <h4>🇧🇷 Brasil × ${esc(j.adversario)} <small style="font-weight:400;color:var(--text-3)">— ${esc(j.fase)}</small></h4>
-                <p style="font-size:.83rem;color:var(--text-3);margin-bottom:8px">${fmtDateOnly(j.data_jogo)} — ${esc(j.competicao)}</p>
-                <div class="jogo-stats">
-                    <span>👥 <strong>${j.total_participantes}</strong> participantes</span>
-                    <span>🎯 <strong>${j.total_palpites}</strong> palpites</span>
-                    <span>💰 Bruto: <strong>${fmtBRL(j.arrecadacao_bruta)}</strong></span>
-                    <span>📉 Taxa: <strong>${fmtBRL(j.taxa_administrativa)}</strong></span>
-                    <span>🏆 Prêmio: <strong>${fmtBRL(j.premiacao_liquida)}</strong></span>
-                </div>
-            </div>`).join('');
-    }catch(e){el.innerHTML=`<div class="empty">Erro: ${esc(e.message)}</div>`}
+        el.innerHTML=jogos.map(function(j){
+            var enc=j.encerrado;
+            var badgeEnc='<span style="margin-left:6px;background:#fdecea;color:#c62828;padding:2px 8px;border-radius:12px;font-size:.72rem;font-weight:700">⛔ Encerrado</span>';
+            var badgeAbr='<span style="margin-left:6px;background:#e8f5e9;color:#2e7d32;padding:2px 8px;border-radius:12px;font-size:.72rem;font-weight:700">● Aberto</span>';
+            var btnGanh=enc?('<div style="margin-top:9px"><button class="btn-modern btn-sm btn-success" data-jid="'+esc(j.id)+'" onclick="event.stopPropagation();abrirGanhadoresById(this)">🏆 Ver Ganhadores</button></div>'):'';
+            return '<div class="jogo-card-adm" onclick="verDetalheJogo(\''+esc(j.id)+'\')">'
+                +'<h4>🇧🇷 Brasil × '+esc(j.adversario)
+                +'<small style="font-weight:400;color:var(--text-3)"> — '+esc(j.fase)+'</small> '
+                +(enc?badgeEnc:badgeAbr)
+                +'</h4>'
+                +'<p style="font-size:.83rem;color:var(--text-3);margin-bottom:8px">'+fmtDateOnly(j.data_jogo)+' — '+esc(j.competicao||'')+'</p>'
+                +'<div class="jogo-stats">'
+                +'<span>👥 <strong>'+j.total_participantes+'</strong> participantes</span>'
+                +'<span>🎯 <strong>'+j.total_palpites+'</strong> palpites</span>'
+                +'<span>💰 Bruto: <strong>'+fmtBRL(j.arrecadacao_bruta)+'</strong></span>'
+                +'<span>📉 Taxa: <strong>'+fmtBRL(j.taxa_administrativa)+'</strong></span>'
+                +'<span>🏆 Prêmio: <strong>'+fmtBRL(j.premiacao_liquida)+'</strong></span>'
+                +'</div>'
+                +btnGanh
+                +'</div>';
+        }).join('');
+    }catch(e){el.innerHTML=`<div class="empty">Erro: ${esc(e.message)}</div>`;}
 }
 
 async function verDetalheJogo(jogoId){
@@ -1800,6 +1814,7 @@ async function registrarResultado(jogoId){
     }catch(e){alert('Erro: '+e.message);}
 }
 
+function abrirGanhadoresById(btn){abrirGanhadores(btn.dataset.jid);}
 async function abrirGanhadores(jogoId){
     const body=document.getElementById('ganhadores-body');
     body.innerHTML='<div class="loading">Calculando ganhadores...</div>';
@@ -1861,12 +1876,14 @@ async function carregarApostas(){
                 <td>${a.qtd_palpites}</td>
                 <td>${fmtBRL(a.valor_total)}</td>
                 <td><span class="badge badge-${a.status_pagamento==='PAGO'?'pago':'pendente'}">${a.status_pagamento}</span></td>
-                <td style="display:flex;gap:4px;flex-wrap:wrap">
-                    <button class="btn-modern btn-sm btn-secondary" onclick="abrirVoucher('${esc(a.id)}')" title="Ver Comprovante">📋 Comprovante</button>
-                    ${a.status_pagamento==='PENDENTE'
-                        ?`<button class="btn-modern btn-sm btn-success" onclick="validarPagamento('${esc(a.id)}','PAGO')" title="Confirmar pagamento">✅ Validar</button>`
-                        :`<button class="btn-modern btn-sm btn-warning" onclick="validarPagamento('${esc(a.id)}','PENDENTE')" title="Reverter para pendente">↩️ Reverter</button>`}
-                    <button class="btn-modern btn-sm btn-danger" onclick="excluirAposta('${esc(a.id)}')" title="Excluir aposta e palpites">🗑 Excluir</button>
+                <td style="text-align:right;white-space:nowrap">
+                    <div style="display:inline-flex;gap:5px;align-items:center;flex-wrap:nowrap">
+                        <button class="btn-modern btn-sm btn-secondary" onclick="abrirVoucher('${esc(a.id)}')" title="Ver Comprovante">📋 Comprovante</button>
+                        ${a.status_pagamento==='PENDENTE'
+                            ?`<button class="btn-modern btn-sm btn-success" onclick="validarPagamento('${esc(a.id)}','PAGO')" title="Confirmar pagamento">✅ Validar</button>`
+                            :`<button class="btn-modern btn-sm btn-warning" onclick="validarPagamento('${esc(a.id)}','PENDENTE')" title="Reverter para pendente">↩️ Reverter</button>`}
+                        <button class="btn-modern btn-sm btn-danger" onclick="excluirAposta('${esc(a.id)}')" title="Excluir aposta e palpites">🗑 Excluir</button>
+                    </div>
                 </td>
             </tr>`).join('');
         // Paginação
@@ -2064,7 +2081,7 @@ async function abrirVoucher(apostaId){
         document.getElementById('btn-imprimir-voucher').onclick=()=>{
             const c=body.innerHTML;
             const w=window.open('','_blank');
-            w.document.write(`<html><head><title>Voucher Bolão Copa 2026</title><style>body{font-family:sans-serif;padding:20px}.voucher-box{border:2px solid #ffdf00;border-radius:8px;padding:20px}.voucher-item{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px dashed #ddd}hr{border-color:#ddd;margin:8px 0}</style></head><body>${c}</body></html>`);
+            w.document.write('<html><head><title>Voucher Bolão dos Amigos</'+'title><style>body{font-family:sans-serif;padding:20px}.voucher-box{border:2px solid #ffdf00;border-radius:8px;padding:20px}.voucher-item{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px dashed #ddd}hr{border-color:#ddd;margin:8px 0}</'+'style></'+'head><body>'+c+'</'+'body></'+'html>');
             w.document.close();setTimeout(()=>w.print(),400);
         };
     }catch(e){body.innerHTML=`<div class="empty">Erro: ${esc(e.message)}</div>`}
