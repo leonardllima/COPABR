@@ -1804,12 +1804,13 @@ async function carregarJogos(){
         el.innerHTML=jogos.map(function(j){
             var enc=j.encerrado;
             var badgeEnc='<span style="margin-left:6px;background:#fdecea;color:#c62828;padding:2px 8px;border-radius:12px;font-size:.72rem;font-weight:700">⛔ Encerrado</span>';
+            var badgeAndamento='<span style="margin-left:6px;background:#fff3e0;color:#e65100;padding:2px 8px;border-radius:12px;font-size:.72rem;font-weight:700">⚽ Em Andamento</span>';
             var badgeAbr='<span style="margin-left:6px;background:#e8f5e9;color:#2e7d32;padding:2px 8px;border-radius:12px;font-size:.72rem;font-weight:700">● Aberto</span>';
             var btnGanh=enc?('<div style="margin-top:9px"><button class="btn-modern btn-sm btn-success" data-jid="'+esc(j.id)+'" onclick="event.stopPropagation();abrirGanhadoresById(this)">🏆 Ver Ganhadores</button></div>'):'';
             return '<div class="jogo-card-adm" onclick="verDetalheJogo(\''+esc(j.id)+'\')">'
                 +'<h4>🇧🇷 Brasil × '+esc(j.adversario)
                 +'<small style="font-weight:400;color:var(--text-3)"> — '+esc(j.fase)+'</small> '
-                +(enc?badgeEnc:badgeAbr)
+                +(enc?badgeEnc:(j.palpites_bloqueados?badgeAndamento:badgeAbr))
                 +'</h4>'
                 +'<p style="font-size:.83rem;color:var(--text-3);margin-bottom:8px">'+fmtDateOnly(j.data_jogo)+' — '+esc(j.competicao||'')+'</p>'
                 +'<div class="jogo-stats">'
