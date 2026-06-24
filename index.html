@@ -1015,8 +1015,8 @@ function mostrarComprovante(dados){
         </div>
         <div class="modal-actions">
             <button class="btn-modern btn-ghost" id="btn-nova-aposta">Nova Aposta</button>
-            <button class="btn-modern btn-success" id="btn-whatsapp">📎 WhatsApp</button>
-            <button class="btn-modern btn-secondary" id="btn-imprimir-comp">🖨️ Imprimir</button>
+            <button class="btn-modern btn-success" id="btn-whatsapp">📎 Enviar Comprovante</button>
+            <button class="btn-modern btn-secondary" id="btn-salvar-img">💾 Salvar Imagem</button>
         </div>`;
     document.getElementById('btn-copiar-pix').onclick=()=>{
         const el=document.getElementById('pix-brcode');el.select();
@@ -1024,11 +1024,32 @@ function mostrarComprovante(dados){
     };
     document.getElementById('btn-nova-aposta').onclick=()=>{closeModal('modal-resumo');abrirBolao()};
     document.getElementById('btn-whatsapp').onclick=()=>window.open(`https://wa.me/${ADMIN_WHATSAPP}?text=${encodeURIComponent(msg)}`,'_blank');
-    document.getElementById('btn-imprimir-comp').onclick=()=>{
-        const c=document.getElementById('resumo-body').innerHTML;
-        const w=window.open('','_blank');
-        w.document.write(`<html><head><title>Comprovante — Bolão dos Amigos</title><style>body{font-family:sans-serif;padding:20px}table{width:100%;border-collapse:collapse}td,th{border:1px solid #ddd;padding:7px;text-align:center}.comp-dados{display:grid;grid-template-columns:1fr 1fr;gap:7px}</style></head><body><h2>🎯 Bolão dos Amigos — Comprovante</h2>${c}</body></html>`);
-        w.document.close();setTimeout(()=>w.print(),350);
+    document.getElementById('btn-salvar-img').onclick=async()=>{
+        const btn=document.getElementById('btn-salvar-img');
+        btn.disabled=true;btn.textContent='⏳ Gerando...';
+        try{
+            // Usa html2canvas via CDN para capturar o modal como imagem
+            if(!window.html2canvas){
+                await new Promise((res,rej)=>{
+                    const s=document.createElement('script');
+                    s.src='https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
+                    s.onload=res;s.onerror=rej;document.head.appendChild(s);
+                });
+            }
+            const el=document.getElementById('resumo-body');
+            const canvas=await html2canvas(el,{
+                backgroundColor:'#ffffff',scale:2,useCORS:true,
+                logging:false,width:el.scrollWidth,height:el.scrollHeight
+            });
+            const link=document.createElement('a');
+            link.download='comprovante-bolao.png';
+            link.href=canvas.toDataURL('image/png');
+            link.click();
+        }catch(e){
+            alert('Erro ao salvar imagem: '+e.message+'
+
+Use o botão Enviar Comprovante para salvar via WhatsApp.');
+        }finally{btn.disabled=false;btn.innerHTML='💾 Salvar Imagem';}
     };
     openModal('modal-resumo');
 }
