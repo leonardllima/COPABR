@@ -1026,9 +1026,8 @@ function mostrarComprovante(dados){
     document.getElementById('btn-whatsapp').onclick=()=>window.open(`https://wa.me/${ADMIN_WHATSAPP}?text=${encodeURIComponent(msg)}`,'_blank');
     document.getElementById('btn-salvar-img').onclick=async()=>{
         const btn=document.getElementById('btn-salvar-img');
-        btn.disabled=true;btn.textContent='⏳ Gerando...';
+        btn.disabled=true;btn.textContent='Gerando...';
         try{
-            // Usa html2canvas via CDN para capturar o modal como imagem
             if(!window.html2canvas){
                 await new Promise((res,rej)=>{
                     const s=document.createElement('script');
@@ -1037,19 +1036,16 @@ function mostrarComprovante(dados){
                 });
             }
             const el=document.getElementById('resumo-body');
-            const canvas=await html2canvas(el,{
-                backgroundColor:'#ffffff',scale:2,useCORS:true,
-                logging:false,width:el.scrollWidth,height:el.scrollHeight
-            });
+            const canvas=await html2canvas(el,{backgroundColor:'#ffffff',scale:2,useCORS:true,logging:false});
             const link=document.createElement('a');
             link.download='comprovante-bolao.png';
             link.href=canvas.toDataURL('image/png');
             link.click();
+            btn.textContent='Salvar Imagem';
         }catch(e){
-            alert('Erro ao salvar imagem: '+e.message+'
-
-Use o botão Enviar Comprovante para salvar via WhatsApp.');
-        }finally{btn.disabled=false;btn.innerHTML='💾 Salvar Imagem';}
+            btn.textContent='Salvar Imagem';
+            alert('Nao foi possivel salvar. Use Enviar Comprovante para salvar via WhatsApp.');
+        }finally{btn.disabled=false;}
     };
     openModal('modal-resumo');
 }
