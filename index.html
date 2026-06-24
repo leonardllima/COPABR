@@ -923,7 +923,7 @@
                 <button class="btn-modern btn-primary btn-sm" id="btn-filtrar-fin">Atualizar</button>
                 <button class="btn-modern btn-ghost btn-sm" id="btn-export-fin">⬇ CSV</button>
             </div>
-            <div class="fin-grid" id="financeiro-cards"></div>
+            <div class="admin-dash" id="financeiro-cards"></div>
             <div class="adm-scroll"><table class="adm-table"><thead><tr><th>Nome</th><th>Jogo</th><th>Palpites</th><th>Valor</th><th>Status</th><th>Validado</th><th>Ação</th></tr></thead><tbody id="financeiro-tbody"></tbody></table></div>
         </div>
     </div>
@@ -2056,14 +2056,13 @@ async function carregarFinanceiro(){
         const dash=await dashRes.json();
         const {apostas}=await apostasRes.json();
 
-        cards.innerHTML=`
-            <div class="financeiro-card"><div class="fc-value">${fmtBRL(dash.arrecadacao_bruta)}</div><div class="fc-label">💰 Arrecadação Bruta</div></div>
-            <div class="financeiro-card fc-yellow"><div class="fc-value">${fmtBRL(dash.taxa_administrativa)}</div><div class="fc-label">📉 Taxa Admin (10%)</div></div>
-            <div class="financeiro-card fc-blue"><div class="fc-value">${fmtBRL(dash.premiacao_liquida)}</div><div class="fc-label">🏆 Premiação Líquida</div></div>
-            <div class="financeiro-card"><div class="fc-value">${fmtBRL(dash.total_pago)}</div><div class="fc-label">✅ Total Confirmado</div></div>
-            <div class="financeiro-card fc-yellow"><div class="fc-value">${fmtBRL(dash.total_pendente)}</div><div class="fc-label">⏳ Total Pendente</div></div>
-            <div class="financeiro-card fc-blue"><div class="fc-value">${fmtBRL(dash.ticket_medio)}</div><div class="fc-label">📈 Ticket Médio</div></div>
-        `;
+        cards.innerHTML=
+            '<div class="stat-card"><div class="sv">'+fmtBRL(dash.arrecadacao_bruta)+'</div><div class="sl">💰 Arrecadação Bruta</div></div>'+
+            '<div class="stat-card sy"><div class="sv">'+fmtBRL(dash.taxa_administrativa)+'</div><div class="sl">📉 Taxa Admin (10%)</div></div>'+
+            '<div class="stat-card sb"><div class="sv">'+fmtBRL(dash.premiacao_liquida)+'</div><div class="sl">🏆 Premiação Líquida</div></div>'+
+            '<div class="stat-card"><div class="sv">'+fmtBRL(dash.total_pago)+'</div><div class="sl">✅ Total Confirmado</div></div>'+
+            '<div class="stat-card sr"><div class="sv">'+fmtBRL(dash.total_pendente)+'</div><div class="sl">⏳ Total Pendente</div></div>'+
+            '<div class="stat-card sb"><div class="sv">'+fmtBRL(dash.ticket_medio)+'</div><div class="sl">📈 Ticket Médio</div></div>';
         tbody.innerHTML=apostas.map(a=>`<tr>
             <td><strong>${escUp(a.nome)}</strong></td>
             <td><small>Brasil × ${esc(a.adversario)}</small></td>
