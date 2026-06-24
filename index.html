@@ -1649,38 +1649,7 @@ async function carregarDashboard(){
         document.getElementById('stat-pendente').textContent=fmtBRL(d.total_pendente);
         document.getElementById('stat-ticket').textContent=fmtBRL(d.ticket_medio);
         document.getElementById('stat-media').textContent=Number(d.media_palpites).toFixed(1);
-        document.getElementById('dash-tops').innerHTML=`
-            <div style="background:var(--surface-2);border:1px solid var(--border);border-radius:var(--r-md);padding:16px">
-                <div style="font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text-3);margin-bottom:10px">🏅 Top Participantes</div>
-                <table style="width:100%;border-collapse:collapse;font-size:.82rem">
-                    <thead><tr>
-                        <th style="padding:6px 8px;text-align:center;font-size:.7rem;font-weight:700;text-transform:uppercase;color:var(--text-3);border-bottom:2px solid var(--border)">#</th>
-                        <th style="padding:6px 8px;text-align:left;font-size:.7rem;font-weight:700;text-transform:uppercase;color:var(--text-3);border-bottom:2px solid var(--border)">Nome</th>
-                        <th style="padding:6px 8px;text-align:center;font-size:.7rem;font-weight:700;text-transform:uppercase;color:var(--text-3);border-bottom:2px solid var(--border)">Palpites</th>
-                    </tr></thead>
-                    <tbody>${d.top_participantes.map((p,i)=>`<tr style="border-bottom:1px solid var(--border)">
-                        <td style="padding:8px;text-align:center;color:var(--text-3);font-weight:700">${i+1}</td>
-                        <td style="padding:8px;font-weight:600">${esc(p.nome)}</td>
-                        <td style="padding:8px;text-align:center"><span style="background:var(--green-lt);color:var(--green-dk);padding:2px 8px;border-radius:12px;font-weight:700;font-size:.78rem">${p.qtd}</span></td>
-                    </tr>`).join('')}</tbody>
-                </table>
-            </div>
-            <div style="background:var(--surface-2);border:1px solid var(--border);border-radius:var(--r-md);padding:16px">
-                <div style="font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text-3);margin-bottom:10px">🏆 Placares Mais Apostados</div>
-                <table style="width:100%;border-collapse:collapse;font-size:.82rem">
-                    <thead><tr>
-                        <th style="padding:6px 8px;text-align:center;font-size:.7rem;font-weight:700;text-transform:uppercase;color:var(--text-3);border-bottom:2px solid var(--border)">#</th>
-                        <th style="padding:6px 8px;text-align:center;font-size:.7rem;font-weight:700;text-transform:uppercase;color:var(--text-3);border-bottom:2px solid var(--border)">Placar</th>
-                        <th style="padding:6px 8px;text-align:center;font-size:.7rem;font-weight:700;text-transform:uppercase;color:var(--text-3);border-bottom:2px solid var(--border)">Votos</th>
-                    </tr></thead>
-                    <tbody>${d.top_placares.map((p,i)=>`<tr style="border-bottom:1px solid var(--border)">
-                        <td style="padding:8px;text-align:center;color:var(--text-3);font-weight:700">${i+1}</td>
-                        <td style="padding:8px;text-align:center;font-weight:600">🇧🇷 ${p.gols_brasil} × ${p.gols_adversario}</td>
-                        <td style="padding:8px;text-align:center"><span style="background:var(--blue-lt);color:var(--blue);padding:2px 8px;border-radius:12px;font-weight:700;font-size:.78rem">${p.qtd}×</span></td>
-                    </tr>`).join('')}</tbody>
-                </table>
-            </div>`
-        };
+        document.getElementById('dash-tops').innerHTML='<div style="background:var(--surface-2);border:1px solid var(--border);border-radius:var(--r-md);padding:16px;margin-bottom:12px"><div style="font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text-3);margin-bottom:10px">🏅 Top Participantes</div><table style="width:100%;border-collapse:collapse;font-size:.82rem"><thead><tr><th style="padding:7px 10px;text-align:center;font-size:.7rem;font-weight:700;text-transform:uppercase;color:var(--text-3);border-bottom:2px solid var(--border)">#</th><th style="padding:7px 10px;text-align:left;font-size:.7rem;font-weight:700;text-transform:uppercase;color:var(--text-3);border-bottom:2px solid var(--border)">Nome</th><th style="padding:7px 10px;text-align:center;font-size:.7rem;font-weight:700;text-transform:uppercase;color:var(--text-3);border-bottom:2px solid var(--border)">Palpites</th></tr></thead><tbody>'+d.top_participantes.map((p,i)=>'<tr style="border-bottom:1px solid var(--border)">'+'<td style="padding:8px 10px;text-align:center;color:var(--text-3);font-weight:700">'+(i+1)+'</td>'+'<td style="padding:8px 10px;font-weight:600">'+esc(p.nome)+'</td>'+'<td style="padding:8px 10px;text-align:center"><span style="background:var(--green-lt);color:var(--green-dk);padding:2px 8px;border-radius:12px;font-weight:700;font-size:.78rem">'+p.qtd+'</span></td>'+'</tr>').join('')+'</tbody></table></div><div style="background:var(--surface-2);border:1px solid var(--border);border-radius:var(--r-md);padding:16px"><div style="font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text-3);margin-bottom:10px">🏆 Placares Mais Apostados</div><table style="width:100%;border-collapse:collapse;font-size:.82rem"><thead><tr><th style="padding:7px 10px;text-align:center;font-size:.7rem;font-weight:700;text-transform:uppercase;color:var(--text-3);border-bottom:2px solid var(--border)">#</th><th style="padding:7px 10px;text-align:center;font-size:.7rem;font-weight:700;text-transform:uppercase;color:var(--text-3);border-bottom:2px solid var(--border)">Placar</th><th style="padding:7px 10px;text-align:center;font-size:.7rem;font-weight:700;text-transform:uppercase;color:var(--text-3);border-bottom:2px solid var(--border)">Votos</th></tr></thead><tbody>'+d.top_placares.map((p,i)=>'<tr style="border-bottom:1px solid var(--border)">'+'<td style="padding:8px 10px;text-align:center;color:var(--text-3);font-weight:700">'+(i+1)+'</td>'+'<td style="padding:8px 10px;text-align:center;font-weight:600">🇧🇷 '+p.gols_brasil+' × '+p.gols_adversario+'</td>'+'<td style="padding:8px 10px;text-align:center"><span style="background:var(--blue-lt);color:var(--blue);padding:2px 8px;border-radius:12px;font-weight:700;font-size:.78rem">'+p.qtd+'×</span></td>'+'</tr>').join('')+'</tbody></table></div>';
     }catch(e){body.innerHTML=`<div class="empty">Erro: ${esc(e.message)}</div>`;}
 }
 
