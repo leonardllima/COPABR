@@ -1239,7 +1239,6 @@ function renderAllData(){
     renderProximoJogo();
     renderGrupoC();
     renderJogosRealizados();
-    renderSquad();
     iniciarCountdown();
 }
 
@@ -1440,6 +1439,7 @@ function renderJogosRealizados(){
 
 function renderSquad(){
     const g=document.getElementById('squad-grid');
+    if(!g)return;
     const setores={gk:'🧤 Goleiros',def:'🛡️ Defesa',mid:'⚙️ Meio-campo',att:'⚡ Ataque'};
     g.innerHTML=Object.entries(setores).map(([s,lbl])=>`
         <div class="squad-section"><h3>${lbl}</h3>
