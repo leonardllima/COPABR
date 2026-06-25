@@ -1488,17 +1488,24 @@ async function carregarProximaPartidaParaBolao(){
         const j=await res.json();
         jogoAtual=j;
         if(!j.adversario){
-            // API não retornou próximo jogo — exibir mensagem de aguardo
-            const pjCard=document.getElementById('pj-titulo');
-            const pjData=document.getElementById('pj-data');
-            const pjInfo=document.getElementById('pj-info');
-            const pjLogos=document.getElementById('pj-logos');
-            const cdWrap=document.getElementById('countdown-wrap');
-            if(pjCard)pjCard.textContent='⏳ Aguardando informações do próximo jogo';
-            if(pjData)pjData.textContent='A API ainda não disponibilizou os dados da próxima partida.';
-            if(pjInfo)pjInfo.textContent='';
-            if(pjLogos)pjLogos.innerHTML='<span style="font-size:2.5rem">🇧🇷</span>';
-            if(cdWrap)cdWrap.style.display='none';
+            // Sem próximo jogo — exibir estado de aguardo limpo
+            const el_logos=document.getElementById('pj-logos');
+            const el_tit=document.getElementById('pj-titulo');
+            const el_data=document.getElementById('pj-data');
+            const el_info=document.getElementById('pj-info');
+            const el_cd=document.getElementById('countdown-wrap');
+            const el_card=document.getElementById('encerrado-card');
+            const el_btn=document.getElementById('bolao-btn-wrap');
+            if(el_logos)el_logos.innerHTML='<img src="https://flagcdn.com/h80/br.png" alt="Brasil" style="height:54px;border-radius:3px;object-fit:contain">';
+            if(el_tit){el_tit.textContent='AGUARDANDO DEFINIÇÃO';el_tit.style.color='var(--text-3)';el_tit.style.fontSize='.95rem';}
+            if(el_data)el_data.textContent='';
+            if(el_info)el_info.textContent='A Seleção Brasileira aguarda a definição do próximo adversário.';
+            if(el_cd)el_cd.style.display='none';
+            if(el_card)el_card.style.display='none';
+            if(el_btn)el_btn.style.display='none';
+            // Bloquear botão do bolão
+            const bolaoBtn=document.getElementById('btn-bolao');
+            if(bolaoBtn)bolaoBtn.disabled=true;
             return;
         }
         if(j.adversario){
@@ -1899,18 +1906,24 @@ async function verDetalheJogo(jogoId){
                         +'<strong style="color:var(--green-dk)">🏆 '+financeiro.qtd_vencedores+' vencedor'+(financeiro.qtd_vencedores>1?'es':'')+' — Prêmio individual: '+fmtBRL(financeiro.valor_individual)+'</strong>'
                         +'</div>';
                 } else {
-                    const devRows=apostas.filter(a=>a.status_pagamento==='PAGO').map(a=>'<tr>'
+                    const devRows=apostas.filter(a=>a.status_pagamento==='PAGO').map(a=>{
+                        const isDevol=a.devolvido===true||a.devolvido===1;
+                        return '<tr style="background:'+(isDevol?'#f1f8e9':'')+'">'
                         +'<td>'+escUp(a.nome)+'</td>'
-                        +'<td style="font-size:.78rem">'+esc(a.pix_key||'—')+'</td>'
+                        +'<td style="font-size:.78rem">'+esc(a.pix_key||'—')+'<br><small style="color:var(--text-3)">'+esc(a.tipo_pix||'')+'</small></td>'
                         +'<td>'+fmtBRL(a.valor_total)+'</td>'
                         +'<td style="color:var(--red)">— '+fmtBRL(a.valor_total*0.1)+'</td>'
                         +'<td style="font-weight:700;color:var(--blue)">'+fmtBRL(a.valor_total*0.9)+'</td>'
-                        +'</tr>').join('');
+                        +'<td style="text-align:center">'
+                        +(isDevol
+                            ?'<span style="background:#e8f5e9;color:#2e7d32;padding:3px 10px;border-radius:12px;font-size:.74rem;font-weight:700">✅ Devolvido<br><small style="font-weight:400;color:#555">'+(a.data_devolucao?new Date(a.data_devolucao).toLocaleDateString('pt-BR'):'')+'</small></span>'
+                            :'<button class="btn-modern btn-sm btn-success" data-aid="'+esc(a.id)+'" onclick="marcarDevolvido(this)" style="font-size:.75rem">💸 Marcar Devolvido</button>')
+                        +'</td></tr>';}).join('');
                     const totPago=apostas.filter(a=>a.status_pagamento==='PAGO').reduce((s,a)=>s+a.valor_total,0);
                     return '<div style="margin-top:18px;padding:14px;background:var(--orange-lt);border:1px solid #ffcc80;border-left:4px solid var(--orange);border-radius:var(--r-md)">'
                         +'<strong style="color:var(--orange)">⚠️ Nenhum acertador — Lista de Devolução</strong>'
                         +'<table style="width:100%;border-collapse:collapse;font-size:.8rem;margin-top:10px">'
-                        +'<thead><tr><th style="text-align:left;padding:5px 8px;border-bottom:1px solid #ffcc80">Nome</th><th style="text-align:left;padding:5px 8px;border-bottom:1px solid #ffcc80">Chave PIX</th><th style="text-align:right;padding:5px 8px;border-bottom:1px solid #ffcc80">Pago</th><th style="text-align:right;padding:5px 8px;border-bottom:1px solid #ffcc80">Taxa 10%</th><th style="text-align:right;padding:5px 8px;border-bottom:1px solid #ffcc80">A Devolver</th></tr></thead>'
+                        +'<thead><tr><th style="text-align:left;padding:5px 8px;border-bottom:1px solid #ffcc80">Nome</th><th style="text-align:left;padding:5px 8px;border-bottom:1px solid #ffcc80">Chave PIX</th><th style="text-align:right;padding:5px 8px;border-bottom:1px solid #ffcc80">Pago</th><th style="text-align:right;padding:5px 8px;border-bottom:1px solid #ffcc80">Taxa 10%</th><th style="text-align:right;padding:5px 8px;border-bottom:1px solid #ffcc80">A Devolver</th><th style="text-align:center;padding:5px 8px;border-bottom:1px solid #ffcc80">Status</th></tr></thead>'
                         +'<tbody>'+devRows+'</tbody>'
                         +'<tfoot><tr style="font-weight:700;border-top:2px solid #ffcc80">'
                         +'<td colspan="2" style="padding:6px 8px">Total</td>'
@@ -1939,6 +1952,35 @@ async function registrarResultado(jogoId){
 }
 
 function abrirGanhadoresById(btn){abrirGanhadores(btn.dataset.jid);}
+
+async function marcarDevolvido(btn){
+    const apostaId=btn.dataset.aid;
+    if(!apostaId)return;
+    if(!confirm('Confirmar devolução via PIX para este participante?'))return;
+    btn.disabled=true;
+    btn.textContent='Registrando...';
+    try{
+        const res=await adminFetch(`/api/admin/aposta/${apostaId}/devolver`,{method:'PUT'});
+        const data=await res.json();
+        if(res.status===409){
+            alert('Esta devolução já foi registrada anteriormente.');
+            btn.textContent='💸 Marcar Devolvido';
+            btn.disabled=false;
+            return;
+        }
+        if(!res.ok)throw new Error(data.error||'Erro ao registrar');
+        // Atualizar célula para estado devolvido
+        const td=btn.parentElement;
+        const dt=data.data_devolucao?new Date(data.data_devolucao).toLocaleDateString('pt-BR'):'';
+        td.innerHTML='<span style="background:#e8f5e9;color:#2e7d32;padding:3px 10px;border-radius:12px;font-size:.74rem;font-weight:700">✅ Devolvido<br><small style="font-weight:400;color:#555">'+dt+'</small></span>';
+        const tr=td.closest('tr');
+        if(tr)tr.style.background='#f1f8e9';
+    }catch(e){
+        alert('Erro: '+e.message);
+        btn.textContent='💸 Marcar Devolvido';
+        btn.disabled=false;
+    }
+}
 function abrirVoucherById(btn){abrirVoucher(btn.dataset.aid);}
 function validarPagamentoById(btn){validarPagamento(btn.dataset.aid,btn.dataset.st);}
 function excluirApostaById(btn){excluirAposta(btn.dataset.aid);}
@@ -2098,7 +2140,8 @@ async function carregarFinanceiro(){
             '<div class="stat-card sb"><div class="sv">'+fmtBRL(dash.premiacao_liquida)+'</div><div class="sl">🏆 Premiação Líquida</div></div>'+
             '<div class="stat-card"><div class="sv">'+fmtBRL(dash.total_pago)+'</div><div class="sl">✅ Total Confirmado</div></div>'+
             '<div class="stat-card sr"><div class="sv">'+fmtBRL(dash.total_pendente)+'</div><div class="sl">⏳ Total Pendente</div></div>'+
-            '<div class="stat-card sb"><div class="sv">'+fmtBRL(dash.ticket_medio)+'</div><div class="sl">📈 Ticket Médio</div></div>';
+            '<div class="stat-card sb"><div class="sv">'+fmtBRL(dash.ticket_medio)+'</div><div class="sl">📈 Ticket Médio</div></div>'+
+            '<div class="stat-card sy"><div class="sv">'+fmtBRL(dash.total_devolvido||0)+'</div><div class="sl">💸 Total Devolvido</div></div>';
         tbody.innerHTML=apostas.map(a=>`<tr>
             <td><strong>${escUp(a.nome)}</strong></td>
             <td><small>Brasil × ${esc(a.adversario)}</small></td>
