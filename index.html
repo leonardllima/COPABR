@@ -727,6 +727,12 @@
     <!-- Bolão -->
     <div class="card card-full" id="bolao-card">
         <div class="card-title">🎯 Bolão dos Amigos</div>
+        <!-- Bandeiras do jogo do bolão -->
+        <div id="bolao-card-logos" style="display:flex;align-items:center;justify-content:center;gap:16px;margin:12px 0 4px">
+            <img src="https://flagcdn.com/h40/br.png" alt="Brasil" style="height:36px;border-radius:3px;object-fit:contain;filter:drop-shadow(0 1px 3px rgba(0,0,0,.2))">
+            <span style="color:var(--text-3);font-size:.9rem;font-weight:600">×</span>
+            <img id="bolao-card-flag-adv" src="" alt="" style="height:36px;border-radius:3px;object-fit:contain;filter:drop-shadow(0 1px 3px rgba(0,0,0,.2));display:none">
+        </div>
         <p id="bolao-jogo-info" style="text-align:center;color:var(--text-3)">Próxima partida do Brasil</p>
         <div style="margin-top:13px;font-size:1.15rem;font-weight:700;color:var(--green);text-align:center">R$ 5,00 por palpite</div>
 
@@ -768,19 +774,6 @@
             <div class="loading">Carregando...</div>
         </div>
     </div>
-
-    <!-- Classificação do grupo -->
-    <div class="card card-full">
-        <div class="card-title">📊 <span id="grupo-titulo">Classificação do Grupo</span></div>
-        <div id="grupo-loading" style="text-align:center;padding:10px;color:var(--text-3);font-size:.9rem">Carregando...</div>
-        <div class="table-scroll" id="grupo-table-wrap" style="display:none">
-            <table>
-                <thead><tr><th>#</th><th>País</th><th>J</th><th>V</th><th>E</th><th>D</th><th>GP</th><th>GC</th><th>SG</th><th>Pts</th></tr></thead>
-                <tbody id="grupo-tbody"></tbody>
-            </table>
-        </div>
-    </div>
-
     <!-- Campanha -->
 
 
@@ -1189,7 +1182,29 @@ async function fetchLiveDadosCopa(auto=false){
     }
 }
 
-function traduzirFase(s){const m={GROUP_STAGE:'Fase de Grupos',ROUND_OF_16:'Oitavas de Final',QUARTER_FINALS:'Quartas de Final',SEMI_FINALS:'Semifinais',THIRD_PLACE:'Disputa 3º Lugar',FINAL:'Final'};return m[s]||s||''}
+function traduzirFase(s){
+    const m={
+        GROUP_STAGE:'Fase de Grupos',
+        LAST_32:'Rodada de 32',
+        LAST_16:'Oitavas de Final',
+        ROUND_OF_16:'Oitavas de Final',
+        LAST_8:'Quartas de Final',
+        QUARTER_FINALS:'Quartas de Final',
+        LAST_4:'Semifinais',
+        SEMI_FINALS:'Semifinais',
+        THIRD_PLACE:'Disputa 3º Lugar',
+        LAST_2:'Final',
+        FINAL:'Final',
+    };
+    if(!s)return '';
+    // Se não tem tradução e parece código técnico (LAST_32 etc), mostrar vazio
+    const traduzido=m[s];
+    if(traduzido)return traduzido;
+    // Texto já amigável? retornar como está
+    if(!/^[A-Z_0-9]+$/.test(s))return s;
+    // Código técnico sem tradução — não exibir
+    return '';
+}
 
 function processarDadosCopa(data){
     const matches=data.matches||[];
@@ -1280,6 +1295,13 @@ function renderProximoJogo(){
     document.getElementById('pj-data').textContent=`${j.dataStr} — ${j.horaStr}`;
     document.getElementById('pj-info').textContent=`${j.local?j.local+' — ':''}${j.fase}`;
     document.getElementById('bolao-jogo-info').textContent=`Brasil × ${j.adversario}`;
+    // Atualizar bandeira adversária no card do bolão
+    const _bjFlag=document.getElementById('bolao-card-flag-adv');
+    if(_bjFlag&&j.adversario){
+        const _furl=j.advFlag||getFlagUrl(j.adversario);
+        if(_furl){_bjFlag.src=_furl;_bjFlag.alt=j.adversario;_bjFlag.style.display='';}
+        else{_bjFlag.style.display='none';}
+    }
     document.getElementById('header-subtitle').textContent=`Brasil × ${j.adversario} — ${j.dataStr}`;
 
     // Encerramento
@@ -1326,6 +1348,8 @@ function renderGrupoC(){
 }
 
 async function carregarStandings(faseAtual){
+    // Card de classificação removido — retornar silenciosamente
+    if(!document.getElementById('grupo-titulo'))return;
     // Fases eliminatórias não têm classificação de grupo
     const fasesElim=['ROUND_OF_16','QUARTER_FINALS','SEMI_FINALS','THIRD_PLACE','FINAL'];
     const el=document.getElementById('grupo-titulo');
@@ -1885,6 +1909,7 @@ async function verDetalheJogo(jogoId){
                 <div class="stat-card sb"><div class="sv">${fmtBRL(financeiro.premiacao_liquida)}</div><div class="sl">Premiação</div></div>
                 <div class="stat-card"><div class="sv">${fmtBRL(financeiro.total_pago)}</div><div class="sl">✅ Pago</div></div>
                 <div class="stat-card sr"><div class="sv">${fmtBRL(financeiro.total_pendente)}</div><div class="sl">⏳ Pendente</div></div>
+                <div class="stat-card sy"><div class="sv">${fmtBRL(financeiro.total_devolvido||0)}</div><div class="sl">💸 Devolvido</div></div>
             </div>
             <h3 style="margin-bottom:10px">🏆 Placares Mais Apostados</h3>
             <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px">
