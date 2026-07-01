@@ -2143,15 +2143,16 @@ async function abrirGanhadores(jogoId){
         // Usa rota admin para ter acesso a premio_pago e dados completos
         const res=await adminFetch(`/api/admin/jogos/${jogoId}`);
         const d=await res.json();
-        if(!d.encerrado||d.placar_brasil===null){
+        const jogo=d.jogo||{};
+        if(!jogo.encerrado||jogo.placar_brasil===null){
             body.innerHTML='<div class="empty">Resultado ainda não registrado para este jogo.</div>';return;
         }
-        const fin=d.financeiro;
-        const ganhs=d.apostas.filter(a=>a.vencedor);
+        const fin=d.financeiro||{};
+        const ganhs=(d.apostas||[]).filter(a=>a.vencedor);
         const qtdVenc=ganhs.length;
         body.innerHTML=`
             <h2>Ganhadores</h2>
-            <p style="color:var(--text-3);margin-bottom:16px">Brasil ${d.placar_brasil} × ${d.placar_adversario} ${esc(d.adversario)}</p>
+            <p style="color:var(--text-3);margin-bottom:16px">Brasil ${jogo.placar_brasil} × ${jogo.placar_adversario} ${esc(jogo.adversario)}</p>
             <div class="fin-grid">
                 <div class="fin-card"><div class="fv">${qtdVenc}</div><div class="fl">Vencedores</div></div>
                 <div class="fin-card"><div class="fv">${fmtBRL(fin.arrecadacao_bruta)}</div><div class="fl">Arrecadação Bruta</div></div>
