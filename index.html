@@ -2476,3 +2476,37 @@ async function carregarTodosResultados(){
         }).join('');
     }catch(e){console.warn('[Resultados]',e.message);}
 }
+
+/* ══════════════════════════════════════════════════════════════════════════
+   BOOTSTRAP / INICIALIZAÇÃO DA PÁGINA  (correção: fetchLiveDadosCopa nunca
+   era chamada → status travava em "Aguardando..." e o botão não reagia)
+   ══════════════════════════════════════════════════════════════════════════ */
+(function initApp(){
+    function boot(){
+        // 1) Botão "Atualizar" → força busca sem cache (fresh)
+        var btn = document.getElementById('btn-atualizar');
+        if (btn) btn.addEventListener('click', function(){ fetchLiveDadosCopa(false); });
+
+        // 2) Primeira carga dos dados da Copa (usa cache do Worker = mais leve)
+        if (typeof fetchLiveDadosCopa === 'function') fetchLiveDadosCopa(true);
+
+        // 3) Conteúdo estático/derivado que também depende de inicialização
+        if (typeof renderSquad === 'function') renderSquad();
+        if (typeof carregarProximaPartidaParaBolao === 'function') carregarProximaPartidaParaBolao();
+        if (typeof carregarUltimoResultado === 'function') carregarUltimoResultado();
+        if (typeof carregarTodosResultados === 'function') carregarTodosResultados();
+
+        // 4) Auto-refresh a cada 60s (auto=true → usa cache, não martela a origem)
+        setInterval(function(){
+            if (typeof fetchLiveDadosCopa === 'function') fetchLiveDadosCopa(true);
+        }, 60000);
+    }
+
+    if (document.readyState === 'loading')
+        document.addEventListener('DOMContentLoaded', boot);
+    else
+        boot();
+})();
+</script>
+</body>
+</html>
