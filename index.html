@@ -2140,15 +2140,15 @@ async function abrirGanhadores(jogoId){
     body.innerHTML='<div class="loading">Calculando ganhadores...</div>';
     openModal('modal-ganhadores');
     try{
-        // Usa rota admin para ter acesso a premio_pago e dados completos
-        const res=await adminFetch(`/api/admin/jogos/${jogoId}`);
+        // Usa o endpoint SQL /api/ganhadores (mesma fonte do card público) — robusto a tipos
+        const res=await fetch(`${PROXY_BASE}/api/ganhadores/${jogoId}`);
         const d=await res.json();
         const jogo=d.jogo||{};
-        if(!jogo.encerrado||jogo.placar_brasil===null){
+        if(!d.resultado_disponivel){
             body.innerHTML='<div class="empty">Resultado ainda não registrado para este jogo.</div>';return;
         }
         const fin=d.financeiro||{};
-        const ganhs=(d.apostas||[]).filter(a=>a.vencedor);
+        const ganhs=d.vencedores||[];
         const qtdVenc=ganhs.length;
         body.innerHTML=`
             <h2>Ganhadores</h2>
@@ -2168,17 +2168,17 @@ async function abrirGanhadores(jogoId){
                     const dt=g.data_premio?new Date(g.data_premio).toLocaleDateString('pt-BR'):'';
                     const btnPremio=jp
                         ?`<span style="background:#e8f5e9;color:#2e7d32;padding:2px 8px;border-radius:10px;font-size:.73rem;font-weight:700">✅ Pago ${dt}</span>
-                          <button class="btn-modern btn-sm btn-warning" data-aid="${esc(g.id)}" onclick="marcarPremio(this,'desfazer')" style="margin-left:4px;font-size:.71rem">↩️ Desfazer</button>`
-                        :`<button class="btn-modern btn-sm btn-success" data-aid="${esc(g.id)}" onclick="marcarPremio(this,'marcar')">💰 Marcar Pago</button>`;
+                          <button class="btn-modern btn-sm btn-warning" data-aid="${esc(g.aposta_id)}" onclick="marcarPremio(this,'desfazer')" style="margin-left:4px;font-size:.71rem">↩️ Desfazer</button>`
+                        :`<button class="btn-modern btn-sm btn-success" data-aid="${esc(g.aposta_id)}" onclick="marcarPremio(this,'marcar')">💰 Marcar Pago</button>`;
                     return `<div class="ganhador-item">
                         <div>
                             <div class="gi-nome">${i+1}. ${escUp(g.nome)}</div>
                             <div class="gi-info">Contato: ${esc(g.contato||'—')}</div>
-                            <div class="gi-info">Palpite: 🇧🇷 ${g.palpites_lista?.[0]?.gols_brasil??'?'} × ${g.palpites_lista?.[0]?.gols_adversario??'?'}</div>
+                            <div class="gi-info">Palpite: 🇧🇷 ${g.gols_brasil??'?'} × ${g.gols_adversario??'?'}</div>
                             <div class="gi-info">Status pgto: ${btnPremio}</div>
                         </div>
                         <div style="text-align:right;min-width:110px">
-                            <div style="font-size:1.15rem;font-weight:800;color:var(--green)">${fmtBRL(fin.valor_individual)}</div>
+                            <div style="font-size:1.15rem;font-weight:800;color:var(--green)">${fmtBRL(g.valor_ganho??fin.valor_individual)}</div>
                             <div style="font-size:.74rem;color:var(--text-3)">prêmio individual</div>
                         </div>
                     </div>`;
